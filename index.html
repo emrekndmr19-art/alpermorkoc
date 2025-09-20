@@ -1,1 +1,177 @@
-
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AMA - Alper Morkoç Architecture</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&amp;family=Roboto:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<style>
+        .carousel-item {
+            transition: transform 0.5s ease-in-out;
+        }
+    </style>
+<script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#E0E0E0",
+                        "background-light": "#F5F5F5",
+                        "background-dark": "#0F0F0F",
+                        "accent": "#BDBDBD",
+                    },
+                    fontFamily: {
+                        display: ["Roboto Condensed", "sans-serif"],
+                        body: ["Roboto", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.125rem",
+                    },
+                },
+            },
+        };
+    </script>
+</head>
+<body class="bg-background-dark text-primary font-body antialiased">
+<div class="relative w-full h-screen overflow-hidden">
+<div class="w-full h-full flex transition-transform duration-500 ease-in-out" id="carousel">
+<div class="carousel-item w-full h-full flex-shrink-0">
+<img alt="Nef Reserve Gölköy" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBY3ViKq1aw3yXDhhfDzgn7d0Vnt9jkYwQLGkJo0WUnOSAcz06Acijs0rfUd0xb9zxwwedHo2UBB6vTEREgApkNX5S4pv1vRV9RH5B9nCgadZSPz8edx5Oegr7Vkl61cWtBT8vpoeYYONTO_1dQasguKJknaYBs5x-ksJA5c-Xwg-FAO92cpnoXersUR8s4cA3gg84RtdesgofL6GVefDsHtJABqFzz-Eiljg6sCLAXqvHOLTd-bZt5Avma1ITGxYiogtxhLn5cU3s"/>
+</div>
+<div class="carousel-item w-full h-full flex-shrink-0">
+<img alt="Architectural detail of a modern building" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDywh5KHJIrXp4s52K1q899PeRE9lFxVweHMW2m5xVN5GAmy9rXujubUdVBDEb-52DZCJp8ESyuMVD_iEpICFtvVL6QsGb93VmuZxZS2PJB6fJAJIbiNy8gFLVVeLF4ljljtdkYfvQ4Zth5632bC7EwePczCSU-byb1tPIHSyUcXztEFgLEIO51I97KC8pNhm7AiIDRl0eeST75VN8H9S7ncLlFfgKAAeySs12gW0IO-bRgtDVQ4sq1_n5jqPeqOZDy0fEuyZiJHm0"/>
+</div>
+<div class="carousel-item w-full h-full flex-shrink-0">
+<img alt="Interior of a modern house" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGbCFIA5CK9Pt4bi0fEdIphWGRzysF0RACqcAQrhCRIPHNhljJIo6DXOsFA5HPMoO8zXERyza-Pl9_e2OnZ-xhgdR2DLkBdVZYKQhOU427ZgDH9NZowetlX5r8f0oCfikqMJkrSuabc9Pi1C7s9zIfz3eUbptgsAll8sluvlI2-86xYefKmDEughe06TuGjVz0RSjVQXHL9l_ze9uidcyYGPuDr_t-CPGqqwi2ZkM7eIn8BIcOvFtdYcURahWa7XoWGf4HO3kRaHY"/>
+</div>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent"></div>
+<header class="absolute top-0 left-0 right-0 z-10 p-8">
+<div class="container mx-auto flex justify-between items-center">
+<div class="text-white text-2xl font-display font-light tracking-wider">
+<span class="font-bold">ALPER MORKOÇ</span> ARCHITECTURE
+</div>
+<nav class="flex items-center space-x-10 text-sm font-medium tracking-widest uppercase">
+<a class="text-white hover:text-opacity-70 transition-opacity" href="#">About</a>
+<a class="text-white hover:text-opacity-70 transition-opacity" href="#">Projects</a>
+<a class="text-white hover:text-opacity-70 transition-opacity" href="#">Istanbul</a>
+<a class="text-white hover:text-opacity-70 transition-opacity" href="#">Contact</a>
+<button class="text-white">
+<span class="material-icons">search</span>
+</button>
+</nav>
+</div>
+</header>
+<div class="absolute bottom-0 left-0 right-0 p-8 md:p-16 text-white z-10">
+<div class="container mx-auto">
+<div class="max-w-3xl">
+<p class="text-sm uppercase tracking-widest mb-4 font-display">NEF RESERVE GÖLKÖY</p>
+<h1 class="text-5xl md:text-6xl font-display font-light mb-8">
+                        Revealing the first glimpses of life in Nef Reserve Gölköy that is nearing completion!
+                    </h1>
+</div>
+<div class="flex items-center mt-12">
+<div class="flex-grow h-0.5 bg-white/20 mr-8">
+<div class="h-full bg-white transition-all duration-3000 ease-linear" id="progress-bar" style="width: 0%;"></div>
+</div>
+<div class="flex space-x-3">
+<button class="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors" id="prev-btn">
+<span class="material-icons">keyboard_arrow_left</span>
+</button>
+<button class="w-12 h-12 border border-white/20 rounded-full flex items-center justify-center hover:bg-white/10 transition-colors" id="next-btn">
+<span class="material-icons">keyboard_arrow_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<footer class="bg-white text-gray-800 py-16 px-8">
+<div class="container mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+<div>
+<h3 class="text-black font-display font-bold text-xl mb-4 tracking-tight">ALPER MORKOÇ ARCHITECTURE</h3>
+<p class="text-sm font-body text-gray-600">Pioneering design and innovation in modern architecture.</p>
+</div>
+<div>
+<h3 class="text-black font-display font-semibold text-base mb-4 tracking-widest">NAVIGATE</h3>
+<ul class="space-y-3 text-sm font-body">
+<li><a class="text-gray-600 hover:text-black transition-colors" href="#">Istanbul</a></li>
+<li><a class="text-gray-600 hover:text-black transition-colors" href="#">London</a></li>
+<li><a class="text-gray-600 hover:text-black transition-colors" href="#">New York</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-black font-display font-semibold text-base mb-4 tracking-widest">SOCIAL</h3>
+<ul class="space-y-3 text-sm font-body">
+<li><a class="text-gray-600 hover:text-black transition-colors" href="#">Instagram</a></li>
+<li><a class="text-gray-600 hover:text-black transition-colors" href="#">Facebook</a></li>
+<li><a class="text-gray-600 hover:text-black transition-colors" href="#">LinkedIn</a></li>
+<li><a class="text-gray-600 hover:text-black transition-colors" href="#">Twitter</a></li>
+</ul>
+</div>
+<div>
+<h3 class="text-black font-display font-semibold text-base mb-4 tracking-widest">SUBSCRIBE</h3>
+<form>
+<input class="w-full bg-gray-100 border-gray-300 text-gray-900 text-sm rounded-sm p-3 focus:ring-1 focus:ring-gray-800 focus:border-gray-800" placeholder="Enter your email" type="email"/>
+<button class="w-full mt-3 bg-gray-800 hover:bg-gray-700 text-white font-bold text-sm rounded-sm py-3 transition-colors" type="submit">Join</button>
+</form>
+</div>
+</div>
+<div class="mt-16 pt-10 border-t border-gray-200 text-center text-xs text-gray-500">
+<p>© 2023 Alper Morkoç Architecture. All Rights Reserved.</p>
+</div>
+</div>
+</footer>
+<script>
+        const carousel = document.getElementById('carousel');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const items = document.querySelectorAll('.carousel-item');
+        const totalItems = items.length;
+        let currentIndex = 0;
+        let intervalId;
+        function updateCarousel() {
+            carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+            startProgressBar();
+        }
+        function startProgressBar() {
+            progressBar.style.transition = 'none';
+            progressBar.style.width = '0%';
+            // Force a reflow
+            void progressBar.offsetWidth;
+            progressBar.style.transition = `width 5000ms linear`;
+            progressBar.style.width = '100%';
+        }
+        function showNext() {
+            currentIndex = (currentIndex + 1) % totalItems;
+            updateCarousel();
+        }
+        function showPrev() {
+            currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+            updateCarousel();
+        }
+        function startAutoplay() {
+            intervalId = setInterval(showNext, 5000);
+            startProgressBar();
+        }
+        function stopAutoplay() {
+            clearInterval(intervalId);
+        }
+        nextBtn.addEventListener('click', () => {
+            stopAutoplay();
+            showNext();
+            startAutoplay();
+        });
+        prevBtn.addEventListener('click', () => {
+            stopAutoplay();
+            showPrev();
+            startAutoplay();
+        });
+        // Initialize
+        startAutoplay();
+    </script>
+</body></html>
