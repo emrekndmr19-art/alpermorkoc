@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html class="dark" lang="tr">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>AMA - Alper Morkoç Architecture</title>
+    <title data-i18n="meta.titles.home">Alpimimarlık — Ana Sayfa</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
@@ -50,52 +50,108 @@
         .reveal {
             animation: reveal 0.6s ease forwards;
         }
+
+        .concept-visual {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.25rem;
+            background-size: 160%;
+            background-position: center;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+
+        .concept-visual::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.18), transparent 55%);
+            mix-blend-mode: screen;
+            opacity: 0.45;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="bg-background-dark text-primary font-body antialiased">
+    <header class="border-b border-white/10 bg-black px-8 py-5 text-white md:px-16">
+        <div class="flex items-center justify-between gap-8">
+            <a class="text-sm font-display uppercase tracking-[0.6em] text-white/80" href="index.html">
+                <span class="font-bold text-white" data-i18n="common.brand">Alpimimarlık</span>
+            </a>
+            <div class="flex items-center gap-3">
+                <label class="sr-only" data-i18n="common.langLabel" for="langSwitcher">Dil Seçimi</label>
+                <select
+                    class="appearance-none rounded-sm border border-white/30 bg-black/60 px-3 py-2 text-[0.65rem] uppercase tracking-[0.45em] text-white/80 shadow-sm transition focus:border-white focus:outline-none"
+                    id="langSwitcher"
+                >
+                    <option data-i18n="common.language.tr" value="tr">TR</option>
+                    <option data-i18n="common.language.en" value="en">EN</option>
+                </select>
+                <button
+                    class="flex items-center gap-2 text-xs uppercase tracking-[0.45em] text-white/70 transition-opacity hover:opacity-60"
+                    id="menu-toggle"
+                    type="button"
+                >
+                    <span class="material-icons text-base">menu</span>
+                    <span data-i18n="common.menuButton">Menü</span>
+                </button>
+            </div>
+        </div>
+    </header>
     <main>
-        <section class="relative h-screen min-h-[650px] overflow-hidden text-white">
+        <section class="relative min-h-[780px] md:min-h-[900px] lg:min-h-[1000px] overflow-hidden text-white">
             <div class="absolute inset-0">
                 <div class="flex h-full w-full transition-transform duration-700 ease-in-out" id="carousel">
                     <div
                         class="carousel-item relative h-full w-full"
-                        data-category="Residential"
-                        data-description="Revealing the first glimpses of life in a serene coastal retreat where refined lines meet the Aegean horizon."
-                        data-location="Bodrum, TR"
-                        data-title="Nef Reserve Gölköy"
+                        data-category="Kampanya Vitrini"
+                        data-description="Gün ışığıyla nefes alan çalışma adaları, yeni ofisimizin sakin ama üretken temposunu sahne ışığı altına taşıyor."
+                        data-location="Merkez Stüdyo"
+                        data-title="Gün Doğumu Stüdyo Kurgusu"
+                        data-i18n-data-category="index.hero.slide1.category"
+                        data-i18n-data-description="index.hero.slide1.description"
+                        data-i18n-data-location="index.hero.slide1.location"
+                        data-i18n-data-title="index.hero.slide1.title"
                     >
                         <img
-                            alt="Nef Reserve Gölköy"
+                            alt="Cam duvarlarla çevrili aydınlık çalışma alanı"
                             class="h-full w-full object-cover"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuBY3ViKq1aw3yXDhhfDzgn7d0Vnt9jkYwQLGkJo0WUnOSAcz06Acijs0rfUd0xb9zxwwedHo2UBB6vTEREgApkNX5S4pv1vRV9RH5B9nCgadZSPz8edx5Oegr7Vkl61cWtBT8vpoeYYONTO_1dQasguKJknaYBs5x-ksJA5c-Xwg-FAO92cpnoXersUR8s4cA3gg84RtdesgofL6GVefDsHtJABqFzz-Eiljg6sCLAXqvHOLTd-bZt5Avma1ITGxYiogtxhLn5cU3s"
+                            src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=80"
                         />
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/30 to-black/40"></div>
                     </div>
                     <div
                         class="carousel-item relative h-full w-full"
-                        data-category="Cultural"
-                        data-description="A sculpted public space in Riyadh that folds desert light into a contemporary urban experience."
-                        data-location="Riyadh, SA"
-                        data-title="Al Sahra Pavilion"
+                        data-category="Mekân Lansmanı"
+                        data-description="Doğal taş ve yumuşak aydınlatma birlikteliği, giriş holünü markamızın sıcak tonlarıyla buluşturan davetkâr bir sahneye dönüştürüyor."
+                        data-location="Giriş Holü"
+                        data-title="Yumuşak Işıkta Karşılama"
+                        data-i18n-data-category="index.hero.slide2.category"
+                        data-i18n-data-description="index.hero.slide2.description"
+                        data-i18n-data-location="index.hero.slide2.location"
+                        data-i18n-data-title="index.hero.slide2.title"
                     >
                         <img
-                            alt="Architectural detail of a modern building"
+                            alt="Ahşap detaylara sahip sıcak karşılaşma alanı"
                             class="h-full w-full object-cover"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDywh5KHJIrXp4s52K1q899PeRE9lFxVweHMW2m5xVN5GAmy9rXujubUdVBDEb-52DZCJp8ESyuMVD_iEpICFtvVL6QsGb93VmuZxZS2PJB6fJAIbiNy8gFLVVeLF4ljljtdkYfvQ4Zth5632bC7EwePczCSU-byb1tPIHSyUcXztEFgLEIO51I97KC8pNhm7AiIDRl0eeST75VN8H9S7ncLlFfgKAAeySs12gW0IO-bRgtDVQ4sq1_n5jqPeqOZDy0fEuyZiJHm0"
+                            src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=1600&q=80"
                         />
                         <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/20"></div>
                     </div>
                     <div
                         class="carousel-item relative h-full w-full"
-                        data-category="Hospitality"
-                        data-description="An immersive interior landscape that blurs the threshold between nature, art, and crafted comfort."
-                        data-location="Istanbul, TR"
-                        data-title="Aether Residence"
+                        data-category="Gece Senaryosu"
+                        data-description="Kentin ritmine eşlik eden cephe ışıkları, ofisimizin akşam saatlerindeki rafine duruşunu panoramaya taşıyor."
+                        data-location="Kent Silueti"
+                        data-title="Akşam Cephesi"
+                        data-i18n-data-category="index.hero.slide3.category"
+                        data-i18n-data-description="index.hero.slide3.description"
+                        data-i18n-data-location="index.hero.slide3.location"
+                        data-i18n-data-title="index.hero.slide3.title"
                     >
                         <img
-                            alt="Interior of a modern house"
+                            alt="Gece ışıklarıyla parlayan ofis cephesi"
                             class="h-full w-full object-cover"
-                            src="https://lh3.googleusercontent.com/aida-public/AB6AXuAGbCFIA5CK9Pt4bi0fEdIphWGRzysF0RACqcAQrhCRIPHNhljJIo6DXOsFA5HPMoO8zXERyza-Pl9_e2OnZ-xhgdR2DLkBdVZYKQhOU427ZgDH9NZowetlX5r8f0oCfikqMJkrSuabc9Pi1C7s9zIfz3eUbptgsAll8sluvlI2-86xYefKmDEughe06TuGjVz0RSjVQXHL9l_ze9uidcyYGPuDr_t-CPGqqwi2ZkM7eIn8BIcOvFtdYcURahWa7XoWGf4HO3kRaHY"
+                            src="https://images.unsplash.com/photo-1489515217757-5fd1be406fef?auto=format&fit=crop&w=1600&q=80"
                         />
                         <div class="absolute inset-0 bg-gradient-to-r from-black/85 via-black/40 to-black/10"></div>
                     </div>
@@ -103,32 +159,14 @@
             </div>
             <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-black via-black/10 to-background-dark"></div>
 
-            <header class="absolute top-0 left-0 right-0 z-30 px-8 py-10 md:px-16">
-                <div class="flex items-center justify-between">
-                    <div class="text-sm font-display uppercase tracking-[0.6em] text-white/80">
-                        <span class="font-bold text-white">Alper Morkoç</span> Architecture
-                    </div>
-                    <nav class="hidden items-center space-x-10 text-xs uppercase tracking-[0.45em] text-white/70 md:flex">
-                        <a class="transition-opacity hover:opacity-60" href="#">Studio</a>
-                        <a class="transition-opacity hover:opacity-60" href="#">Projects</a>
-                        <a class="transition-opacity hover:opacity-60" href="#">Insights</a>
-                        <a class="transition-opacity hover:opacity-60" href="#">Contact</a>
-                    </nav>
-                    <button class="flex items-center gap-2 text-xs uppercase tracking-[0.45em] text-white/70 transition-opacity hover:opacity-60">
-                        <span class="material-icons text-base">search</span>
-                        <span>Search</span>
-                    </button>
-                </div>
-            </header>
-
             <div class="relative z-20 flex h-full flex-col justify-end px-8 pb-24 md:px-20">
-                <div class="pointer-events-auto max-w-3xl space-y-6">
-                    <p class="text-xs uppercase tracking-[0.55em] text-white/60" id="slide-category">Residential</p>
-                    <h1 class="text-4xl font-display font-light leading-[1.1] text-white transition-all duration-500 md:text-6xl" id="slide-title">
-                        Nef Reserve Gölköy
+                <div class="pointer-events-auto max-w-3xl">
+                    <p class="text-xs uppercase tracking-[0.55em] text-white/60" data-i18n="index.hero.slide1.category" id="slide-category">Kampanya Vitrini</p>
+                    <h1 class="mt-4 text-4xl font-display font-light leading-tight text-white transition-all duration-500 md:text-6xl md:leading-[1.1]" data-i18n="index.hero.slide1.title" id="slide-title">
+                        Gün Doğumu Stüdyo Kurgusu
                     </h1>
-                    <p class="text-sm text-white/70 md:text-base" id="slide-description">
-                        Revealing the first glimpses of life in a serene coastal retreat where refined lines meet the Aegean horizon.
+                    <p class="mt-5 text-sm text-white/70 md:mt-6 md:text-base" data-i18n="index.hero.slide1.description" id="slide-description">
+                        Gün ışığıyla nefes alan çalışma adaları, yeni ofisimizin sakin ama üretken temposunu sahne ışığı altına taşıyor.
                     </p>
                 </div>
                 <div class="pointer-events-auto mt-12 flex flex-col gap-8 md:flex-row md:items-center md:justify-between">
@@ -137,7 +175,7 @@
                         <span class="font-display text-sm text-white" id="slide-index">01</span>
                         <span class="text-white/40">/</span>
                         <span class="font-display text-sm text-white/70" id="slide-total">03</span>
-                        <span class="text-white/50" id="slide-location">Bodrum, TR</span>
+                        <span class="text-white/50" data-i18n="index.hero.slide1.location" id="slide-location">Merkez Stüdyo</span>
                     </div>
                     <div class="flex items-center gap-6">
                         <div class="relative h-0.5 w-32 overflow-hidden bg-white/25">
@@ -165,110 +203,122 @@
 
             <div class="pointer-events-none absolute bottom-10 left-8 flex items-center gap-5 text-[0.55rem] uppercase tracking-[0.6em] text-white/40 md:left-20">
                 <span class="h-8 w-px bg-white/25"></span>
-                <span>Scroll to explore</span>
+                <span data-i18n="index.hero.scrollHint">Scroll to explore</span>
             </div>
         </section>
 
         <section class="bg-background-dark px-8 py-20 text-primary md:px-20">
             <div class="flex flex-col gap-12 md:flex-row md:items-end md:justify-between">
                 <div>
-                    <p class="text-xs uppercase tracking-[0.55em] text-accent">Featured Works</p>
-                    <h2 class="mt-4 max-w-2xl text-3xl font-display text-white md:text-5xl">Stories from Alper Morkoç Architecture</h2>
+                    <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="index.vision.eyebrow">Stüdyo Vizyonu</p>
                 </div>
-                <div class="max-w-xl text-sm text-gray-400">
-                    <p>
-                        A curated selection of places, people, and crafted experiences that define the studio's multidimensional practice across the globe.
+                <div class="max-w-2xl space-y-5 text-sm text-gray-400">
+                    <p data-i18n="index.vision.body2">
+                        Her sunum klasöründe, giriş sahnesinden gece cephe kurgusuna kadar uzanan atmosfer anlatıları yer alıyor. Hazırlık sürecinde paylaştığımız eskizler ve maket fotoğrafları, anlatının tonunu koruyarak ekiplerin tanıtım adımlarını hızlandırıyor.
                     </p>
                 </div>
-            </div>
-            <div class="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
-                <article class="group relative overflow-hidden rounded-sm border border-white/5 bg-black/30">
-                    <img
-                        alt="Design team in conversation"
-                        class="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        src="https://images.unsplash.com/photo-1529429617124-aee575b5dbb3?auto=format&fit=crop&w=1100&q=80"
-                    />
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
-                    <div class="absolute bottom-0 p-6">
-                        <p class="text-[0.55rem] uppercase tracking-[0.6em] text-white/50">Studio Life</p>
-                        <h3 class="mt-3 text-2xl font-display text-white transition-colors duration-300 group-hover:text-primary">Inside the Istanbul Atelier</h3>
-                        <p class="mt-2 max-w-xs text-sm text-white/70">Collaborative spaces that bring craft, technology, and dialogue together.</p>
-                    </div>
-                </article>
-                <article class="group relative overflow-hidden rounded-sm border border-white/5 bg-black/30">
-                    <img
-                        alt="Modern cultural pavilion"
-                        class="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        src="https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=1100&q=80"
-                    />
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
-                    <div class="absolute bottom-0 p-6">
-                        <p class="text-[0.55rem] uppercase tracking-[0.6em] text-white/50">Perspective</p>
-                        <h3 class="mt-3 text-2xl font-display text-white transition-colors duration-300 group-hover:text-primary">Resilient Cultural Landscapes</h3>
-                        <p class="mt-2 max-w-xs text-sm text-white/70">Design strategies that respond to climate while celebrating local narratives.</p>
-                    </div>
-                </article>
-                <article class="group relative overflow-hidden rounded-sm border border-white/5 bg-black/30">
-                    <img
-                        alt="High-rise skyline"
-                        class="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        src="https://images.unsplash.com/photo-1487956382158-bb926046304a?auto=format&fit=crop&w=1100&q=80"
-                    />
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
-                    <div class="absolute bottom-0 p-6">
-                        <p class="text-[0.55rem] uppercase tracking-[0.6em] text-white/50">Global Practice</p>
-                        <h3 class="mt-3 text-2xl font-display text-white transition-colors duration-300 group-hover:text-primary">Elevating Urban Skylines</h3>
-                        <p class="mt-2 max-w-xs text-sm text-white/70">Hybrid towers that balance hospitality, culture, and public experience.</p>
-                    </div>
-                </article>
             </div>
         </section>
     </main>
 
+    <div
+        class="fixed inset-x-4 bottom-6 z-50 max-w-3xl translate-x-0 rounded border border-white/15 bg-black/90 p-6 text-sm text-white shadow-2xl md:inset-x-auto md:left-1/2 md:-translate-x-1/2"
+        data-visible="false"
+        hidden
+        id="cookie-banner"
+    >
+        <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div class="space-y-2 md:max-w-xl">
+                <p class="text-xs uppercase tracking-[0.4em] text-accent" data-i18n="common.cookie.heading">Çerez Ayarları</p>
+                <p class="text-sm text-white/80" data-i18n="common.cookie.body">
+                    Deneyiminizi kişiselleştirmek ve site performansını takip etmek için çerezler kullanıyoruz. Tercihinizi istediğiniz zaman değiştirebilirsiniz.
+                </p>
+            </div>
+            <div class="flex flex-col gap-2 whitespace-nowrap md:flex-row">
+                <button
+                    class="rounded-sm border border-white/30 px-4 py-2 text-xs uppercase tracking-[0.4em] text-white transition hover:border-white hover:text-white"
+                    data-action="decline"
+                    data-i18n="common.cookie.decline"
+                    type="button"
+                >
+                    Reddet
+                </button>
+                <button
+                    class="rounded-sm bg-white px-4 py-2 text-xs uppercase tracking-[0.4em] text-black transition hover:bg-white/90"
+                    data-action="accept"
+                    data-i18n="common.cookie.accept"
+                    type="button"
+                >
+                    Kabul Et
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div
+        aria-labelledby="menu-title"
+        aria-modal="true"
+        class="fixed inset-0 z-40 hidden bg-black/70 opacity-0 backdrop-blur-md transition-opacity"
+        id="menu-panel"
+        role="dialog"
+    >
+        <div class="ml-auto flex h-full w-full max-w-xs flex-col border-l border-white/10 bg-background-dark/95 p-8 text-white shadow-2xl sm:max-w-sm">
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="common.brand" id="menu-title">Alpimimarlık</p>
+                </div>
+                <button class="text-white/60 transition hover:text-white" id="menu-close" type="button">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <nav class="mt-10 space-y-6 text-sm uppercase tracking-[0.4em] text-white/70">
+                <a class="block transition-opacity hover:opacity-60" data-i18n="common.nav.home" href="index.html">Ana Sayfa</a>
+                <a class="block transition-opacity hover:opacity-60" data-i18n="common.nav.studio" href="studio.html">Studio</a>
+                <a class="block transition-opacity hover:opacity-60" data-i18n="common.nav.careers" href="kariyer.html">Kariyer</a>
+                <a class="block transition-opacity hover:opacity-60" data-i18n="common.nav.contact" href="contact.html">Contact</a>
+            </nav>
+            <div class="mt-auto space-y-4 text-sm text-white/60">
+                <p class="uppercase tracking-[0.35em] text-white/40" data-i18n="common.menuPanel.contactHeading">İletişim</p>
+                <p data-i18n="common.menuPanel.contactBody">İzmir merkezli ofis, sunum ve konsept kitapçıkları hazırlıyor.</p>
+                <a class="inline-flex items-center gap-2 text-white transition hover:text-white/70" href="mailto:info@alpimimarlik.com">
+                    <span class="material-icons text-base">mail</span>
+                    <span data-i18n="common.menuPanel.email">info@alpimimarlik.com</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
     <footer class="border-t border-white/10 bg-black px-8 py-16 text-primary md:px-20">
-        <div class="grid grid-cols-1 gap-12 md:grid-cols-4">
+        <div class="grid grid-cols-1 gap-12 md:grid-cols-3">
             <div>
-                <h3 class="text-xl font-display font-bold tracking-tight text-white">Alper Morkoç Architecture</h3>
-                <p class="mt-3 text-sm text-gray-400">
+                <h3 class="text-xl font-display font-bold tracking-tight text-white" data-i18n="common.footer.title">ALPI</h3>
+                <p class="mt-3 text-sm text-gray-400" data-i18n="common.footer.tagline">
                     Pioneering architectural narratives shaped by context, craft, and human experience.
                 </p>
             </div>
             <div>
-                <h3 class="text-sm font-display uppercase tracking-[0.45em] text-white/70">Navigate</h3>
+                <h3 class="text-sm font-display uppercase tracking-[0.45em] text-white/70" data-i18n="common.footer.navigate">Navigate</h3>
                 <ul class="mt-4 space-y-3 text-sm text-gray-400">
-                    <li><a class="transition-colors hover:text-white" href="#">Istanbul</a></li>
-                    <li><a class="transition-colors hover:text-white" href="#">London</a></li>
-                    <li><a class="transition-colors hover:text-white" href="#">New York</a></li>
+                    <li><a class="transition-colors hover:text-white" data-i18n="common.nav.home" href="index.html">Home</a></li>
+                    <li><a class="transition-colors hover:text-white" data-i18n="common.nav.studio" href="studio.html">Studio</a></li>
+                    <li><a class="transition-colors hover:text-white" data-i18n="common.nav.careers" href="kariyer.html">Kariyer</a></li>
+                    <li><a class="transition-colors hover:text-white" data-i18n="common.nav.contact" href="contact.html">Contact</a></li>
                 </ul>
             </div>
             <div>
-                <h3 class="text-sm font-display uppercase tracking-[0.45em] text-white/70">Connect</h3>
+                <h3 class="text-sm font-display uppercase tracking-[0.45em] text-white/70" data-i18n="common.footer.connect">Connect</h3>
                 <ul class="mt-4 space-y-3 text-sm text-gray-400">
-                    <li><a class="transition-colors hover:text-white" href="#">Instagram</a></li>
-                    <li><a class="transition-colors hover:text-white" href="#">LinkedIn</a></li>
-                    <li><a class="transition-colors hover:text-white" href="#">Behance</a></li>
-                    <li><a class="transition-colors hover:text-white" href="#">YouTube</a></li>
+                    <li><a class="transition-colors hover:text-white" href="https://www.instagram.com/alpiarchitects?igsh=NWRtOGY2cjRjMGY0" data-i18n="common.footer.instagram">Instagram</a></li>
                 </ul>
-            </div>
-            <div>
-                <h3 class="text-sm font-display uppercase tracking-[0.45em] text-white/70">Newsletter</h3>
-                <form class="mt-4 space-y-3">
-                    <input
-                        class="w-full border border-white/15 bg-white/5 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none"
-                        placeholder="Enter your email"
-                        type="email"
-                    />
-                    <button class="w-full bg-white/10 py-3 text-sm font-semibold uppercase tracking-[0.35em] text-white transition hover:bg-white/20" type="submit">
-                        Join
-                    </button>
-                </form>
             </div>
         </div>
         <div class="mt-14 border-t border-white/10 pt-6 text-xs text-white/40">
-            <p>© 2024 Alper Morkoç Architecture. All Rights Reserved.</p>
+            <p data-i18n="common.footer.copyright">© 2024 Alpimimarlık. Tüm hakları saklıdır.</p>
         </div>
     </footer>
 
+    <script src="assets/js/i18n.js"></script>
+    <script src="assets/js/cookie-consent.js"></script>
     <script>
         const carousel = document.getElementById('carousel');
         const prevBtn = document.getElementById('prev-btn');
@@ -281,6 +331,9 @@
         const slideLocation = document.getElementById('slide-location');
         const slideIndex = document.getElementById('slide-index');
         const slideTotal = document.getElementById('slide-total');
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuPanel = document.getElementById('menu-panel');
+        const menuClose = document.getElementById('menu-close');
         const totalItems = items.length;
 
         let currentIndex = 0;
@@ -350,9 +403,74 @@
             startAutoplay();
         });
 
+        if (window.I18N && typeof window.I18N.onChange === 'function') {
+            window.I18N.onChange(() => {
+                updateTextualContent();
+            });
+        }
+
+        const openMenuPanel = () => {
+            if (!menuPanel) return;
+            menuPanel.classList.remove('hidden');
+            menuPanel.classList.remove('opacity-0');
+            requestAnimationFrame(() => {
+                menuPanel.classList.add('opacity-100');
+            });
+            stopAutoplay();
+        };
+
+        const closeMenuPanel = () => {
+            if (!menuPanel) return;
+            menuPanel.classList.remove('opacity-100');
+            menuPanel.classList.add('opacity-0');
+            setTimeout(() => {
+                menuPanel.classList.add('hidden');
+            }, 180);
+            startAutoplay();
+        };
+
+        if (menuToggle) {
+            menuToggle.addEventListener('click', openMenuPanel);
+        }
+
+        if (menuClose) {
+            menuClose.addEventListener('click', closeMenuPanel);
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && menuPanel && !menuPanel.classList.contains('hidden')) {
+                closeMenuPanel();
+            }
+        });
+
+        if (menuPanel) {
+            menuPanel.addEventListener('click', (event) => {
+                if (event.target === menuPanel) {
+                    closeMenuPanel();
+                }
+            });
+
+            menuPanel.querySelectorAll('a').forEach((link) => {
+                link.addEventListener('click', closeMenuPanel);
+            });
+        }
+
+        document.addEventListener('i18n:change', () => {
+            updateTextualContent();
+        });
+
         slideTotal.textContent = padNumber(totalItems);
-        goToSlide(0);
-        startAutoplay();
+
+        const initCarousel = () => {
+            goToSlide(0);
+            startAutoplay();
+        };
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initCarousel, { once: true });
+        } else {
+            initCarousel();
+        }
     </script>
 </body>
 </html>
