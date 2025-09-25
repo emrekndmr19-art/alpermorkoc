@@ -30,7 +30,6 @@
       "contact": "İletişim"
     },
     "menuPanel": {
-      "title": "Tanıtım Menüsü",
       "contactHeading": "İletişim",
       "contactBody": "İzmir merkezli ofis, sunum ve konsept kitapçıkları hazırlıyor.",
       "email": "info@alpimimarlik.com"
@@ -326,13 +325,11 @@
       "emailPlaceholder": "ornek@studio.com",
       "topicLabel": "Sunum İlgisi",
       "topicOptions": {
-        "conceptBook": "Konsept kitap hazırlığı",
         "renderSession": "Render ve görselleştirme oturumu",
         "launchSet": "Dijital lansman seti",
         "other": "Diğer"
       },
       "messageLabel": "Mesajınız",
-      "messagePlaceholder": "Ekibinizin ihtiyacını kısaca anlatın...",
       "submit": "Gönder"
     },
     "aside": {

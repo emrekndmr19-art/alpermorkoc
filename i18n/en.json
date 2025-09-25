@@ -30,7 +30,6 @@
       "contact": "Contact"
     },
     "menuPanel": {
-      "title": "Showcase Menu",
       "contactHeading": "Contact",
       "contactBody": "Izmir-based studio crafting presentation booklets.",
       "email": "info@alpimimarlik.com"
@@ -326,13 +325,11 @@
       "emailPlaceholder": "sample@studio.com",
       "topicLabel": "Presentation Interest",
       "topicOptions": {
-        "conceptBook": "Preparing a concept book",
         "renderSession": "Render and visualization session",
         "launchSet": "Digital launch set",
         "other": "Other"
       },
       "messageLabel": "Your Message",
-      "messagePlaceholder": "Tell us briefly about your team's needs...",
       "submit": "Send"
     },
     "aside": {
