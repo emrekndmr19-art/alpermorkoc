@@ -29,6 +29,26 @@
             },
         };
     </script>
+    <style>
+        .ai-visual {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.25rem;
+            background-size: 160%;
+            background-position: center;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+
+        .ai-visual::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.18), transparent 55%);
+            mix-blend-mode: screen;
+            opacity: 0.45;
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body class="bg-background-dark text-primary font-body antialiased">
     <header class="border-b border-white/10 bg-black/60 px-8 py-6 backdrop-blur-md md:px-16">
@@ -68,31 +88,46 @@
             <p class="text-xs uppercase tracking-[0.55em] text-accent">Stüdyo Hikâyesi</p>
             <h1 class="text-4xl font-display text-white md:text-5xl">Butik Ofisin Arka Planı</h1>
             <p class="text-base text-white/70">
-                AMA, henüz hayata geçirilmemiş projelerini bile etkileyici bir kampanya diliyle anlatan küçük ama çevik bir mimarlık ofisi.
-                Yapay zekâ destekli görsel üretim altyapımız, fikir aşamasındaki konseptleri gerçek sahneler gibi hissettiren render ve kolajlara dönüştürüyor.
+                AMA, henüz portföyünü paylaşmayan küçük bir mimarlık ofisi.
+                Tanıtım kitapçıklarında boş kalan bölümleri, ekip içinde hazırladığımız AI görselleriyle dolduruyor ve sunumların sıcak bir dilde ilerlemesini sağlıyoruz.
             </p>
             <div class="grid gap-6 md:grid-cols-3">
                 <figure class="overflow-hidden rounded-sm border border-white/10 bg-black/40">
-                    <img alt="Çalışma masalarının yer aldığı AI stüdyo görseli" class="h-48 w-full object-cover" src="https://images.unsplash.com/photo-1529429617124-aee575b5dbb3?auto=format&fit=crop&w=900&q=80"/>
+                    <div
+                        aria-label="Çalışma masalarının yer aldığı AI stüdyo görseli"
+                        class="ai-visual h-48"
+                        role="img"
+                        style="background-image: radial-gradient(circle at 25% 25%, rgba(255, 208, 158, 0.8) 0%, rgba(255, 208, 158, 0) 55%), radial-gradient(circle at 75% 70%, rgba(255, 126, 126, 0.5) 0%, rgba(255, 126, 126, 0) 45%), linear-gradient(145deg, #222232, #101019 60%, #30253e);"
+                    ></div>
                     <figcaption class="p-4 text-xs uppercase tracking-[0.35em] text-white/60">Planlama Odası</figcaption>
                 </figure>
                 <figure class="overflow-hidden rounded-sm border border-white/10 bg-black/40">
-                    <img alt="Giriş holünü gösteren şık render" class="h-48 w-full object-cover" src="https://images.unsplash.com/photo-1519710164239-da123dc03ef4?auto=format&fit=crop&w=900&q=80"/>
+                    <div
+                        aria-label="Giriş holünü gösteren AI render"
+                        class="ai-visual h-48"
+                        role="img"
+                        style="background-image: radial-gradient(circle at 70% 30%, rgba(160, 214, 255, 0.75) 0%, rgba(160, 214, 255, 0) 55%), radial-gradient(circle at 20% 75%, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(150deg, #1b2435, #0f141f 58%, #2a3247);"
+                    ></div>
                     <figcaption class="p-4 text-xs uppercase tracking-[0.35em] text-white/60">Lobi Vinyeti</figcaption>
                 </figure>
                 <figure class="overflow-hidden rounded-sm border border-white/10 bg-black/40">
-                    <img alt="Gece cephe aydınlatmasını betimleyen görsel" class="h-48 w-full object-cover" src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=80"/>
+                    <div
+                        aria-label="Gece cephe aydınlatmasını betimleyen AI görsel"
+                        class="ai-visual h-48"
+                        role="img"
+                        style="background-image: radial-gradient(circle at 20% 70%, rgba(255, 172, 225, 0.55) 0%, rgba(255, 172, 225, 0) 52%), radial-gradient(circle at 80% 25%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(165deg, #121422, #1c1f31 55%, #302445);"
+                    ></div>
                     <figcaption class="p-4 text-xs uppercase tracking-[0.35em] text-white/60">Cephe Senaryosu</figcaption>
                 </figure>
             </div>
             <div class="space-y-6">
                 <h2 class="text-2xl font-display text-white">Yaklaşımımız</h2>
                 <p class="text-sm text-white/70">
-                    Müşterilerimizin anlatmak istediği hikâyeleri, toplantı öncesi paylaşılan küçük dijital kitapçıklarla destekliyoruz.
-                    Taslak odaklı süreç; ölçeksiz eskizler, yapay zekâ ile oluşturulmuş sahne önerileri ve kısa metin bloklarından oluşuyor.
+                    Toplantı öncesi paylaşılan kitapçıklarda, ölçeksiz eskizleri ve AI ile üretilen sahne önerilerini yan yana kurguluyoruz.
+                    Her görsel, mekânın hissini anlatan kısa notlarla destekleniyor.
                 </p>
                 <p class="text-sm text-white/70">
-                    Bu yaklaşım sayesinde, henüz bir proje dosyası bile yokken, yatırımcı ya da kullanıcı tarafında güven veren bir vitrin hazırlamak mümkün oluyor.
+                    Bu sayede henüz bir uygulama dosyası oluşmadan, yatırımcılara ofisin karakterini net şekilde gösteren tanıtım klasörleri hazırlıyoruz.
                 </p>
             </div>
         </div>

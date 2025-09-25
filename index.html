@@ -50,6 +50,25 @@
         .reveal {
             animation: reveal 0.6s ease forwards;
         }
+
+        .ai-visual {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.25rem;
+            background-size: 160%;
+            background-position: center;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+
+        .ai-visual::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.18), transparent 55%);
+            mix-blend-mode: screen;
+            opacity: 0.45;
+            pointer-events: none;
+        }
     </style>
 </head>
 <body class="bg-background-dark text-primary font-body antialiased">
@@ -194,47 +213,68 @@
                         Henüz uygulama aşamasına geçmeyen projelerimizi, yalın anlatımlı sunumlarla ve detaylı maket çalışmalarıyla paylaşıyoruz. Hazırladığımız kampanya görselleri, ofisimizin ölçekli düşünme becerisini ve samimi iletişim dilini kısa tanıtım metinleriyle birlikte ortaya koymayı hedefliyor.
                     </p>
                     <div class="mt-6 grid grid-cols-3 gap-3 text-[0px]">
-                        <img
-                            alt="Butik ofis lobisini gösteren konsept çalışma"
-                            class="h-24 w-full rounded-sm object-cover"
-                            src="https://images.unsplash.com/photo-1529429617124-aee575b5dbb3?auto=format&fit=crop&w=400&q=80"
-                        />
-                        <img
-                            alt="Toplantı alanı için hazırlanan konsept illüstrasyon"
-                            class="h-24 w-full rounded-sm object-cover"
-                            src="https://images.unsplash.com/photo-1670604606316-3f97b0623e58?auto=format&fit=crop&w=400&q=80"
-                        />
-                        <img
-                            alt="Akşam ışıklandırmasını vurgulayan cephe konsepti"
-                            class="h-24 w-full rounded-sm object-cover"
-                            src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=400&q=80"
-                        />
+                        <div
+                            aria-label="Butik ofis lobisini gösteren AI konsept"
+                            class="ai-visual h-24"
+                            role="img"
+                            style="background-image: radial-gradient(circle at 20% 30%, rgba(255, 209, 147, 0.8) 0%, rgba(255, 209, 147, 0) 55%), radial-gradient(circle at 80% 10%, rgba(255, 137, 94, 0.6) 0%, rgba(255, 137, 94, 0) 45%), linear-gradient(135deg, #2a2a3a, #161620 55%, #1f2e45);"
+                        ></div>
+                        <div
+                            aria-label="Toplantı alanı için hazırlanan AI illüstrasyon"
+                            class="ai-visual h-24"
+                            role="img"
+                            style="background-image: radial-gradient(circle at 75% 25%, rgba(144, 201, 255, 0.7) 0%, rgba(144, 201, 255, 0) 50%), radial-gradient(circle at 15% 75%, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(140deg, #1c2538, #10141f 60%, #243046);"
+                        ></div>
+                        <div
+                            aria-label="Gece cephe atmosferi için AI konsepti"
+                            class="ai-visual h-24"
+                            role="img"
+                            style="background-image: radial-gradient(circle at 30% 70%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 60%), radial-gradient(circle at 80% 30%, rgba(255, 184, 212, 0.55) 0%, rgba(255, 184, 212, 0) 55%), linear-gradient(160deg, #101421, #1c1f31 55%, #2f2445);"
+                        ></div>
                     </div>
                 </div>
             </div>
             <div class="mt-16 grid grid-cols-1 gap-10 md:grid-cols-3">
                 <div class="space-y-4 border border-white/10 bg-black/30 p-6">
+                    <div
+                        aria-label="AI ile oluşturulmuş kampanya akışı eskizi"
+                        class="ai-visual h-36 w-full"
+                        role="img"
+                        style="background-image: radial-gradient(circle at 20% 20%, rgba(255, 199, 141, 0.85) 0%, rgba(255, 199, 141, 0) 55%), radial-gradient(circle at 80% 80%, rgba(255, 119, 119, 0.45) 0%, rgba(255, 119, 119, 0) 50%), linear-gradient(145deg, #1f1f2e, #101019 60%, #2d2539);"
+                    ></div>
                     <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent">Kampanya Rehberi</p>
                     <h3 class="text-2xl font-display text-white">Tanıtım Akışları</h3>
                     <p class="text-sm text-white/70">
-                        Sunum paketi; giriş deneyimini, çalışma adalarını ve cephe anlatılarını kapsayan üç sahnede toplanıyor.
-                        Her sahne için yapay zekâ ile üretilmiş görsel brief’ler, müşterilerinize ilk toplantıda paylaşmanız için hazır.
+                        Lobi, çalışma alanı ve gece cephesi sahnelerini sıralayan akış şemaları hazırlıyoruz.
+                        Boş kalan sayfalar, stüdyoda ürettiğimiz AI eskizleriyle dolduruluyor ve metinlerin tonu ile uyumlu kalıyor.
                     </p>
                 </div>
                 <div class="space-y-4 border border-white/10 bg-black/30 p-6">
+                    <div
+                        aria-label="Sunum paketleri için AI ışık denemesi"
+                        class="ai-visual h-36 w-full"
+                        role="img"
+                        style="background-image: radial-gradient(circle at 25% 65%, rgba(161, 218, 255, 0.7) 0%, rgba(161, 218, 255, 0) 55%), radial-gradient(circle at 80% 30%, rgba(255, 210, 162, 0.5) 0%, rgba(255, 210, 162, 0) 45%), linear-gradient(160deg, #1a1f2c, #0e111b 58%, #26324a);"
+                    ></div>
                     <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent">AI Görsel Dizisi</p>
                     <h3 class="text-2xl font-display text-white">Sunum Paketleri</h3>
                     <p class="text-sm text-white/70">
-                        Proje anlatımı olmayan durumlarda dahi, etkileyici render ve kolajlarla konsept atmosferi kuruyoruz.
-                        Metinsiz bölümleri parlak görsellerle tamamlayan bu paket, yeni ofisinizi dijitalde sergilemenin en hızlı yolu.
+                        Henüz proje üretmeyen ekipler için render, kolaj ve detaylı kesit denemeleri yapıyoruz.
+                        AI görselleri, sunum dosyasındaki boş bölümlere yerleşecek şekilde ölçeklenmiş halde teslim ediyoruz.
                     </p>
                 </div>
                 <div class="space-y-4 border border-white/10 bg-black/30 p-6">
+                    <div
+                        aria-label="Butik ofis iletişim tonu için AI konsept"
+                        class="ai-visual h-36 w-full"
+                        role="img"
+                        style="background-image: radial-gradient(circle at 70% 25%, rgba(255, 172, 225, 0.55) 0%, rgba(255, 172, 225, 0) 48%), radial-gradient(circle at 15% 50%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(155deg, #191927, #101018 62%, #2e243d);"
+                    ></div>
                     <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent">İletişim Tonu</p>
                     <h3 class="text-2xl font-display text-white">Butik Yaklaşım</h3>
                     <p class="text-sm text-white/70">
-                        Tüm metinler iki dilde hazırlandığından, yatırımcı sunumlarınızda sıcak ama profesyonel bir ton yakalarsınız.
-                        Geri bildirim formlarımız, projeye göre özelleştirilen yeni görsel setleri için rehber niteliğinde.
+                        Metinleri Türkçe ve İngilizce hazırlayıp aynı görsel dili kullanıyoruz.
+                        Geri bildirimlerinize göre yeni AI görselleri üreterek paketlerin güncel kalmasını sağlıyoruz.
                     </p>
                 </div>
             </div>

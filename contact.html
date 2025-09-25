@@ -29,6 +29,26 @@
             },
         };
     </script>
+    <style>
+        .ai-visual {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.25rem;
+            background-size: 160%;
+            background-position: center;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+
+        .ai-visual::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.18), transparent 55%);
+            mix-blend-mode: screen;
+            opacity: 0.45;
+            pointer-events: none;
+        }
+    </style>
 </head>
 <body class="bg-background-dark text-primary font-body antialiased">
     <header class="border-b border-white/10 bg-black/60 px-8 py-6 backdrop-blur-md md:px-16">
@@ -66,6 +86,12 @@
     <main class="px-8 py-20 text-primary md:px-20">
         <div class="grid gap-16 md:grid-cols-[2fr,1fr]">
             <div class="space-y-10">
+                <div
+                    aria-label="Stüdyo girişini anlatan AI görsel"
+                    class="ai-visual h-48 w-full"
+                    role="img"
+                    style="background-image: radial-gradient(circle at 22% 28%, rgba(255, 208, 158, 0.8) 0%, rgba(255, 208, 158, 0) 55%), radial-gradient(circle at 78% 68%, rgba(161, 218, 255, 0.6) 0%, rgba(161, 218, 255, 0) 48%), linear-gradient(150deg, #1a1c28, #0f1119 60%, #2d253a);"
+                ></div>
                 <p class="text-xs uppercase tracking-[0.55em] text-accent">İletişim</p>
                 <h1 class="text-4xl font-display text-white md:text-5xl">Bize Ulaşın</h1>
                 <p class="text-base text-white/70">
@@ -102,6 +128,12 @@
                 </form>
             </div>
             <aside class="space-y-8 border border-white/10 bg-black/30 p-6">
+                <div
+                    aria-label="Galata stüdyo atmosferini anlatan AI görsel"
+                    class="ai-visual h-32 w-full"
+                    role="img"
+                    style="background-image: radial-gradient(circle at 25% 70%, rgba(255, 174, 226, 0.55) 0%, rgba(255, 174, 226, 0) 48%), radial-gradient(circle at 78% 25%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(165deg, #131522, #1d1f31 58%, #302544);"
+                ></div>
                 <div class="space-y-2">
                     <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent">Stüdyo</p>
                     <p class="text-sm text-white/70">Istanbul, Galata</p>
