@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Studio — Alper Morkoç Architecture</title>
+    <title>Studio — Alpimimarlık</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
@@ -54,14 +54,8 @@
     <header class="border-b border-white/10 bg-black/60 px-8 py-6 backdrop-blur-md md:px-16">
         <div class="flex items-center justify-between gap-8">
             <a class="text-sm font-display uppercase tracking-[0.6em] text-white/80" href="index.html">
-                <span class="font-bold text-white">Alper Morkoç</span> Architecture
+                <span class="font-bold text-white">Alpimimarlık</span>
             </a>
-            <nav class="hidden items-center space-x-10 text-xs uppercase tracking-[0.45em] text-white/70 md:flex">
-                <a class="transition-opacity hover:opacity-60" href="studio.html">Studio</a>
-                <a class="transition-opacity hover:opacity-60" href="services.html">Services</a>
-                <a class="transition-opacity hover:opacity-60" href="insights.html">Insights</a>
-                <a class="transition-opacity hover:opacity-60" href="contact.html">Contact</a>
-            </nav>
             <div class="flex items-center gap-4">
                 <label class="sr-only" for="language-select">Dil Seçimi</label>
                 <select
@@ -73,11 +67,11 @@
                 </select>
                 <button
                     class="flex items-center gap-2 text-xs uppercase tracking-[0.45em] text-white/70 transition-opacity hover:opacity-60"
-                    id="search-toggle"
+                    id="menu-toggle"
                     type="button"
                 >
-                    <span class="material-icons text-base">search</span>
-                    <span>Search</span>
+                    <span class="material-icons text-base">menu</span>
+                    <span>Menü</span>
                 </button>
             </div>
         </div>
@@ -88,7 +82,7 @@
             <p class="text-xs uppercase tracking-[0.55em] text-accent">Stüdyo Hikâyesi</p>
             <h1 class="text-4xl font-display text-white md:text-5xl">Stüdyonun Arka Planı</h1>
             <p class="text-base text-white/70">
-                AMA, Galata merkezli küçük bir mimarlık ofisi.
+                Alpimimarlık, Galata merkezli küçük bir mimarlık ofisi.
                 Tanıtım kitapçıklarında boş kalan bölümleri, ekip içinde hazırladığımız konsept görselleriyle dolduruyor ve sunumların sıcak bir dilde ilerlemesini sağlıyoruz.
             </p>
             <div class="grid gap-6 md:grid-cols-3">
@@ -134,47 +128,44 @@
     </main>
 
     <div
-        class="fixed inset-0 z-40 hidden opacity-0 bg-black/70 backdrop-blur-md transition-opacity"
-        id="search-panel"
-        role="dialog"
+        aria-labelledby="menu-title"
         aria-modal="true"
-        aria-labelledby="search-title"
+        class="fixed inset-0 z-40 hidden bg-black/70 opacity-0 backdrop-blur-md transition-opacity"
+        id="menu-panel"
+        role="dialog"
     >
-        <div class="mx-auto mt-32 w-full max-w-2xl rounded-sm border border-white/15 bg-background-dark p-8 text-white shadow-2xl">
+        <div class="ml-auto flex h-full w-full max-w-xs flex-col border-l border-white/10 bg-background-dark/95 p-8 text-white shadow-2xl sm:max-w-sm">
             <div class="flex items-start justify-between">
                 <div>
-                    <p class="text-xs uppercase tracking-[0.55em] text-accent" id="search-title">Site İçi Arama</p>
-                    <h2 class="mt-3 text-3xl font-display text-white">Sunum İçeriklerinde Ara</h2>
+                    <p class="text-xs uppercase tracking-[0.55em] text-accent" id="menu-title">Alpimimarlık</p>
+                    <h2 class="mt-3 text-2xl font-display text-white">Tanıtım Menüsü</h2>
                 </div>
-                <button class="text-white/60 transition hover:text-white" id="search-close" type="button">
+                <button class="text-white/60 transition hover:text-white" id="menu-close" type="button">
                     <span class="material-icons">close</span>
                 </button>
             </div>
-            <form class="mt-8 space-y-4" role="search">
-                <label class="block text-sm uppercase tracking-[0.35em] text-white/60" for="search-input">Anahtar Kelime</label>
-                <input
-                    class="w-full border border-white/20 bg-black/40 p-4 text-base text-white placeholder:text-white/40 focus:border-white focus:outline-none"
-                    id="search-input"
-                    placeholder="Örn. lobi görseli, gece cephesi"
-                    type="search"
-                />
-                <button
-                    class="w-full bg-white/10 py-3 text-sm font-semibold uppercase tracking-[0.35em] text-white transition hover:bg-white/20"
-                    type="submit"
-                >
-                    Arama Yap
-                </button>
-            </form>
-            <p class="mt-6 text-sm text-white/60">
-                Proje arşivimizi başlık ve tema bazlı filtrelerle düzenliyoruz. İlk sürümde sonuç listesi taslağı gösterilir.
-            </p>
+            <nav class="mt-10 space-y-6 text-sm uppercase tracking-[0.4em] text-white/70">
+                <a class="block transition-opacity hover:opacity-60" href="index.html">Ana Sayfa</a>
+                <a class="block transition-opacity hover:opacity-60" href="studio.html">Studio</a>
+                <a class="block transition-opacity hover:opacity-60" href="services.html">Services</a>
+                <a class="block transition-opacity hover:opacity-60" href="insights.html">Insights</a>
+                <a class="block transition-opacity hover:opacity-60" href="contact.html">Contact</a>
+            </nav>
+            <div class="mt-auto space-y-4 text-sm text-white/60">
+                <p class="uppercase tracking-[0.35em] text-white/40">İletişim</p>
+                <p>Galata merkezli ofis, sunum ve konsept kitapçıkları hazırlıyor.</p>
+                <a class="inline-flex items-center gap-2 text-white transition hover:text-white/70" href="mailto:iletisim@alpimimarlik.com">
+                    <span class="material-icons text-base">mail</span>
+                    <span>iletisim@alpimimarlik.com</span>
+                </a>
+            </div>
         </div>
     </div>
 
     <footer class="border-t border-white/10 bg-black px-8 py-16 text-primary md:px-20">
         <div class="grid grid-cols-1 gap-12 md:grid-cols-4">
             <div>
-                <h3 class="text-xl font-display font-bold tracking-tight text-white">Alper Morkoç Architecture</h3>
+                <h3 class="text-xl font-display font-bold tracking-tight text-white">Alpimimarlık</h3>
                 <p class="mt-3 text-sm text-gray-400">
                     Pioneering architectural narratives shaped by context, craft, and human experience.
                 </p>
@@ -213,53 +204,53 @@
             </div>
         </div>
         <div class="mt-14 border-t border-white/10 pt-6 text-xs text-white/40">
-            <p>© 2024 Alper Morkoç Architecture. All Rights Reserved.</p>
+            <p>© 2024 Alpimimarlık. Tüm hakları saklıdır.</p>
         </div>
     </footer>
 
     <script>
-        const searchToggle = document.getElementById('search-toggle');
-        const searchPanel = document.getElementById('search-panel');
-        const searchClose = document.getElementById('search-close');
-        const searchInput = document.getElementById('search-input');
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuPanel = document.getElementById('menu-panel');
+        const menuClose = document.getElementById('menu-close');
         const languageSelect = document.getElementById('language-select');
 
-        const openSearchPanel = () => {
-            if (!searchPanel) return;
-            searchPanel.classList.remove('hidden');
-            searchPanel.classList.remove('opacity-0');
-            setTimeout(() => searchPanel.classList.add('opacity-100'), 10);
-            if (searchInput) {
-                setTimeout(() => searchInput.focus(), 120);
-            }
+        const openMenuPanel = () => {
+            if (!menuPanel) return;
+            menuPanel.classList.remove('hidden');
+            menuPanel.classList.remove('opacity-0');
+            requestAnimationFrame(() => menuPanel.classList.add('opacity-100'));
         };
 
-        const closeSearchPanel = () => {
-            if (!searchPanel) return;
-            searchPanel.classList.remove('opacity-100');
-            searchPanel.classList.add('opacity-0');
-            setTimeout(() => searchPanel.classList.add('hidden'), 180);
+        const closeMenuPanel = () => {
+            if (!menuPanel) return;
+            menuPanel.classList.remove('opacity-100');
+            menuPanel.classList.add('opacity-0');
+            setTimeout(() => menuPanel.classList.add('hidden'), 180);
         };
 
-        if (searchToggle) {
-            searchToggle.addEventListener('click', openSearchPanel);
+        if (menuToggle) {
+            menuToggle.addEventListener('click', openMenuPanel);
         }
 
-        if (searchClose) {
-            searchClose.addEventListener('click', closeSearchPanel);
+        if (menuClose) {
+            menuClose.addEventListener('click', closeMenuPanel);
         }
 
         document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && searchPanel && !searchPanel.classList.contains('hidden')) {
-                closeSearchPanel();
+            if (event.key === 'Escape' && menuPanel && !menuPanel.classList.contains('hidden')) {
+                closeMenuPanel();
             }
         });
 
-        if (searchPanel) {
-            searchPanel.addEventListener('click', (event) => {
-                if (event.target === searchPanel) {
-                    closeSearchPanel();
+        if (menuPanel) {
+            menuPanel.addEventListener('click', (event) => {
+                if (event.target === menuPanel) {
+                    closeMenuPanel();
                 }
+            });
+
+            menuPanel.querySelectorAll('a').forEach((link) => {
+                link.addEventListener('click', closeMenuPanel);
             });
         }
 
