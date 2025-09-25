@@ -53,20 +53,18 @@
 <body class="bg-background-dark text-primary font-body antialiased">
     <header class="border-b border-white/10 bg-black px-8 py-5 text-white md:px-16">
         <div class="flex items-center justify-between gap-8">
-            <div class="flex items-center gap-4">
-                <a class="text-sm font-display uppercase tracking-[0.6em] text-white/80" href="index.html">
-                    <span class="font-bold text-white" data-i18n="common.brand">Alpimimarlık</span>
-                </a>
+            <a class="text-sm font-display uppercase tracking-[0.6em] text-white/80" href="index.html">
+                <span class="font-bold text-white" data-i18n="common.brand">Alpimimarlık</span>
+            </a>
+            <div class="flex items-center gap-3">
                 <label class="sr-only" data-i18n="common.langLabel" for="langSwitcher">Dil Seçimi</label>
                 <select
-                    class="hidden appearance-none rounded-sm border border-white/30 bg-black/40 px-3 py-2 text-[0.65rem] uppercase tracking-[0.45em] text-white/80 shadow-sm transition focus:border-white focus:outline-none md:block"
+                    class="appearance-none rounded-sm border border-white/30 bg-black/60 px-3 py-2 text-[0.65rem] uppercase tracking-[0.45em] text-white/80 shadow-sm transition focus:border-white focus:outline-none"
                     id="langSwitcher"
                 >
                     <option data-i18n="common.language.tr" value="tr">TR</option>
                     <option data-i18n="common.language.en" value="en">EN</option>
                 </select>
-            </div>
-            <div class="flex items-center gap-4">
                 <button
                     class="flex items-center gap-2 text-xs uppercase tracking-[0.45em] text-white/70 transition-opacity hover:opacity-60"
                     id="menu-toggle"
@@ -80,178 +78,53 @@
     </header>
 
     <main class="px-8 py-20 text-primary md:px-20">
-        <div class="mx-auto max-w-5xl space-y-16">
-            <section class="space-y-8">
-                <div class="grid gap-8 md:grid-cols-[1.5fr,1fr] md:items-end">
-                    <div class="space-y-6">
-                        <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="careers.intro.eyebrow">Kariyer</p>
-                        <h1 class="text-4xl font-display text-white md:text-5xl" data-i18n="careers.intro.title">Sunum Odaklı Mimarlığa Katılın</h1>
-                        <p class="text-base text-white/70" data-i18n="careers.intro.body">
-                            Alpimimarlık, küçük ama disiplinli ekibiyle konsept sunumlarını, maket çekimlerini ve şantiye öncesi iletişimi yönetiyor.
-                            İzmir'deki stüdyomuzda hazırladığımız görsel anlatılara katkı sunacak meraklı çalışma arkadaşları arıyoruz.
-                        </p>
-                    </div>
-                    <div
-                        aria-label="Stüdyo çalışma masasını anlatan konsept görsel"
-                        class="concept-visual h-52 w-full"
-                        role="img"
-                        style="background-image: radial-gradient(circle at 24% 30%, rgba(255, 208, 158, 0.75) 0%, rgba(255, 208, 158, 0) 55%), radial-gradient(circle at 78% 68%, rgba(164, 214, 255, 0.6) 0%, rgba(164, 214, 255, 0) 48%), linear-gradient(150deg, #1a1c28, #0f1119 62%, #2e253b));"
-                    ></div>
-                </div>
-                <div class="grid gap-10 md:grid-cols-3">
-                    <div class="space-y-4 border border-white/10 bg-black/30 p-6">
-                        <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent" data-i18n="careers.values.rhythm.label">Çalışma Düzeni</p>
-                        <h2 class="text-xl font-display text-white" data-i18n="careers.values.rhythm.title">Atölye Tempo</h2>
-                        <p class="text-sm text-white/70" data-i18n="careers.values.rhythm.body">
-                            Haftada dört gün stüdyoda, bir gün uzaktan ortak eskiz oturumları düzenliyoruz.
-                            Sunum dosyaları ekip içinde paylaşılıyor, revizyonlar hızla ilerliyor.
-                        </p>
-                    </div>
-                    <div class="space-y-4 border border-white/10 bg-black/30 p-6">
-                        <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent" data-i18n="careers.values.mentoring.label">Mentorluk</p>
-                        <h2 class="text-xl font-display text-white" data-i18n="careers.values.mentoring.title">Beraber Öğrenme</h2>
-                        <p class="text-sm text-white/70" data-i18n="careers.values.mentoring.body">
-                            Yeni katılan ekip arkadaşları, stüdyo kurucu ortaklarıyla bire bir proje takip oturumlarına giriyor.
-                            Tüm sunum şablonlarını birlikte geliştiriyoruz.
-                        </p>
-                    </div>
-                    <div class="space-y-4 border border-white/10 bg-black/30 p-6">
-                        <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent" data-i18n="careers.values.atmosphere.label">Ortam</p>
-                        <h2 class="text-xl font-display text-white" data-i18n="careers.values.atmosphere.title">Sıcak Stüdyo</h2>
-                        <p class="text-sm text-white/70" data-i18n="careers.values.atmosphere.body">
-                            İzmir sokaklarındaki ritmi stüdyoya taşıyan samimi bir ekip var.
-                            Maket masası, ses sistemi ve fotoğraf köşesi her zaman açık.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="space-y-10">
-                <div class="flex items-start justify-between gap-8">
-                    <div class="space-y-4">
-                        <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="careers.roles.eyebrow">Açık Pozisyonlar</p>
-                        <h2 class="text-3xl font-display text-white md:text-4xl" data-i18n="careers.roles.title">Güncel Aradığımız Roller</h2>
-                        <p class="max-w-2xl text-sm text-white/70" data-i18n="careers.roles.description">
-                            Aşağıdaki roller için portfolyo, kısa niyet mektubu ve iletişim bilgilerinizi paylaşırsanız bir haftalık sürede geri dönüş yapıyoruz.
-                        </p>
-                    </div>
-                    
-                </div>
-                <div class="space-y-6">
-                    <article class="grid gap-6 border border-white/10 bg-black/30 p-6 md:grid-cols-[1.2fr,1fr] md:items-center">
-                        <div class="space-y-3">
-                            <h3 class="text-2xl font-display text-white" data-i18n="careers.roles.positions.presentationArchitect.title">Sunum Mimarı</h3>
-                            <p class="text-sm text-white/70" data-i18n="careers.roles.positions.presentationArchitect.body">
-                                Konsept toplantılarında kullanılacak plan, kesit ve atmosfer panolarını hazırlayacak; maket çekimlerini katalog diline taşıyacak bir ekip arkadaşı arıyoruz.
-                                Rhino, Enscape ve Adobe InDesign kullanımı bekleniyor.
-                            </p>
-                            <ul class="space-y-2 text-sm text-white/60">
-                                <li data-i18n="careers.roles.positions.presentationArchitect.bullets.one">• 2-4 yıl mimari sunum deneyimi</li>
-                                <li data-i18n="careers.roles.positions.presentationArchitect.bullets.two">• Detaylı Türkçe metin ve kısa İngilizce özet yazabilme</li>
-                                <li data-i18n="careers.roles.positions.presentationArchitect.bullets.three">• Şantiye öncesi toplantılara katılım</li>
-                            </ul>
-                        </div>
-                        <div
-                            aria-label="Sunum ekibini anlatan konsept görsel"
-                            class="concept-visual h-48 w-full"
-                            role="img"
-                            style="background-image: radial-gradient(circle at 22% 28%, rgba(255, 174, 226, 0.55) 0%, rgba(255, 174, 226, 0) 52%), radial-gradient(circle at 78% 65%, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 58%), linear-gradient(160deg, #161826, #22263a 60%, #352949));"
-                        ></div>
-                    </article>
-                    <article class="grid gap-6 border border-white/10 bg-black/30 p-6 md:grid-cols-[1.2fr,1fr] md:items-center">
-                        <div class="space-y-3">
-                            <h3 class="text-2xl font-display text-white" data-i18n="careers.roles.positions.visualDesigner.title">Görsel İletişim Tasarımcısı</h3>
-                            <p class="text-sm text-white/70" data-i18n="careers.roles.positions.visualDesigner.body">
-                                Kampanya lansmanlarında kullanılacak posterler, sosyal medya düzenleri ve sunum kapaklarını birlikte tasarlayacağız.
-                                Tasarım dilimizi korurken yeni tipografi önerileri getirecek bir ekip arkadaşı arıyoruz.
-                            </p>
-                            <ul class="space-y-2 text-sm text-white/60">
-                                <li data-i18n="careers.roles.positions.visualDesigner.bullets.one">• Adobe Illustrator ve Figma deneyimi</li>
-                                <li data-i18n="careers.roles.positions.visualDesigner.bullets.two">• Mimarlık görselleriyle çalışmaya yatkınlık</li>
-                                <li data-i18n="careers.roles.positions.visualDesigner.bullets.three">• Kısa süreli freelance iş birliklerine açık</li>
-                            </ul>
-                        </div>
-                        <div
-                            aria-label="Grafik tasarım masasını anlatan konsept görsel"
-                            class="concept-visual h-48 w-full"
-                            role="img"
-                            style="background-image: radial-gradient(circle at 30% 32%, rgba(255, 208, 158, 0.72) 0%, rgba(255, 208, 158, 0) 52%), radial-gradient(circle at 72% 68%, rgba(160, 214, 255, 0.55) 0%, rgba(160, 214, 255, 0) 48%), linear-gradient(155deg, #1c1e2c, #141723 58%, #2c243c));"
-                        ></div>
-                    </article>
-                    <article class="grid gap-6 border border-white/10 bg-black/30 p-6 md:grid-cols-[1.2fr,1fr] md:items-center">
-                        <div class="space-y-3">
-                            <h3 class="text-2xl font-display text-white" data-i18n="careers.roles.positions.studioIntern.title">Stüdyo Stajyeri</h3>
-                            <p class="text-sm text-white/70" data-i18n="careers.roles.positions.studioIntern.body">
-                                Yaz döneminde stüdyomuzda eskiz ve maket süreçlerine destek verecek, toplantı öncesi sunum klasörlerini düzenleyecek bir stajyer arıyoruz.
-                                Okul projelerindeki anlatım dilinizi görmek isteriz.
-                            </p>
-                            <ul class="space-y-2 text-sm text-white/60">
-                                <li data-i18n="careers.roles.positions.studioIntern.bullets.one">• 3. veya 4. sınıf mimarlık öğrencisi</li>
-                                <li data-i18n="careers.roles.positions.studioIntern.bullets.two">• Haftada en az üç gün stüdyoda bulunabilme</li>
-                                <li data-i18n="careers.roles.positions.studioIntern.bullets.three">• Model yapımında hassasiyet</li>
-                            </ul>
-                        </div>
-                        <div
-                            aria-label="Maket çalışmalarını anlatan konsept görsel"
-                            class="concept-visual h-48 w-full"
-                            role="img"
-                            style="background-image: radial-gradient(circle at 26% 70%, rgba(255, 174, 226, 0.58) 0%, rgba(255, 174, 226, 0) 50%), radial-gradient(circle at 74% 32%, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(165deg, #131522, #1d1f31 58%, #302544));"
-                        ></div>
-                    </article>
-                </div>
-            </section>
-
-            <section class="grid gap-10 border border-white/10 bg-black/25 p-8 md:grid-cols-[1.1fr,1fr] md:items-center">
-                <div class="space-y-5">
-                    <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="careers.application.eyebrow">Başvuru</p>
-                    <h2 class="text-3xl font-display text-white md:text-4xl" data-i18n="careers.application.title">Başvuru Formu</h2>
-                    <p class="text-sm text-white/70" data-i18n="careers.application.intro">
-                        Portfolyonuzu, özgeçmişinizi ve iletişim bilgilerinizi aşağıdaki formdan paylaşın. Tüm başvurular haftalık olarak değerlendirilir.
-                    </p>
-                </div>
-                <form class="space-y-6" enctype="multipart/form-data" method="post">
-                    <div class="grid gap-4 md:grid-cols-2">
-                        <div>
-                            <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.nameLabel" for="application-name">Ad Soyad</label>
-                            <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.namePlaceholder" id="application-name" placeholder="Adınız Soyadınız" type="text" required/>
-                        </div>
-                        <div>
-                            <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.emailLabel" for="application-email">E-posta</label>
-                            <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.emailPlaceholder" id="application-email" placeholder="ornek@studio.com" type="email" required/>
-                        </div>
-                    </div>
-                    <div class="grid gap-4 md:grid-cols-2">
-                        <div>
-                            <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.phoneLabel" for="application-phone">Telefon</label>
-                            <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.phonePlaceholder" id="application-phone" placeholder="+90 5XX XXX XX XX" type="tel" required/>
-                        </div>
-                        <div>
-                            <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.roleLabel" for="application-role">Tercih Edilen Rol</label>
-                            <select class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white focus:border-white focus:outline-none" id="application-role">
-                                <option data-i18n="careers.application.fields.rolePresentation" value="presentation">Sunum Mimarı</option>
-                                <option data-i18n="careers.application.fields.roleVisual" value="visual">Görsel İletişim Tasarımcısı</option>
-                                <option data-i18n="careers.application.fields.roleIntern" value="intern">Stüdyo Stajyeri</option>
-                            </select>
-                        </div>
+        <div class="mx-auto max-w-3xl space-y-8">
+            <div class="space-y-4 text-center md:text-left">
+                <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="careers.application.eyebrow">Başvuru</p>
+                <h1 class="text-4xl font-display text-white md:text-5xl" data-i18n="careers.application.title">Başvuru Formu</h1>
+                <p class="text-sm text-white/70" data-i18n="careers.application.intro">
+                    Portfolyonuzu, özgeçmişinizi ve iletişim bilgilerinizi aşağıdaki formdan paylaşın. Tüm başvurular haftalık olarak değerlendirilir.
+                </p>
+            </div>
+            <form class="space-y-6 border border-white/10 bg-black/25 p-8" enctype="multipart/form-data" method="post">
+                <div class="grid gap-4 md:grid-cols-2">
+                    <div>
+                        <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.nameLabel" for="application-name">Ad Soyad</label>
+                        <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.namePlaceholder" id="application-name" placeholder="Adınız Soyadınız" required type="text"/>
                     </div>
                     <div>
-                        <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.portfolioLabel" for="application-portfolio">Portfolyo Bağlantısı</label>
-                        <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.portfolioPlaceholder" id="application-portfolio" placeholder="https://" type="url" required/>
+                        <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.emailLabel" for="application-email">E-posta</label>
+                        <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.emailPlaceholder" id="application-email" placeholder="ornek@studio.com" required type="email"/>
                     </div>
-                    <div>
-                        <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.messageLabel" for="application-message">Kısa Mesaj</label>
-                        <textarea class="mt-2 h-32 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.messagePlaceholder" id="application-message" placeholder="Motivasyonunuzu ve ekip deneyiminizi anlatın..."></textarea>
-                    </div>
-                    <div>
-                        <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.cvLabel" for="application-cv">Özgeçmiş (PDF)</label>
-                        <input accept="application/pdf" class="mt-2 w-full border border-dashed border-white/20 bg-black/30 p-3 text-sm text-white focus:border-white focus:outline-none" id="application-cv" type="file"/>
-                        <p class="mt-2 text-[0.65rem] uppercase tracking-[0.35em] text-white/40" data-i18n="careers.application.fields.cvHelp">Maksimum 10 MB, PDF formatında yükleyin.</p>
-                    </div>
-                    <button class="w-full bg-white/10 py-3 text-sm font-semibold uppercase tracking-[0.35em] text-white transition hover:bg-white/20" data-i18n="careers.application.fields.submit" type="submit">
-                        Başvuruyu Gönder
-                    </button>
-                </form>
-            </section>
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.phoneLabel" for="application-phone">Telefon</label>
+                    <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.phonePlaceholder" id="application-phone" placeholder="+90 000 000 00 00" required type="tel"/>
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.roleLabel" for="application-role">Rol Tercihi</label>
+                    <select class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.rolePlaceholder" id="application-role" required>
+                        <option value="" disabled selected data-i18n="careers.application.fields.rolePlaceholder">Rol Seçin</option>
+                        <option data-i18n="careers.application.fields.roles.presentationArchitect" value="presentationArchitect">Sunum Mimarı</option>
+                        <option data-i18n="careers.application.fields.roles.visualDesigner" value="visualDesigner">Görsel İletişim Tasarımcısı</option>
+                        <option data-i18n="careers.application.fields.roles.studioIntern" value="studioIntern">Stüdyo Stajyeri</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.portfolioLabel" for="application-portfolio">Portfolyo Bağlantısı</label>
+                    <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.portfolioPlaceholder" id="application-portfolio" placeholder="https://" required type="url"/>
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.motivationLabel" for="application-message">Kısa Not</label>
+                    <textarea class="mt-2 h-32 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.motivationPlaceholder" id="application-message" placeholder="Neden Alpimimarlık?" required></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.cvLabel" for="application-cv">Özgeçmiş</label>
+                    <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.cvPlaceholder" id="application-cv" required type="file"/>
+                </div>
+                <button class="w-full border border-white/20 bg-white/10 px-6 py-3 text-xs uppercase tracking-[0.45em] text-white transition hover:bg-white/20" data-i18n="careers.application.submit" type="submit">Başvuruyu Gönder</button>
+                <p class="text-xs text-white/50" data-i18n="careers.application.privacy">Gönderdiğiniz bilgiler yalnızca değerlendirme sürecinde kullanılır.</p>
+            </form>
         </div>
     </main>
 
