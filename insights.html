@@ -142,6 +142,40 @@
     </main>
 
     <div
+        class="fixed inset-x-4 bottom-6 z-50 max-w-3xl translate-x-0 rounded border border-white/15 bg-black/90 p-6 text-sm text-white shadow-2xl md:inset-x-auto md:left-1/2 md:-translate-x-1/2"
+        data-visible="false"
+        hidden
+        id="cookie-banner"
+    >
+        <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div class="space-y-2 md:max-w-xl">
+                <p class="text-xs uppercase tracking-[0.4em] text-accent" data-i18n="common.cookie.heading">Çerez Ayarları</p>
+                <p class="text-sm text-white/80" data-i18n="common.cookie.body">
+                    Deneyiminizi kişiselleştirmek ve site performansını takip etmek için çerezler kullanıyoruz. Tercihinizi istediğiniz zaman değiştirebilirsiniz.
+                </p>
+            </div>
+            <div class="flex flex-col gap-2 whitespace-nowrap md:flex-row">
+                <button
+                    class="rounded-sm border border-white/30 px-4 py-2 text-xs uppercase tracking-[0.4em] text-white transition hover:border-white hover:text-white"
+                    data-action="decline"
+                    data-i18n="common.cookie.decline"
+                    type="button"
+                >
+                    Reddet
+                </button>
+                <button
+                    class="rounded-sm bg-white px-4 py-2 text-xs uppercase tracking-[0.4em] text-black transition hover:bg-white/90"
+                    data-action="accept"
+                    data-i18n="common.cookie.accept"
+                    type="button"
+                >
+                    Kabul Et
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div
         aria-labelledby="menu-title"
         aria-modal="true"
         class="fixed inset-0 z-40 hidden bg-black/70 opacity-0 backdrop-blur-md transition-opacity"
@@ -203,6 +237,7 @@
     </footer>
 
     <script src="assets/js/i18n.js"></script>
+    <script src="assets/js/cookie-consent.js"></script>
     <script>
         const menuToggle = document.getElementById('menu-toggle');
         const menuPanel = document.getElementById('menu-panel');

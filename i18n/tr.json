@@ -44,6 +44,12 @@
       "behance": "Behance",
       "youtube": "YouTube",
       "copyright": "© 2024 Alpimimarlık. Tüm hakları saklıdır."
+    },
+    "cookie": {
+      "heading": "Çerez Ayarları",
+      "body": "Deneyiminizi kişiselleştirmek ve site performansını takip etmek için çerezler kullanıyoruz. Tercihinizi istediğiniz zaman değiştirebilirsiniz.",
+      "accept": "Kabul Et",
+      "decline": "Reddet"
     }
   },
   "index": {
@@ -70,8 +76,6 @@
     },
     "vision": {
       "eyebrow": "Stüdyo Vizyonu",
-      "title": "Alpimimarlık'ın Sunum Yaklaşımı",
-      "body1": "Projelerimizi yalın anlatımlı sunumlar ve detaylı maket çalışmaları eşliğinde paylaşıyoruz. Hazırladığımız görsel sunumlar, ofisimizin ölçekli düşünme becerisini ve samimi iletişim dilini kısa tanıtım metinleriyle birlikte ortaya koymayı hedefliyor.",
       "body2": "Her sunum klasöründe, giriş sahnesinden gece cephe kurgusuna kadar uzanan atmosfer anlatıları yer alıyor. Hazırlık sürecinde paylaştığımız eskizler ve maket fotoğrafları, anlatının tonunu koruyarak ekiplerin tanıtım adımlarını hızlandırıyor."
     }
   },

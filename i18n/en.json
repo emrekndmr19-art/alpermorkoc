@@ -44,6 +44,12 @@
       "behance": "Behance",
       "youtube": "YouTube",
       "copyright": "© 2024 Alpimimarlık. All rights reserved."
+    },
+    "cookie": {
+      "heading": "Cookie Preferences",
+      "body": "We use cookies to personalise your experience and monitor site performance. You can update your choice at any time.",
+      "accept": "Allow",
+      "decline": "Decline"
     }
   },
   "index": {
@@ -70,8 +76,6 @@
     },
     "vision": {
       "eyebrow": "Studio Vision",
-      "title": "Alpimimarlık's Presentation Approach",
-      "body1": "We share our projects through concise presentations complemented by detailed model work. The visual decks we prepare showcase our sense of scale and warm voice alongside short promotional copy.",
       "body2": "Each folder covers atmosphere narratives from the opening scene to the night façade. Sketches and model photographs shared during preparation preserve the tone and accelerate the team's promotional steps."
     }
   },

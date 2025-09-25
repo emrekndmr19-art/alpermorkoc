@@ -211,12 +211,8 @@
             <div class="flex flex-col gap-12 md:flex-row md:items-end md:justify-between">
                 <div>
                     <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="index.vision.eyebrow">Stüdyo Vizyonu</p>
-                    <h2 class="mt-4 max-w-2xl text-3xl font-display text-white md:text-5xl" data-i18n="index.vision.title">Alpimimarlık'ın Sunum Yaklaşımı</h2>
                 </div>
                 <div class="max-w-2xl space-y-5 text-sm text-gray-400">
-                    <p data-i18n="index.vision.body1">
-                        Projelerimizi yalın anlatımlı sunumlar ve detaylı maket çalışmaları eşliğinde paylaşıyoruz. Hazırladığımız görsel sunumlar, ofisimizin ölçekli düşünme becerisini ve samimi iletişim dilini kısa tanıtım metinleriyle birlikte ortaya koymayı hedefliyor.
-                    </p>
                     <p data-i18n="index.vision.body2">
                         Her sunum klasöründe, giriş sahnesinden gece cephe kurgusuna kadar uzanan atmosfer anlatıları yer alıyor. Hazırlık sürecinde paylaştığımız eskizler ve maket fotoğrafları, anlatının tonunu koruyarak ekiplerin tanıtım adımlarını hızlandırıyor.
                     </p>
@@ -224,6 +220,40 @@
             </div>
         </section>
     </main>
+
+    <div
+        class="fixed inset-x-4 bottom-6 z-50 max-w-3xl translate-x-0 rounded border border-white/15 bg-black/90 p-6 text-sm text-white shadow-2xl md:inset-x-auto md:left-1/2 md:-translate-x-1/2"
+        data-visible="false"
+        hidden
+        id="cookie-banner"
+    >
+        <div class="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
+            <div class="space-y-2 md:max-w-xl">
+                <p class="text-xs uppercase tracking-[0.4em] text-accent" data-i18n="common.cookie.heading">Çerez Ayarları</p>
+                <p class="text-sm text-white/80" data-i18n="common.cookie.body">
+                    Deneyiminizi kişiselleştirmek ve site performansını takip etmek için çerezler kullanıyoruz. Tercihinizi istediğiniz zaman değiştirebilirsiniz.
+                </p>
+            </div>
+            <div class="flex flex-col gap-2 whitespace-nowrap md:flex-row">
+                <button
+                    class="rounded-sm border border-white/30 px-4 py-2 text-xs uppercase tracking-[0.4em] text-white transition hover:border-white hover:text-white"
+                    data-action="decline"
+                    data-i18n="common.cookie.decline"
+                    type="button"
+                >
+                    Reddet
+                </button>
+                <button
+                    class="rounded-sm bg-white px-4 py-2 text-xs uppercase tracking-[0.4em] text-black transition hover:bg-white/90"
+                    data-action="accept"
+                    data-i18n="common.cookie.accept"
+                    type="button"
+                >
+                    Kabul Et
+                </button>
+            </div>
+        </div>
+    </div>
 
     <div
         aria-labelledby="menu-title"
@@ -288,6 +318,7 @@
     </footer>
 
     <script src="assets/js/i18n.js"></script>
+    <script src="assets/js/cookie-consent.js"></script>
     <script>
         const carousel = document.getElementById('carousel');
         const prevBtn = document.getElementById('prev-btn');
