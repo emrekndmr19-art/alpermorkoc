@@ -32,11 +32,11 @@
     "menuPanel": {
       "title": "Showcase Menu",
       "contactHeading": "Contact",
-      "contactBody": "Galata-based studio crafting presentation booklets.",
+      "contactBody": "Izmir-based studio crafting presentation booklets.",
       "email": "info@alpimimarlik.com"
     },
     "footer": {
-      "title": "Alpimimarlık",
+      "title": "ALPI",
       "tagline": "Pioneering architectural narratives shaped by context, craft, and human experience.",
       "navigate": "Navigate",
       "connect": "Connect",
@@ -83,7 +83,7 @@
     "hero": {
       "eyebrow": "Studio Story",
       "title": "Behind the Studio",
-      "body": "Alpimimarlık is a small Galata-based architecture studio. We fill the empty pockets in presentation booklets with in-house concept visuals so every deck carries a warm tone."
+      "body": "Alpimimarlık is a small Izmir-based architecture studio. We fill the empty pockets in presentation booklets with in-house concept visuals so every deck carries a warm tone."
     },
     "gallery": {
       "caption1": "Planning Room",
@@ -234,7 +234,7 @@
     "intro": {
       "eyebrow": "Careers",
       "title": "Join Presentation-Focused Practice",
-      "body": "Alpimimarlık is a small, disciplined team managing concept presentations, model shoots, and pre-site communication. We look for curious teammates to strengthen the visual stories prepared in our Galata studio."
+      "body": "Alpimimarlık is a small, disciplined team managing concept presentations, model shoots, and pre-site communication. We are looking for curious teammates to strengthen the visual stories prepared in our Izmir studio."
     },
     "values": {
       "rhythm": {
@@ -250,7 +250,7 @@
       "atmosphere": {
         "label": "Atmosphere",
         "title": "Warm Studio",
-        "body": "A close-knit crew brings Galata's rhythm into the studio. The model table, sound system, and photo corner are always ready."
+        "body": "A close-knit crew brings Izmir's rhythm into the studio. The model table, sound system, and photo corner are always ready."
       }
     },
     "roles": {
@@ -290,10 +290,27 @@
     },
     "application": {
       "eyebrow": "Application",
-      "title": "How to Apply",
-      "body1": "Prepare your portfolio as a PDF of up to 15 pages. In your motivation letter, share the type of presentation you would like to build with the Alpimimarlık team. Include contact details for tutors or collaborators who can provide references.",
-      "body2": "Send your application to kariyer@alpimimarlik.com. We follow up within a week to schedule a meeting or share portfolio feedback.",
-      "cta": "Share Application"
+      "title": "Send Your Details",
+      "intro": "Share your portfolio, résumé, and contact details through the form below. We review applications every week.",
+      "fields": {
+        "nameLabel": "Full Name",
+        "namePlaceholder": "Your name",
+        "emailLabel": "Email",
+        "emailPlaceholder": "name@studio.com",
+        "phoneLabel": "Phone",
+        "phonePlaceholder": "+90 5XX XXX XX XX",
+        "roleLabel": "Preferred Role",
+        "rolePresentation": "Presentation Architect",
+        "roleVisual": "Visual Communication Designer",
+        "roleIntern": "Studio Intern",
+        "portfolioLabel": "Portfolio Link",
+        "portfolioPlaceholder": "https://",
+        "messageLabel": "Short Message",
+        "messagePlaceholder": "Tell us about your motivation and recent work...",
+        "cvLabel": "Résumé (PDF)",
+        "cvHelp": "Upload a PDF up to 10 MB.",
+        "submit": "Submit Application"
+      }
     }
   },
   "contact": {
@@ -321,12 +338,12 @@
     "aside": {
       "studio": {
         "label": "Studio",
-        "location": "Istanbul, Galata",
+        "location": "Izmir, Alsancak",
         "hours": "Meetings by appointment on weekdays between 10:00 and 18:00."
       },
       "phone": {
         "label": "Phone",
-        "number": "+90 212 222 33 44"
+        "number": "+905332330035"
       },
       "email": {
         "label": "Email",

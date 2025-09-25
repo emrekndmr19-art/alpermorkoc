@@ -32,11 +32,11 @@
     "menuPanel": {
       "title": "Tanıtım Menüsü",
       "contactHeading": "İletişim",
-      "contactBody": "Galata merkezli ofis, sunum ve konsept kitapçıkları hazırlıyor.",
+      "contactBody": "İzmir merkezli ofis, sunum ve konsept kitapçıkları hazırlıyor.",
       "email": "info@alpimimarlik.com"
     },
     "footer": {
-      "title": "Alpimimarlık",
+      "title": "ALPI",
       "tagline": "Bağlam, zanaat ve insan deneyimiyle şekillenen mimari anlatılar.",
       "navigate": "Gezin",
       "connect": "İletişim",
@@ -83,7 +83,7 @@
     "hero": {
       "eyebrow": "Stüdyo Hikâyesi",
       "title": "Stüdyonun Arka Planı",
-      "body": "Alpimimarlık, Galata merkezli küçük bir mimarlık ofisi. Tanıtım kitapçıklarında boş kalan bölümleri, ekip içinde hazırladığımız konsept görselleriyle dolduruyor ve sunumların sıcak bir dilde ilerlemesini sağlıyoruz."
+      "body": "Alpimimarlık, İzmir merkezli küçük bir mimarlık ofisi. Tanıtım kitapçıklarında boş kalan bölümleri, ekip içinde hazırladığımız konsept görselleriyle dolduruyor ve sunumların sıcak bir dilde ilerlemesini sağlıyoruz."
     },
     "gallery": {
       "caption1": "Planlama Odası",
@@ -234,7 +234,7 @@
     "intro": {
       "eyebrow": "Kariyer",
       "title": "Sunum Odaklı Mimarlığa Katılın",
-      "body": "Alpimimarlık, küçük ama disiplinli ekibiyle konsept sunumlarını, maket çekimlerini ve şantiye öncesi iletişimi yönetiyor. Galata'daki stüdyomuzda hazırladığımız görsel anlatılara katkı sunacak meraklı çalışma arkadaşları arıyoruz."
+      "body": "Alpimimarlık, küçük ama disiplinli ekibiyle konsept sunumlarını, maket çekimlerini ve şantiye öncesi iletişimi yönetiyor. İzmir'deki stüdyomuzda hazırladığımız görsel anlatılara katkı sunacak meraklı çalışma arkadaşları arıyoruz."
     },
     "values": {
       "rhythm": {
@@ -250,7 +250,7 @@
       "atmosphere": {
         "label": "Ortam",
         "title": "Sıcak Stüdyo",
-        "body": "Galata sokaklarındaki ritmi stüdyoya taşıyan samimi bir ekip var. Maket masası, ses sistemi ve fotoğraf köşesi her zaman açık."
+        "body": "İzmir sokaklarındaki ritmi stüdyoya taşıyan samimi bir ekip var. Maket masası, ses sistemi ve fotoğraf köşesi her zaman açık."
       }
     },
     "roles": {
@@ -290,10 +290,27 @@
     },
     "application": {
       "eyebrow": "Başvuru",
-      "title": "Nasıl Başvurulur?",
-      "body1": "Portfolyonuzu PDF formatında, maksimum 15 sayfa olacak şekilde düzenleyin. Kısa niyet mektubunda Alpimimarlık ekibiyle nasıl bir sunum geliştirmek istediğinizi anlatın. Referans olabilecek eğitmen veya önceki ekip arkadaşlarının iletişim bilgilerini eklemeyi unutmayın.",
-      "body2": "Başvurular kariyer@alpimimarlik.com adresine gönderiliyor. Bir hafta içerisinde toplantı veya portfolyo geri bildirimi için iletişime geçiyoruz.",
-      "cta": "Başvuruyu Paylaş"
+      "title": "Başvuru Formu",
+      "intro": "Portfolyonuzu, özgeçmişinizi ve iletişim bilgilerinizi aşağıdaki formdan paylaşın. Tüm başvurular haftalık olarak değerlendirilir.",
+      "fields": {
+        "nameLabel": "Ad Soyad",
+        "namePlaceholder": "Adınız Soyadınız",
+        "emailLabel": "E-posta",
+        "emailPlaceholder": "ornek@studio.com",
+        "phoneLabel": "Telefon",
+        "phonePlaceholder": "+90 5XX XXX XX XX",
+        "roleLabel": "Tercih Edilen Rol",
+        "rolePresentation": "Sunum Mimarı",
+        "roleVisual": "Görsel İletişim Tasarımcısı",
+        "roleIntern": "Stüdyo Stajyeri",
+        "portfolioLabel": "Portfolyo Bağlantısı",
+        "portfolioPlaceholder": "https://",
+        "messageLabel": "Kısa Mesaj",
+        "messagePlaceholder": "Motivasyonunuzu ve ekip deneyiminizi anlatın...",
+        "cvLabel": "Özgeçmiş (PDF)",
+        "cvHelp": "Maksimum 10 MB, PDF formatında yükleyin.",
+        "submit": "Başvuruyu Gönder"
+      }
     }
   },
   "contact": {
@@ -321,12 +338,12 @@
     "aside": {
       "studio": {
         "label": "Stüdyo",
-        "location": "Istanbul, Galata",
+        "location": "İzmir, Alsancak",
         "hours": "Hafta içi 10:00 - 18:00 arası randevu ile görüşme sağlanır."
       },
       "phone": {
         "label": "Telefon",
-        "number": "+90 212 222 33 44"
+        "number": "+905332330035"
       },
       "email": {
         "label": "E-posta",

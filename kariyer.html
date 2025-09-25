@@ -53,10 +53,10 @@
 <body class="bg-background-dark text-primary font-body antialiased">
     <header class="border-b border-white/10 bg-black px-8 py-5 text-white md:px-16">
         <div class="flex items-center justify-between gap-8">
-            <a class="text-sm font-display uppercase tracking-[0.6em] text-white/80" href="index.html">
-                <span class="font-bold text-white" data-i18n="common.brand">Alpimimarlık</span>
-            </a>
             <div class="flex items-center gap-4">
+                <a class="text-sm font-display uppercase tracking-[0.6em] text-white/80" href="index.html">
+                    <span class="font-bold text-white" data-i18n="common.brand">Alpimimarlık</span>
+                </a>
                 <label class="sr-only" data-i18n="common.langLabel" for="langSwitcher">Dil Seçimi</label>
                 <select
                     class="hidden appearance-none rounded-sm border border-white/30 bg-black/40 px-3 py-2 text-[0.65rem] uppercase tracking-[0.45em] text-white/80 shadow-sm transition focus:border-white focus:outline-none md:block"
@@ -65,6 +65,8 @@
                     <option data-i18n="common.language.tr" value="tr">TR</option>
                     <option data-i18n="common.language.en" value="en">EN</option>
                 </select>
+            </div>
+            <div class="flex items-center gap-4">
                 <button
                     class="flex items-center gap-2 text-xs uppercase tracking-[0.45em] text-white/70 transition-opacity hover:opacity-60"
                     id="menu-toggle"
@@ -86,7 +88,7 @@
                         <h1 class="text-4xl font-display text-white md:text-5xl" data-i18n="careers.intro.title">Sunum Odaklı Mimarlığa Katılın</h1>
                         <p class="text-base text-white/70" data-i18n="careers.intro.body">
                             Alpimimarlık, küçük ama disiplinli ekibiyle konsept sunumlarını, maket çekimlerini ve şantiye öncesi iletişimi yönetiyor.
-                            Galata'daki stüdyomuzda hazırladığımız görsel anlatılara katkı sunacak meraklı çalışma arkadaşları arıyoruz.
+                            İzmir'deki stüdyomuzda hazırladığımız görsel anlatılara katkı sunacak meraklı çalışma arkadaşları arıyoruz.
                         </p>
                     </div>
                     <div
@@ -117,7 +119,7 @@
                         <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent" data-i18n="careers.values.atmosphere.label">Ortam</p>
                         <h2 class="text-xl font-display text-white" data-i18n="careers.values.atmosphere.title">Sıcak Stüdyo</h2>
                         <p class="text-sm text-white/70" data-i18n="careers.values.atmosphere.body">
-                            Galata sokaklarındaki ritmi stüdyoya taşıyan samimi bir ekip var.
+                            İzmir sokaklarındaki ritmi stüdyoya taşıyan samimi bir ekip var.
                             Maket masası, ses sistemi ve fotoğraf köşesi her zaman açık.
                         </p>
                     </div>
@@ -133,9 +135,7 @@
                             Aşağıdaki roller için portfolyo, kısa niyet mektubu ve iletişim bilgilerinizi paylaşırsanız bir haftalık sürede geri dönüş yapıyoruz.
                         </p>
                     </div>
-                    <a class="hidden text-xs uppercase tracking-[0.45em] text-white/70 transition hover:text-white md:inline-flex" data-i18n="careers.roles.cta" href="mailto:kariyer@alpimimarlik.com">
-                        Başvuruyu Gönder
-                    </a>
+                    
                 </div>
                 <div class="space-y-6">
                     <article class="grid gap-6 border border-white/10 bg-black/30 p-6 md:grid-cols-[1.2fr,1fr] md:items-center">
@@ -204,27 +204,53 @@
             <section class="grid gap-10 border border-white/10 bg-black/25 p-8 md:grid-cols-[1.1fr,1fr] md:items-center">
                 <div class="space-y-5">
                     <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="careers.application.eyebrow">Başvuru</p>
-                    <h2 class="text-3xl font-display text-white md:text-4xl" data-i18n="careers.application.title">Nasıl Başvurulur?</h2>
-                    <p class="text-sm text-white/70" data-i18n="careers.application.body1">
-                        Portfolyonuzu PDF formatında, maksimum 15 sayfa olacak şekilde düzenleyin.
-                        Kısa niyet mektubunda Alpimimarlık ekibiyle nasıl bir sunum geliştirmek istediğinizi anlatın.
-                        Referans olabilecek eğitmen veya önceki ekip arkadaşlarının iletişim bilgilerini eklemeyi unutmayın.
-                    </p>
-                    <p class="text-sm text-white/70" data-i18n="careers.application.body2">
-                        Başvurular kariyer@alpimimarlik.com adresine gönderiliyor. Bir hafta içerisinde toplantı veya portfolyo geri bildirimi için iletişime geçiyoruz.
+                    <h2 class="text-3xl font-display text-white md:text-4xl" data-i18n="careers.application.title">Başvuru Formu</h2>
+                    <p class="text-sm text-white/70" data-i18n="careers.application.intro">
+                        Portfolyonuzu, özgeçmişinizi ve iletişim bilgilerinizi aşağıdaki formdan paylaşın. Tüm başvurular haftalık olarak değerlendirilir.
                     </p>
                 </div>
-                <div class="space-y-6">
-                    <div
-                        aria-label="Başvuru dosyasını anlatan konsept görsel"
-                        class="concept-visual h-40 w-full"
-                        role="img"
-                        style="background-image: radial-gradient(circle at 24% 34%, rgba(255, 208, 158, 0.65) 0%, rgba(255, 208, 158, 0) 50%), radial-gradient(circle at 76% 70%, rgba(164, 214, 255, 0.55) 0%, rgba(164, 214, 255, 0) 50%), linear-gradient(160deg, #1b1d2b, #11131f 62%, #2d253a));"
-                    ></div>
-                    <a class="inline-flex items-center justify-center border border-white/20 bg-white/10 px-6 py-3 text-xs font-semibold uppercase tracking-[0.4em] text-white transition hover:bg-white/20" data-i18n="careers.application.cta" href="mailto:kariyer@alpimimarlik.com">
-                        Başvuruyu Paylaş
-                    </a>
-                </div>
+                <form class="space-y-6" enctype="multipart/form-data" method="post">
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.nameLabel" for="application-name">Ad Soyad</label>
+                            <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.namePlaceholder" id="application-name" placeholder="Adınız Soyadınız" type="text" required/>
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.emailLabel" for="application-email">E-posta</label>
+                            <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.emailPlaceholder" id="application-email" placeholder="ornek@studio.com" type="email" required/>
+                        </div>
+                    </div>
+                    <div class="grid gap-4 md:grid-cols-2">
+                        <div>
+                            <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.phoneLabel" for="application-phone">Telefon</label>
+                            <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.phonePlaceholder" id="application-phone" placeholder="+90 5XX XXX XX XX" type="tel" required/>
+                        </div>
+                        <div>
+                            <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.roleLabel" for="application-role">Tercih Edilen Rol</label>
+                            <select class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white focus:border-white focus:outline-none" id="application-role">
+                                <option data-i18n="careers.application.fields.rolePresentation" value="presentation">Sunum Mimarı</option>
+                                <option data-i18n="careers.application.fields.roleVisual" value="visual">Görsel İletişim Tasarımcısı</option>
+                                <option data-i18n="careers.application.fields.roleIntern" value="intern">Stüdyo Stajyeri</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.portfolioLabel" for="application-portfolio">Portfolyo Bağlantısı</label>
+                        <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.portfolioPlaceholder" id="application-portfolio" placeholder="https://" type="url" required/>
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.messageLabel" for="application-message">Kısa Mesaj</label>
+                        <textarea class="mt-2 h-32 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.messagePlaceholder" id="application-message" placeholder="Motivasyonunuzu ve ekip deneyiminizi anlatın..."></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.cvLabel" for="application-cv">Özgeçmiş (PDF)</label>
+                        <input accept="application/pdf" class="mt-2 w-full border border-dashed border-white/20 bg-black/30 p-3 text-sm text-white focus:border-white focus:outline-none" id="application-cv" type="file"/>
+                        <p class="mt-2 text-[0.65rem] uppercase tracking-[0.35em] text-white/40" data-i18n="careers.application.fields.cvHelp">Maksimum 10 MB, PDF formatında yükleyin.</p>
+                    </div>
+                    <button class="w-full bg-white/10 py-3 text-sm font-semibold uppercase tracking-[0.35em] text-white transition hover:bg-white/20" data-i18n="careers.application.fields.submit" type="submit">
+                        Başvuruyu Gönder
+                    </button>
+                </form>
             </section>
         </div>
     </main>
@@ -249,14 +275,12 @@
             <nav class="mt-10 space-y-6 text-sm uppercase tracking-[0.4em] text-white/70">
                 <a class="block transition-opacity hover:opacity-60" href="index.html" data-i18n="common.nav.home">Ana Sayfa</a>
                 <a class="block transition-opacity hover:opacity-60" href="studio.html" data-i18n="common.nav.studio">Studio</a>
-                <a class="block transition-opacity hover:opacity-60" href="services.html" data-i18n="common.nav.services">Services</a>
-                <a class="block transition-opacity hover:opacity-60" href="insights.html" data-i18n="common.nav.insights">Insights</a>
                 <a class="block transition-opacity hover:opacity-60" href="kariyer.html" data-i18n="common.nav.careers">Kariyer</a>
                 <a class="block transition-opacity hover:opacity-60" href="contact.html" data-i18n="common.nav.contact">Contact</a>
             </nav>
             <div class="mt-auto space-y-4 text-sm text-white/60">
                 <p class="uppercase tracking-[0.35em] text-white/40" data-i18n="common.menuPanel.contactHeading">İletişim</p>
-                <p data-i18n="common.menuPanel.contactBody">Galata merkezli ofis, sunum ve konsept kitapçıkları hazırlıyor.</p>
+                <p data-i18n="common.menuPanel.contactBody">İzmir merkezli ofis, sunum ve konsept kitapçıkları hazırlıyor.</p>
                 <a class="inline-flex items-center gap-2 text-white transition hover:text-white/70" href="mailto:info@alpimimarlik.com">
                     <span class="material-icons text-base">mail</span>
                     <span>info@alpimimarlik.com</span>
@@ -268,7 +292,7 @@
     <footer class="border-t border-white/10 bg-black px-8 py-16 text-primary md:px-20">
         <div class="grid grid-cols-1 gap-12 md:grid-cols-4">
             <div>
-                <h3 class="text-xl font-display font-bold tracking-tight text-white" data-i18n="common.footer.title">Alpimimarlık</h3>
+                <h3 class="text-xl font-display font-bold tracking-tight text-white" data-i18n="common.footer.title">ALPI</h3>
                 <p class="mt-3 text-sm text-gray-400" data-i18n="common.footer.tagline">                    Pioneering architectural narratives shaped by context, craft, and human experience.
                 </p>
             </div>
@@ -277,8 +301,6 @@
                 <ul class="mt-4 space-y-3 text-sm text-gray-400">
                     <li><a class="transition-colors hover:text-white" href="index.html" data-i18n="common.nav.home">Home</a></li>
                     <li><a class="transition-colors hover:text-white" href="studio.html" data-i18n="common.nav.studio">Studio</a></li>
-                    <li><a class="transition-colors hover:text-white" href="services.html" data-i18n="common.nav.services">Services</a></li>
-                    <li><a class="transition-colors hover:text-white" href="insights.html" data-i18n="common.nav.insights">Insights</a></li>
                     <li><a class="transition-colors hover:text-white" href="kariyer.html" data-i18n="common.nav.careers">Kariyer</a></li>
                     <li><a class="transition-colors hover:text-white" href="contact.html" data-i18n="common.nav.contact">Contact</a></li>
                 </ul>
@@ -286,10 +308,7 @@
             <div>
                 <h3 class="text-sm font-display uppercase tracking-[0.45em] text-white/70" data-i18n="common.footer.connect">Connect</h3>
                 <ul class="mt-4 space-y-3 text-sm text-gray-400">
-                    <li><a class="transition-colors hover:text-white" href="#" data-i18n="common.footer.instagram">Instagram</a></li>
-                    <li><a class="transition-colors hover:text-white" href="#" data-i18n="common.footer.linkedin">LinkedIn</a></li>
-                    <li><a class="transition-colors hover:text-white" href="#" data-i18n="common.footer.behance">Behance</a></li>
-                    <li><a class="transition-colors hover:text-white" href="#" data-i18n="common.footer.youtube">YouTube</a></li>
+                    <li><a class="transition-colors hover:text-white" href="https://www.instagram.com/alpiarchitects?igsh=NWRtOGY2cjRjMGY0" data-i18n="common.footer.instagram">Instagram</a></li>
                 </ul>
             </div>
             <div>
