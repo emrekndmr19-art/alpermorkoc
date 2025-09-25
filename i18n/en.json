@@ -1,0 +1,341 @@
+{
+  "meta": {
+    "dir": "ltr",
+    "titles": {
+      "home": "Alpimimarlık — Home",
+      "studio": "Studio — Alpimimarlık",
+      "services": "Services — Alpimimarlık",
+      "insights": "Insights — Alpimimarlık",
+      "contact": "Contact — Alpimimarlık",
+      "careers": "Careers — Alpimimarlık",
+      "insightLobby": "Lobby First Impressions — Alpimimarlık Notes",
+      "insightScene": "How to Tell a Scene Without Text — Alpimimarlık Notes",
+      "insightSessions": "In-Studio Concept Sessions — Alpimimarlık Notes"
+    }
+  },
+  "common": {
+    "brand": "Alpimimarlık",
+    "langLabel": "Language",
+    "language": {
+      "tr": "TR",
+      "en": "EN"
+    },
+    "menuButton": "Menu",
+    "nav": {
+      "home": "Home",
+      "studio": "Studio",
+      "services": "Services",
+      "insights": "Insights",
+      "careers": "Careers",
+      "contact": "Contact"
+    },
+    "menuPanel": {
+      "title": "Showcase Menu",
+      "contactHeading": "Contact",
+      "contactBody": "Galata-based studio crafting presentation booklets.",
+      "email": "info@alpimimarlik.com"
+    },
+    "footer": {
+      "title": "Alpimimarlık",
+      "tagline": "Pioneering architectural narratives shaped by context, craft, and human experience.",
+      "navigate": "Navigate",
+      "connect": "Connect",
+      "newsletter": "Newsletter",
+      "newsletterPlaceholder": "Enter your email",
+      "newsletterButton": "Join",
+      "instagram": "Instagram",
+      "linkedin": "LinkedIn",
+      "behance": "Behance",
+      "youtube": "YouTube",
+      "copyright": "© 2024 Alpimimarlık. All rights reserved."
+    }
+  },
+  "index": {
+    "hero": {
+      "scrollHint": "Scroll to explore",
+      "slide1": {
+        "category": "Campaign Showcase",
+        "title": "Sunrise Studio Composition",
+        "description": "Daylight-bathed work islands bring the calm yet productive tempo of our new office into the spotlight.",
+        "location": "Main Studio"
+      },
+      "slide2": {
+        "category": "Launch Moment",
+        "title": "Soft-Lit Welcome",
+        "description": "The pairing of natural stone and gentle lighting turns the lobby into an inviting scene coloured with our warm tones.",
+        "location": "Lobby"
+      },
+      "slide3": {
+        "category": "Night Scenario",
+        "title": "Evening Façade",
+        "description": "City-facing lights carry the refined evening posture of our office across the skyline.",
+        "location": "City Silhouette"
+      }
+    },
+    "vision": {
+      "eyebrow": "Studio Vision",
+      "title": "Alpimimarlık's Presentation Approach",
+      "body1": "We share our projects through concise presentations complemented by detailed model work. The visual decks we prepare showcase our sense of scale and warm voice alongside short promotional copy.",
+      "body2": "Each folder covers atmosphere narratives from the opening scene to the night façade. Sketches and model photographs shared during preparation preserve the tone and accelerate the team's promotional steps."
+    }
+  },
+  "studio": {
+    "hero": {
+      "eyebrow": "Studio Story",
+      "title": "Behind the Studio",
+      "body": "Alpimimarlık is a small Galata-based architecture studio. We fill the empty pockets in presentation booklets with in-house concept visuals so every deck carries a warm tone."
+    },
+    "gallery": {
+      "caption1": "Planning Room",
+      "caption2": "Lobby Vignette",
+      "caption3": "Façade Scenario"
+    },
+    "approach": {
+      "title": "Our Approach",
+      "body1": "Before meetings we pair rough sketches with scenes prepared in our studio. Each visual is supported by short notes describing the mood of the space.",
+      "body2": "This lets us present folders that clearly convey the office character even before the construction set is complete."
+    }
+  },
+  "services": {
+    "hero": {
+      "eyebrow": "Service Packages",
+      "title": "Presentation-Focused Architecture Services",
+      "body": "We craft launch-ready packages that stage the concepts of small-scale studios. Drawings, atmosphere visuals, and concise copy help you offer a trusted showcase in first meetings."
+    },
+    "packages": {
+      "visionBook": {
+        "index": "01",
+        "title": "Vision Book",
+        "body": "A three-part digital book narrates the lobby, work zone, and façade in a unified tone. Renders and edited photos arrive ready to use with headlines."
+      },
+      "presentationScene": {
+        "index": "02",
+        "title": "Presentation Scene",
+        "body": "Designed for pitch meetings, this set couples a motion-ready slide flow with a short teaser film. We complete empty screens with collages and plans that match your studio identity."
+      },
+      "pressKit": {
+        "index": "03",
+        "title": "Digital Press Kit",
+        "body": "Includes templates you can quickly tailor for press briefings and social launches. Each visual is paired with captions that convey your studio's tone."
+      },
+      "consulting": {
+        "index": "04",
+        "title": "Consulting & Coordination",
+        "body": "We schedule sessions that guide your team during preparation. Shareable guides cover material choices, voice, and visual placement."
+      }
+    }
+  },
+  "insights": {
+    "hero": {
+      "eyebrow": "Insights & Notes",
+      "title": "Alpimimarlık Notebook",
+      "body": "We collect the methods we rely on while preparing client-ready files. Short articles share notes on presentation flow, visual selection, and how our small team works."
+    },
+    "articles": {
+      "lobby": {
+        "label": "Field Note",
+        "title": "First Impressions in the Lobby",
+        "excerpt": "The lobby scene helps visitors grasp the atmosphere within minutes. We outlined three key touches that work for us and the sample presentation plan.",
+        "link": "Read More"
+      },
+      "scene": {
+        "label": "Guide",
+        "title": "How to Convey a Wordless Scene",
+        "excerpt": "Our three-step strategy for pages without text: set the mood, write a user vignette, and finish with a supporting collage.",
+        "link": "Read More"
+      },
+      "sessions": {
+        "label": "Workshop Recap",
+        "title": "In-Studio Concept Sessions",
+        "excerpt": "We compiled the scene descriptions, lighting tips, and palette pairings we use in weekly sessions with sample files.",
+        "link": "Read More"
+      }
+    }
+  },
+  "insightLobby": {
+    "hero": {
+      "label": "Field Note",
+      "title": "First Impressions in the Lobby",
+      "meta": "Published — 18 January 2024",
+      "intro": "The lobby scene is our strongest tool for communicating a small office's character in the first minute. This article explains the narrative we build and the priorities we focus on when defining the space."
+    },
+    "sections": {
+      "route": {
+        "heading": "Clarifying the visitor route",
+        "paragraph1": "In our initial plan diagram we briefly describe the steps from entry to meeting area. A clear path between the door, reception, and lounge helps clients imagine the flow.",
+        "paragraph2": "We keep to three core points: the atmosphere at the entrance, the seating layout in the lounge, and how light shifts on the way to the meeting room. Together they answer the first questions about the lobby and set the stage for the rest of the session."
+      },
+      "light": {
+        "heading": "Balancing light and material",
+        "paragraph1": "Light is the first visual cue in our lobby narrative. We prepare separate schemes for day and evening scenarios—one section highlighting daylight levels and another collage showing how adjustable fixtures spread through the space.",
+        "paragraph2": "The material palette reinforces the emotion we want the light to convey. Matte surfaces soften it, while brass or copper details sharpen the focal points. Limiting the palette to three main tones keeps the story clear."
+      },
+      "structure": {
+        "heading": "Structuring the presentation",
+        "paragraph1": "We break the lobby story into short steps instead of covering everything at once. The first page sets the mood with a wide angle, the second narrates the user experience, and the third summarises materials and lighting.",
+        "paragraph2": "We close with a finished view and checklist covering lighting setup, wayfinding graphics, and furniture placement. Everyone leaves the meeting with the same understanding of order and expected atmosphere."
+      }
+    },
+    "backLink": "Back to all articles"
+  },
+  "insightScene": {
+    "hero": {
+      "label": "Guide",
+      "title": "How to Tell a Scene Without Text",
+      "meta": "Published — 4 February 2024",
+      "intro": "It is possible to design the empty pages in a presentation without adding copy. This guide summarises how we strengthen the story using visual cues instead of words."
+    },
+    "sections": {
+      "atmosphere": {
+        "heading": "Building atmosphere without words",
+        "paragraph1": "Before we start, we decide which feeling the space should deliver. Light direction, palette, and materials form the base. Rather than a wide angle, we use three frames to steer the viewer's eye.",
+        "paragraph2": "Each frame focuses on one element—the floor texture, seating, or the light slipping along the façade—so the audience grasps the whole scene without reading text."
+      },
+      "story": {
+        "heading": "Shaping the user story",
+        "paragraph1": "We switch to a timeline approach to build a story without copy. Morning, midday, and evening scenarios show how the space is used throughout the day.",
+        "paragraph2": "Small icons or notes tied to the user's needs support the visuals. Keeping the design minimal—one highlight per frame—prevents overload."
+      },
+      "collage": {
+        "heading": "Finishing with a collage",
+        "paragraph1": "We conclude the scene with a collage placed over a plan or section. Thin lines and short labels indicate light directions, furniture placement, and colour intensity.",
+        "paragraph2": "The visual approach invites quick feedback during meetings and reveals which parts need refinement without adding text."
+      }
+    },
+    "backLink": "Back to all articles"
+  },
+  "insightSessions": {
+    "hero": {
+      "label": "Workshop Recap",
+      "title": "In-Studio Concept Sessions",
+      "meta": "Published — 26 February 2024",
+      "intro": "Our weekly concept sessions keep presentation files consistent and moving quickly. This article explains how we plan them, the outputs we expect, and how we share responsibilities."
+    },
+    "sections": {
+      "schedule": {
+        "heading": "Session flow",
+        "paragraph1": "Each meeting is structured in 45-minute blocks. One person presents the latest deck while the others listen and note questions.",
+        "paragraph2": "Notes are documented within 24 hours in a short summary so everyone sees the tasks and deadlines clearly."
+      },
+      "checklist": {
+        "heading": "Visual checklist",
+        "paragraph1": "The second block reviews visual consistency—palette, light direction, and material storytelling under three headings. We assign owners for missing items with quick turnarounds.",
+        "paragraph2": "This keeps every deck speaking the same language even when multiple team members contribute."
+      },
+      "archive": {
+        "heading": "Archiving and sharing",
+        "paragraph1": "We store every visual and file on a shared server at the end of the session. Each folder includes a cover sheet with the date, owner, and revision notes.",
+        "paragraph2": "Maintaining a clear archive gives us ready references for future meetings and avoids duplicate work."
+      }
+    },
+    "backLink": "Back to all articles"
+  },
+  "careers": {
+    "intro": {
+      "eyebrow": "Careers",
+      "title": "Join Presentation-Focused Practice",
+      "body": "Alpimimarlık is a small, disciplined team managing concept presentations, model shoots, and pre-site communication. We look for curious teammates to strengthen the visual stories prepared in our Galata studio."
+    },
+    "values": {
+      "rhythm": {
+        "label": "Cadence",
+        "title": "Workshop Tempo",
+        "body": "We spend four days together in the studio and one remote day for shared sketch sessions. Presentation files circulate within the team so revisions move fast."
+      },
+      "mentoring": {
+        "label": "Mentoring",
+        "title": "Learning Together",
+        "body": "New teammates join one-on-one reviews with the founding partners. We develop every presentation template collaboratively."
+      },
+      "atmosphere": {
+        "label": "Atmosphere",
+        "title": "Warm Studio",
+        "body": "A close-knit crew brings Galata's rhythm into the studio. The model table, sound system, and photo corner are always ready."
+      }
+    },
+    "roles": {
+      "eyebrow": "Open Positions",
+      "title": "Roles We're Hiring",
+      "description": "Share your portfolio, a short motivation letter, and contact details for the roles below and we respond within a week.",
+      "cta": "Send Application",
+      "positions": {
+        "presentationArchitect": {
+          "title": "Presentation Architect",
+          "body": "You'll prepare plans, sections, and atmosphere boards for concept meetings and bring model photography into a catalogue language. Experience with Rhino, Enscape, and Adobe InDesign is expected.",
+          "bullets": {
+            "one": "• 2–4 years of architectural presentation experience",
+            "two": "• Ability to write detailed Turkish copy and short English summaries",
+            "three": "• Participation in pre-construction meetings"
+          }
+        },
+        "visualDesigner": {
+          "title": "Visual Communication Designer",
+          "body": "We'll co-design posters, social layouts, and covers for launch campaigns. We're looking for someone who preserves our design voice while proposing fresh typography.",
+          "bullets": {
+            "one": "• Adobe Illustrator and Figma experience",
+            "two": "• Comfort working with architectural imagery",
+            "three": "• Open to short-term freelance collaboration"
+          }
+        },
+        "studioIntern": {
+          "title": "Studio Intern",
+          "body": "During summer you will support sketch and model workflows and organise presentation folders before meetings. We'd like to see the narrative voice in your studio projects.",
+          "bullets": {
+            "one": "• Third or fourth year architecture student",
+            "two": "• Availability for at least three studio days per week",
+            "three": "• Precision in model making"
+          }
+        }
+      }
+    },
+    "application": {
+      "eyebrow": "Application",
+      "title": "How to Apply",
+      "body1": "Prepare your portfolio as a PDF of up to 15 pages. In your motivation letter, share the type of presentation you would like to build with the Alpimimarlık team. Include contact details for tutors or collaborators who can provide references.",
+      "body2": "Send your application to kariyer@alpimimarlik.com. We follow up within a week to schedule a meeting or share portfolio feedback.",
+      "cta": "Share Application"
+    }
+  },
+  "contact": {
+    "hero": {
+      "eyebrow": "Contact",
+      "title": "Get in Touch",
+      "body": "Fill in the form to talk about our campaign-focused presentations or to request access to our archive. We schedule a quick starter session for teams preparing their first presentation."
+    },
+    "form": {
+      "nameLabel": "Full Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "sample@studio.com",
+      "topicLabel": "Presentation Interest",
+      "topicOptions": {
+        "conceptBook": "Preparing a concept book",
+        "renderSession": "Render and visualization session",
+        "launchSet": "Digital launch set",
+        "other": "Other"
+      },
+      "messageLabel": "Your Message",
+      "messagePlaceholder": "Tell us briefly about your team's needs...",
+      "submit": "Send"
+    },
+    "aside": {
+      "studio": {
+        "label": "Studio",
+        "location": "Istanbul, Galata",
+        "hours": "Meetings by appointment on weekdays between 10:00 and 18:00."
+      },
+      "phone": {
+        "label": "Phone",
+        "number": "+90 212 222 33 44"
+      },
+      "email": {
+        "label": "Email",
+        "address": "info@alpimimarlik.com"
+      },
+      "archive": {
+        "label": "Presentation Archive",
+        "body": "We create a private gallery link for sample visuals shared ahead of meetings. Please mention it in the form."
+      }
+    }
+  }
+}
