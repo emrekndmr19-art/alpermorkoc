@@ -23,11 +23,11 @@
     "menuButton": "Menü",
     "nav": {
       "home": "Ana Sayfa",
-      "studio": "Studio",
-      "services": "Services",
-      "insights": "Insights",
+      "studio": "Stüdyo",
+      "services": "Hizmetler",
+      "insights": "Notlar",
       "careers": "Kariyer",
-      "contact": "Contact"
+      "contact": "İletişim"
     },
     "menuPanel": {
       "title": "Tanıtım Menüsü",
@@ -37,12 +37,12 @@
     },
     "footer": {
       "title": "Alpimimarlık",
-      "tagline": "Pioneering architectural narratives shaped by context, craft, and human experience.",
-      "navigate": "Navigate",
-      "connect": "Connect",
-      "newsletter": "Newsletter",
-      "newsletterPlaceholder": "Enter your email",
-      "newsletterButton": "Join",
+      "tagline": "Bağlam, zanaat ve insan deneyimiyle şekillenen mimari anlatılar.",
+      "navigate": "Gezin",
+      "connect": "İletişim",
+      "newsletter": "Bülten",
+      "newsletterPlaceholder": "E-posta adresinizi girin",
+      "newsletterButton": "Katıl",
       "instagram": "Instagram",
       "linkedin": "LinkedIn",
       "behance": "Behance",
@@ -52,7 +52,7 @@
   },
   "index": {
     "hero": {
-      "scrollHint": "Scroll to explore",
+      "scrollHint": "Keşfetmek için kaydırın",
       "slide1": {
         "category": "Kampanya Vitrini",
         "title": "Gün Doğumu Stüdyo Kurgusu",
