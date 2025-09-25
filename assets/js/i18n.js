@@ -69,13 +69,13 @@
         html.lang = lang;
         html.dir = resolveKey(dictionary, 'meta.dir') || 'ltr';
 
-        document.querySelectorAll('[data-i18n]').forEach((element) => {
-            const key = element.getAttribute('data-i18n');
-            const target = element.getAttribute('data-i18n-target');
-            applyValue(element, resolveKey(dictionary, key), target);
-        });
+        document.querySelectorAll('*').forEach((element) => {
+            if (element.hasAttribute('data-i18n')) {
+                const key = element.getAttribute('data-i18n');
+                const target = element.getAttribute('data-i18n-target');
+                applyValue(element, resolveKey(dictionary, key), target);
+            }
 
-        document.querySelectorAll('[data-i18n]').forEach((element) => {
             Array.from(element.attributes)
                 .filter((attr) => {
                     if (!attr.name.startsWith('data-i18n-')) return false;
