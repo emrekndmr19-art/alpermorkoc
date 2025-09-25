@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Lobi Sunumunda İlk İzlenim — Alpimimarlık Notları</title>
+    <title data-i18n="meta.titles.insightLobby">Lobi Sunumunda İlk İzlenim — Alpimimarlık Notları</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
@@ -54,16 +54,16 @@
     <header class="border-b border-white/10 bg-black px-8 py-5 text-white md:px-16">
         <div class="flex items-center justify-between gap-8">
             <a class="text-sm font-display uppercase tracking-[0.6em] text-white/80" href="index.html">
-                <span class="font-bold text-white">Alpimimarlık</span>
+                <span class="font-bold text-white" data-i18n="common.brand">Alpimimarlık</span>
             </a>
             <div class="flex items-center gap-4">
-                <label class="sr-only" for="language-select">Dil Seçimi</label>
+                <label class="sr-only" data-i18n="common.langLabel" for="langSwitcher">Dil Seçimi</label>
                 <select
                     class="hidden appearance-none rounded-sm border border-white/30 bg-black/40 px-3 py-2 text-[0.65rem] uppercase tracking-[0.45em] text-white/80 shadow-sm transition focus:border-white focus:outline-none md:block"
-                    id="language-select"
+                    id="langSwitcher"
                 >
-                    <option value="tr" selected>TR</option>
-                    <option value="en">EN</option>
+                    <option data-i18n="common.language.tr" value="tr">TR</option>
+                    <option data-i18n="common.language.en" value="en">EN</option>
                 </select>
                 <button
                     class="flex items-center gap-2 text-xs uppercase tracking-[0.45em] text-white/70 transition-opacity hover:opacity-60"
@@ -71,7 +71,7 @@
                     type="button"
                 >
                     <span class="material-icons text-base">menu</span>
-                    <span>Menü</span>
+                    <span data-i18n="common.menuButton">Menü</span>
                 </button>
             </div>
         </div>
@@ -80,50 +80,50 @@
     <main class="px-8 py-20 text-primary md:px-20">
         <div class="mx-auto max-w-4xl space-y-12">
             <div class="space-y-6">
-                <p class="text-xs uppercase tracking-[0.55em] text-accent">Saha Notu</p>
-                <h1 class="text-4xl font-display text-white md:text-5xl">Lobi Sunumunda İlk İzlenim</h1>
-                <p class="text-sm uppercase tracking-[0.35em] text-white/50">Yayın Tarihi — 18 Ocak 2024</p>
+                <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="insightLobby.hero.label">Saha Notu</p>
+                <h1 class="text-4xl font-display text-white md:text-5xl" data-i18n="insightLobby.hero.title">Lobi Sunumunda İlk İzlenim</h1>
+                <p class="text-sm uppercase tracking-[0.35em] text-white/50" data-i18n="insightLobby.hero.meta">Yayın Tarihi — 18 Ocak 2024</p>
                 <div
                     aria-label="Lobi sunumu için hazırlanan ışık ve renk kurgusu"
                     class="ai-visual h-60 w-full"
                     role="img"
                     style="background-image: radial-gradient(circle at 22% 30%, rgba(255, 206, 165, 0.8) 0%, rgba(255, 206, 165, 0) 55%), radial-gradient(circle at 78% 65%, rgba(255, 126, 126, 0.45) 0%, rgba(255, 126, 126, 0) 50%), linear-gradient(150deg, #1e1f2d, #101019 58%, #2e2439);"
                 ></div>
-                <p class="text-lg text-white/80">
+                <p class="text-lg text-white/80" data-i18n="insightLobby.hero.intro">
                     Lobi sahnesi, küçük bir ofisin kimliğini ilk dakikada aktarması için kullandığımız en güçlü araç. Bu yazı,
                     hazırladığımız sunum dosyalarında nasıl bir hikâye kurduğumuzu, mekânı tanımlarken hangi öncelikleri göz önünde bulundurduğumuzu anlatıyor.
                 </p>
             </div>
 
             <article class="prose prose-invert max-w-none">
-                <h2>Ziyaretçi rotasını netleştirmek</h2>
-                <p>
+                <h2 data-i18n="insightLobby.sections.route.heading">Ziyaretçi rotasını netleştirmek</h2>
+                <p data-i18n="insightLobby.sections.route.paragraph1">
                     İlk sunumda kullandığımız plan şemasında, ziyaretçinin girişten toplantı alanına kadar izleyeceği adımları kısaca tarif ediyoruz.
                     Kapı, danışma ve bekleme alanları arasında net bir rota oluşturmak, müşterinin zihninde mekânın akışını canlandırıyor.
                     Planın yanında, zemin kaplaması ve yönlendirme elemanları için seçtiğimiz malzemeleri belirtiyoruz.
                 </p>
-                <p>
+                <p data-i18n="insightLobby.sections.route.paragraph2">
                     Bu bölümde gereksiz detaylardan kaçınarak üç ana mesaj iletiyoruz: girişten itibaren hissedilen atmosfer, bekleme alanındaki oturma düzeni ve toplantı odasına geçişte ışığın nasıl değiştiği.
                     Bu üç başlık, lobiye ilişkin ilk soruları yanıtlıyor ve toplantının ilerleyen dakikalarına sağlam bir zemin hazırlıyor.
                 </p>
 
-                <h2>Işık ve malzeme dengesi</h2>
-                <p>
+                <h2 data-i18n="insightLobby.sections.light.heading">Işık ve malzeme dengesi</h2>
+                <p data-i18n="insightLobby.sections.light.paragraph1">
                     Lobi anlatımında ışık, mekânı tanıtan ilk görsel ipucu. Gündüz ve akşam senaryoları için iki ayrı aydınlatma şeması hazırlıyoruz.
                     Gündüz senaryosunda doğal ışığın yoğunluğunu gösteren kısa bir kesit, akşam senaryosunda ise sıcaklığı ayarlanabilir armatürlerin mekâna yayılışını vurgulayan bir kolaj kullanıyoruz.
                 </p>
-                <p>
+                <p data-i18n="insightLobby.sections.light.paragraph2">
                     Malzeme paleti seçimimiz, ışığın anlatmak istediği duyguyu destekliyor. Mat yüzeyler ışığı yumuşatırken, bakır veya pirinç detaylar odağı güçlendiriyor.
                     Paleti üç ana renkle sınırlamak, anlatımın sade ve anlaşılır kalmasını sağlıyor.
                 </p>
 
-                <h2>Sunum planını yapılandırmak</h2>
-                <p>
+                <h2 data-i18n="insightLobby.sections.structure.heading">Sunum planını yapılandırmak</h2>
+                <p data-i18n="insightLobby.sections.structure.paragraph1">
                     Sunum dosyasını hazırlarken lobiyi tek seferde anlatmak yerine kısa adımlara bölüyoruz.
                     İlk sayfa mekânın duygusunu veren geniş açı, ikinci sayfa kullanıcı deneyimi hikâyesi ve üçüncü sayfa malzeme ile aydınlatma tablosu.
                     Bu yapı sayesinde toplantı sırasında her bölüm için kısa, net bir açıklama yapabiliyoruz.
                 </p>
-                <p>
+                <p data-i18n="insightLobby.sections.structure.paragraph2">
                     Sunumun sonunda, lobinin bitmiş halini temsil eden bir görseli, kontrol listesi ile birlikte paylaşarak görüşmeyi tamamlıyoruz.
                     Liste; aydınlatma kurulumu, yönlendirme grafikleri ve mobilya yerleşiminden oluşuyor.
                     Böylece görüşmeden çıkan herkes, yapılacak işlerin sırasını ve beklenen atmosferi aynı şekilde hayal ediyor.
@@ -131,7 +131,7 @@
             </article>
 
             <div class="border-t border-white/10 pt-10">
-                <a class="inline-flex items-center text-xs uppercase tracking-[0.35em] text-white/60 transition hover:text-white" href="insights.html">
+                <a class="inline-flex items-center text-xs uppercase tracking-[0.35em] text-white/60 transition hover:text-white" data-i18n="insightLobby.backLink" href="insights.html">
                     <span class="material-icons mr-2 text-sm">west</span>
                     Tüm yazılara dön
                 </a>
@@ -149,24 +149,24 @@
         <div class="ml-auto flex h-full w-full max-w-xs flex-col border-l border-white/10 bg-background-dark/95 p-8 text-white shadow-2xl sm:max-w-sm">
             <div class="flex items-start justify-between">
                 <div>
-                    <p class="text-xs uppercase tracking-[0.55em] text-accent" id="menu-title">Alpimimarlık</p>
-                    <h2 class="mt-3 text-2xl font-display text-white">Tanıtım Menüsü</h2>
+                    <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="common.brand" id="menu-title">Alpimimarlık</p>
+                    <h2 class="mt-3 text-2xl font-display text-white" data-i18n="common.menuPanel.title">Tanıtım Menüsü</h2>
                 </div>
                 <button class="text-white/60 transition hover:text-white" id="menu-close" type="button">
                     <span class="material-icons">close</span>
                 </button>
             </div>
             <nav class="mt-10 space-y-6 text-sm uppercase tracking-[0.4em] text-white/70">
-                <a class="block transition-opacity hover:opacity-60" href="index.html">Ana Sayfa</a>
-                <a class="block transition-opacity hover:opacity-60" href="studio.html">Studio</a>
-                <a class="block transition-opacity hover:opacity-60" href="services.html">Services</a>
-                <a class="block transition-opacity hover:opacity-60" href="insights.html">Insights</a>
-                <a class="block transition-opacity hover:opacity-60" href="kariyer.html">Kariyer</a>
-                <a class="block transition-opacity hover:opacity-60" href="contact.html">Contact</a>
+                <a class="block transition-opacity hover:opacity-60" href="index.html" data-i18n="common.nav.home">Ana Sayfa</a>
+                <a class="block transition-opacity hover:opacity-60" href="studio.html" data-i18n="common.nav.studio">Studio</a>
+                <a class="block transition-opacity hover:opacity-60" href="services.html" data-i18n="common.nav.services">Services</a>
+                <a class="block transition-opacity hover:opacity-60" href="insights.html" data-i18n="common.nav.insights">Insights</a>
+                <a class="block transition-opacity hover:opacity-60" href="kariyer.html" data-i18n="common.nav.careers">Kariyer</a>
+                <a class="block transition-opacity hover:opacity-60" href="contact.html" data-i18n="common.nav.contact">Contact</a>
             </nav>
             <div class="mt-auto space-y-4 text-sm text-white/60">
-                <p class="uppercase tracking-[0.35em] text-white/40">İletişim</p>
-                <p>Galata merkezli ofis, sunum ve konsept kitapçıkları hazırlıyor.</p>
+                <p class="uppercase tracking-[0.35em] text-white/40" data-i18n="common.menuPanel.contactHeading">İletişim</p>
+                <p data-i18n="common.menuPanel.contactBody">Galata merkezli ofis, sunum ve konsept kitapçıkları hazırlıyor.</p>
                 <a class="inline-flex items-center gap-2 text-white transition hover:text-white/70" href="mailto:iletisim@alpimimarlik.com">
                     <span class="material-icons text-base">mail</span>
                     <span>iletisim@alpimimarlik.com</span>
@@ -178,55 +178,52 @@
     <footer class="border-t border-white/10 bg-black px-8 py-16 text-primary md:px-20">
         <div class="grid grid-cols-1 gap-12 md:grid-cols-4">
             <div>
-                <h3 class="text-xl font-display font-bold tracking-tight text-white">Alpimimarlık</h3>
-                <p class="mt-3 text-sm text-gray-400">
-                    Pioneering architectural narratives shaped by context, craft, and human experience.
+                <h3 class="text-xl font-display font-bold tracking-tight text-white" data-i18n="common.footer.title">Alpimimarlık</h3>
+                <p class="mt-3 text-sm text-gray-400" data-i18n="common.footer.tagline">                    Pioneering architectural narratives shaped by context, craft, and human experience.
                 </p>
             </div>
             <div>
-                <h3 class="text-sm font-display uppercase tracking-[0.45em] text-white/70">Navigate</h3>
+                <h3 class="text-sm font-display uppercase tracking-[0.45em] text-white/70" data-i18n="common.footer.navigate">Navigate</h3>
                 <ul class="mt-4 space-y-3 text-sm text-gray-400">
-                    <li><a class="transition-colors hover:text-white" href="index.html">Home</a></li>
-                    <li><a class="transition-colors hover:text-white" href="studio.html">Studio</a></li>
-                    <li><a class="transition-colors hover:text-white" href="services.html">Services</a></li>
-                    <li><a class="transition-colors hover:text-white" href="insights.html">Insights</a></li>
-                    <li><a class="transition-colors hover:text-white" href="kariyer.html">Kariyer</a></li>
-                    <li><a class="transition-colors hover:text-white" href="contact.html">Contact</a></li>
+                    <li><a class="transition-colors hover:text-white" href="index.html" data-i18n="common.nav.home">Home</a></li>
+                    <li><a class="transition-colors hover:text-white" href="studio.html" data-i18n="common.nav.studio">Studio</a></li>
+                    <li><a class="transition-colors hover:text-white" href="services.html" data-i18n="common.nav.services">Services</a></li>
+                    <li><a class="transition-colors hover:text-white" href="insights.html" data-i18n="common.nav.insights">Insights</a></li>
+                    <li><a class="transition-colors hover:text-white" href="kariyer.html" data-i18n="common.nav.careers">Kariyer</a></li>
+                    <li><a class="transition-colors hover:text-white" href="contact.html" data-i18n="common.nav.contact">Contact</a></li>
                 </ul>
             </div>
             <div>
-                <h3 class="text-sm font-display uppercase tracking-[0.45em] text-white/70">Connect</h3>
+                <h3 class="text-sm font-display uppercase tracking-[0.45em] text-white/70" data-i18n="common.footer.connect">Connect</h3>
                 <ul class="mt-4 space-y-3 text-sm text-gray-400">
-                    <li><a class="transition-colors hover:text-white" href="#">Instagram</a></li>
-                    <li><a class="transition-colors hover:text-white" href="#">LinkedIn</a></li>
-                    <li><a class="transition-colors hover:text-white" href="#">Behance</a></li>
-                    <li><a class="transition-colors hover:text-white" href="#">YouTube</a></li>
+                    <li><a class="transition-colors hover:text-white" href="#" data-i18n="common.footer.instagram">Instagram</a></li>
+                    <li><a class="transition-colors hover:text-white" href="#" data-i18n="common.footer.linkedin">LinkedIn</a></li>
+                    <li><a class="transition-colors hover:text-white" href="#" data-i18n="common.footer.behance">Behance</a></li>
+                    <li><a class="transition-colors hover:text-white" href="#" data-i18n="common.footer.youtube">YouTube</a></li>
                 </ul>
             </div>
             <div>
-                <h3 class="text-sm font-display uppercase tracking-[0.45em] text-white/70">Newsletter</h3>
+                <h3 class="text-sm font-display uppercase tracking-[0.45em] text-white/70" data-i18n="common.footer.newsletter">Newsletter</h3>
                 <form class="mt-4 space-y-3">
                     <input
                         class="w-full border border-white/15 bg-white/5 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none"
-                        placeholder="Enter your email"
+                        data-i18n-placeholder="common.footer.newsletterPlaceholder" placeholder="Enter your email"
                         type="email"
                     />
-                    <button class="w-full bg-white/10 py-3 text-sm font-semibold uppercase tracking-[0.35em] text-white transition hover:bg-white/20" type="submit">
-                        Join
-                    </button>
+                    <button class="w-full bg-white/10 py-3 text-sm font-semibold uppercase tracking-[0.35em] text-white transition hover:bg-white/20" type="submit" data-i18n="common.footer.newsletterButton">Join</button>
                 </form>
             </div>
         </div>
         <div class="mt-14 border-t border-white/10 pt-6 text-xs text-white/40">
-            <p>© 2024 Alpimimarlık. Tüm hakları saklıdır.</p>
+            <p data-i18n="common.footer.copyright">© 2024 Alpimimarlık. Tüm hakları saklıdır.</p>
         </div>
     </footer>
 
+    <script src="assets/js/i18n.js"></script>
     <script>
         const menuToggle = document.getElementById('menu-toggle');
         const menuPanel = document.getElementById('menu-panel');
         const menuClose = document.getElementById('menu-close');
-        const languageSelect = document.getElementById('language-select');
 
         const openMenuPanel = () => {
             if (!menuPanel) return;
@@ -268,12 +265,6 @@
             });
         }
 
-        if (languageSelect) {
-            languageSelect.addEventListener('change', (event) => {
-                const value = event.target.value;
-                document.documentElement.lang = value === 'en' ? 'en' : 'tr';
-            });
-        }
     </script>
 </body>
 </html>

@@ -1,0 +1,341 @@
+{
+  "meta": {
+    "dir": "ltr",
+    "titles": {
+      "home": "Alpimimarlık — Ana Sayfa",
+      "studio": "Studio — Alpimimarlık",
+      "services": "Services — Alpimimarlık",
+      "insights": "Insights — Alpimimarlık",
+      "contact": "Contact — Alpimimarlık",
+      "careers": "Kariyer — Alpimimarlık",
+      "insightLobby": "Lobi Sunumunda İlk İzlenim — Alpimimarlık Notları",
+      "insightScene": "Metinsiz Sahne Nasıl Anlatılır? — Alpimimarlık Notları",
+      "insightSessions": "Takım İçi Konsept Oturumları — Alpimimarlık Notları"
+    }
+  },
+  "common": {
+    "brand": "Alpimimarlık",
+    "langLabel": "Dil Seçimi",
+    "language": {
+      "tr": "TR",
+      "en": "EN"
+    },
+    "menuButton": "Menü",
+    "nav": {
+      "home": "Ana Sayfa",
+      "studio": "Studio",
+      "services": "Services",
+      "insights": "Insights",
+      "careers": "Kariyer",
+      "contact": "Contact"
+    },
+    "menuPanel": {
+      "title": "Tanıtım Menüsü",
+      "contactHeading": "İletişim",
+      "contactBody": "Galata merkezli ofis, sunum ve konsept kitapçıkları hazırlıyor.",
+      "email": "iletisim@alpimimarlik.com"
+    },
+    "footer": {
+      "title": "Alpimimarlık",
+      "tagline": "Pioneering architectural narratives shaped by context, craft, and human experience.",
+      "navigate": "Navigate",
+      "connect": "Connect",
+      "newsletter": "Newsletter",
+      "newsletterPlaceholder": "Enter your email",
+      "newsletterButton": "Join",
+      "instagram": "Instagram",
+      "linkedin": "LinkedIn",
+      "behance": "Behance",
+      "youtube": "YouTube",
+      "copyright": "© 2024 Alpimimarlık. Tüm hakları saklıdır."
+    }
+  },
+  "index": {
+    "hero": {
+      "scrollHint": "Scroll to explore",
+      "slide1": {
+        "category": "Kampanya Vitrini",
+        "title": "Gün Doğumu Stüdyo Kurgusu",
+        "description": "Gün ışığıyla nefes alan çalışma adaları, yeni ofisimizin sakin ama üretken temposunu sahne ışığı altına taşıyor.",
+        "location": "Merkez Stüdyo"
+      },
+      "slide2": {
+        "category": "Mekân Lansmanı",
+        "title": "Yumuşak Işıkta Karşılama",
+        "description": "Doğal taş ve yumuşak aydınlatma birlikteliği, giriş holünü markamızın sıcak tonlarıyla buluşturan davetkâr bir sahneye dönüştürüyor.",
+        "location": "Giriş Holü"
+      },
+      "slide3": {
+        "category": "Gece Senaryosu",
+        "title": "Akşam Cephesi",
+        "description": "Kentin ritmine eşlik eden cephe ışıkları, ofisimizin akşam saatlerindeki rafine duruşunu panoramaya taşıyor.",
+        "location": "Kent Silueti"
+      }
+    },
+    "vision": {
+      "eyebrow": "Stüdyo Vizyonu",
+      "title": "Alpimimarlık'ın Sunum Yaklaşımı",
+      "body1": "Projelerimizi yalın anlatımlı sunumlar ve detaylı maket çalışmaları eşliğinde paylaşıyoruz. Hazırladığımız görsel sunumlar, ofisimizin ölçekli düşünme becerisini ve samimi iletişim dilini kısa tanıtım metinleriyle birlikte ortaya koymayı hedefliyor.",
+      "body2": "Her sunum klasöründe, giriş sahnesinden gece cephe kurgusuna kadar uzanan atmosfer anlatıları yer alıyor. Hazırlık sürecinde paylaştığımız eskizler ve maket fotoğrafları, anlatının tonunu koruyarak ekiplerin tanıtım adımlarını hızlandırıyor."
+    }
+  },
+  "studio": {
+    "hero": {
+      "eyebrow": "Stüdyo Hikâyesi",
+      "title": "Stüdyonun Arka Planı",
+      "body": "Alpimimarlık, Galata merkezli küçük bir mimarlık ofisi. Tanıtım kitapçıklarında boş kalan bölümleri, ekip içinde hazırladığımız konsept görselleriyle dolduruyor ve sunumların sıcak bir dilde ilerlemesini sağlıyoruz."
+    },
+    "gallery": {
+      "caption1": "Planlama Odası",
+      "caption2": "Lobi Vinyeti",
+      "caption3": "Cephe Senaryosu"
+    },
+    "approach": {
+      "title": "Yaklaşımımız",
+      "body1": "Toplantı öncesi paylaşılan kitapçıklarda, ölçeksiz eskizleri ve stüdyomuzda hazırlanan sahne önerilerini yan yana kurguluyoruz. Her görsel, mekânın hissini anlatan kısa notlarla destekleniyor.",
+      "body2": "Bu sayede uygulama dosyası tamamlanmadan önce bile yatırımcılara ofisin karakterini net şekilde gösteren tanıtım klasörleri hazırlıyoruz."
+    }
+  },
+  "services": {
+    "hero": {
+      "eyebrow": "Hizmet Paketleri",
+      "title": "Sunum Odaklı Mimarlık Servisleri",
+      "body": "Küçük ölçekli ofislerin konseptlerini sahneleyen tanıtım paketleri hazırlıyoruz. Ölçekli çizimler, atmosfer görselleri ve kısa metin blokları, ilk görüşmede güven veren bir vitrin sunmanıza yardımcı oluyor."
+    },
+    "packages": {
+      "visionBook": {
+        "index": "01",
+        "title": "Vizyon Kitabı",
+        "body": "Üç bölümlü dijital kitap, lobi, çalışma alanı ve cephe sahnelerini aynı dilde anlatır. Renderlar ve fotoğraf düzenlemeleri, başlıklarla birlikte kullanılmaya hazır halde teslim edilir."
+      },
+      "presentationScene": {
+        "index": "02",
+        "title": "Sunum Sahnesi",
+        "body": "Pitch toplantıları için hazırlanan bu paket, hareketli slayt akışı ve kısa tanıtım filmiyle desteklenir. Boş ekranları, ofis kimliğinize uygun kolaj ve plan detaylarıyla tamamlıyoruz."
+      },
+      "pressKit": {
+        "index": "03",
+        "title": "Dijital Basın Dosyası",
+        "body": "Basın bültenleri ve sosyal medya lansmanları için hızlıca özelleştirebileceğiniz şablonlar içerir. Her görsel, stüdyonuzun tonunu anlatan kısa açıklamalarla birlikte gelir."
+      },
+      "consulting": {
+        "index": "04",
+        "title": "Danışmanlık & Koordinasyon",
+        "body": "Sunum hazırlıkları sırasında ekiplerinizi yönlendiren toplantılar planlıyoruz. Malzeme seçimi, metin tonu ve görsel yerleşimleri için paylaşılabilir rehberler sunuyoruz."
+      }
+    }
+  },
+  "insights": {
+    "hero": {
+      "eyebrow": "Görüşler & Notlar",
+      "title": "Alpimimarlık Not Defteri",
+      "body": "Müşterilerle paylaşılacak dosyaları hazırlarken kullandığımız yöntemleri burada toparlıyoruz. Sunum akışı, görsel seçimleri ve küçük ekibimizin çalışma biçimi hakkında notlar içeren kısa makaleler paylaşıyoruz."
+    },
+    "articles": {
+      "lobby": {
+        "label": "Saha Notu",
+        "title": "Lobi Sunumunda İlk İzlenim",
+        "excerpt": "İlk görüşmede paylaşılan lobi sahnesi, ziyaretçilerin mekânın atmosferini hızla anlamasını sağlıyor. Bizim için çalışan üç temel dokunuşu ve örnek sunum planını anlattık.",
+        "link": "Devamını Oku"
+      },
+      "scene": {
+        "label": "Rehber",
+        "title": "Metinsiz Sahne Nasıl Anlatılır?",
+        "excerpt": "Görsel olmayan bölümler için kullandığımız üç adımlı strateji: atmosferi kelimelerle kurmak, kullanıcı hikâyesi yazmak ve son kareyi destekleyecek bir kolajla tamamlamak.",
+        "link": "Devamını Oku"
+      },
+      "sessions": {
+        "label": "Atölye Özeti",
+        "title": "Takım İçi Konsept Oturumları",
+        "excerpt": "Haftalık oturumlarımızda kullandığımız sahne tariflerini, ışık önerilerini ve renk paleti kombinlerini örnek dosyalarla birlikte derledik.",
+        "link": "Devamını Oku"
+      }
+    }
+  },
+  "insightLobby": {
+    "hero": {
+      "label": "Saha Notu",
+      "title": "Lobi Sunumunda İlk İzlenim",
+      "meta": "Yayın Tarihi — 18 Ocak 2024",
+      "intro": "Lobi sahnesi, küçük bir ofisin kimliğini ilk dakikada aktarması için kullandığımız en güçlü araç. Bu yazı, hazırladığımız sunum dosyalarında nasıl bir hikâye kurduğumuzu, mekânı tanımlarken hangi öncelikleri göz önünde bulundurduğumuzu anlatıyor."
+    },
+    "sections": {
+      "route": {
+        "heading": "Ziyaretçi rotasını netleştirmek",
+        "paragraph1": "İlk sunumda kullandığımız plan şemasında, ziyaretçinin girişten toplantı alanına kadar izleyeceği adımları kısaca tarif ediyoruz. Kapı, danışma ve bekleme alanları arasında net bir rota oluşturmak, müşterinin zihninde mekânın akışını canlandırıyor. Planın yanında, zemin kaplaması ve yönlendirme elemanları için seçtiğimiz malzemeleri belirtiyoruz.",
+        "paragraph2": "Bu bölümde gereksiz detaylardan kaçınarak üç ana mesaj iletiyoruz: girişten itibaren hissedilen atmosfer, bekleme alanındaki oturma düzeni ve toplantı odasına geçişte ışığın nasıl değiştiği. Bu üç başlık, lobiye ilişkin ilk soruları yanıtlıyor ve toplantının ilerleyen dakikalarına sağlam bir zemin hazırlıyor."
+      },
+      "light": {
+        "heading": "Işık ve malzeme dengesi",
+        "paragraph1": "Lobi anlatımında ışık, mekânı tanıtan ilk görsel ipucu. Gündüz ve akşam senaryoları için iki ayrı aydınlatma şeması hazırlıyoruz. Gündüz senaryosunda doğal ışığın yoğunluğunu gösteren kısa bir kesit, akşam senaryosunda ise sıcaklığı ayarlanabilir armatürlerin mekâna yayılışını vurgulayan bir kolaj kullanıyoruz.",
+        "paragraph2": "Malzeme paleti seçimimiz, ışığın anlatmak istediği duyguyu destekliyor. Mat yüzeyler ışığı yumuşatırken, bakır veya pirinç detaylar odağı güçlendiriyor. Paleti üç ana renkle sınırlamak, anlatımın sade ve anlaşılır kalmasını sağlıyor."
+      },
+      "structure": {
+        "heading": "Sunum planını yapılandırmak",
+        "paragraph1": "Sunum dosyasını hazırlarken lobiyi tek seferde anlatmak yerine kısa adımlara bölüyoruz. İlk sayfa mekânın duygusunu veren geniş açı, ikinci sayfa kullanıcı deneyimi hikâyesi ve üçüncü sayfa malzeme ile aydınlatma tablosu. Bu yapı sayesinde toplantı sırasında her bölüm için kısa, net bir açıklama yapabiliyoruz.",
+        "paragraph2": "Sunumun sonunda, lobinin bitmiş halini temsil eden bir görseli, kontrol listesi ile birlikte paylaşarak görüşmeyi tamamlıyoruz. Liste; aydınlatma kurulumu, yönlendirme grafikleri ve mobilya yerleşiminden oluşuyor. Böylece görüşmeden çıkan herkes, yapılacak işlerin sırasını ve beklenen atmosferi aynı şekilde hayal ediyor."
+      }
+    },
+    "backLink": "Tüm yazılara dön"
+  },
+  "insightScene": {
+    "hero": {
+      "label": "Rehber",
+      "title": "Metinsiz Sahne Nasıl Anlatılır?",
+      "meta": "Yayın Tarihi — 4 Şubat 2024",
+      "intro": "Sunum dosyalarında boş kalan sayfaları, metin kullanmadan da etkili bir şekilde kurgulamak mümkün. Bu rehberde kullandığımız yöntemleri, hikâyeyi kelimeler yerine görsel ipuçlarıyla nasıl güçlendirdiğimizi özetliyoruz."
+    },
+    "sections": {
+      "atmosphere": {
+        "heading": "Atmosferi kelimeler olmadan kurmak",
+        "paragraph1": "Metinsiz sahne anlatımına başlamadan önce, mekânın hangi duyguya odaklandığını belirliyoruz. Işık yönü, renk paleti ve kullanılan malzemeler bu duygunun temelini oluşturuyor. Geniş açılı bir görsel yerine, belirli bir noktayı tarif eden üç kare kullanmak, izleyicinin bakışını yönlendiriyor.",
+        "paragraph2": "Her karede bir ana unsur seçiyoruz: zemin dokusu, oturma düzeni veya cepheye sızan ışık gibi. Böylece izleyici, sahnenin bütününü kelime okumadan da kavrıyor."
+      },
+      "story": {
+        "heading": "Kullanıcı hikâyesi oluşturmak",
+        "paragraph1": "Metin yerine kısa bir hikâye kurgulamak için zaman çizelgesi yaklaşımı kullanıyoruz. Sabah, gün ortası ve akşam senaryolarını üç karede göstererek, mekânın gün boyunca nasıl yaşadığını aktarıyoruz.",
+        "paragraph2": "Her senaryoda mekânı kullanan kişinin ihtiyacına odaklanan küçük ikonlar veya notlar eklemek, anlatımı destekliyor. Bunu yaparken tasarımın yalın kalmasına dikkat ediyoruz; her karede tek bir vurgu yeterli oluyor."
+      },
+      "collage": {
+        "heading": "Kolaj ile son kareyi tamamlamak",
+        "paragraph1": "Sahnenin finalini, plan veya kesit üzerine oturttuğumuz kolajla tamamlıyoruz. Bu kolajda ışık yönlerini, mobilya yerleşimini ve renk yoğunluğunu göstermek için ince çizgiler ve kısa etiketler kullanıyoruz.",
+        "paragraph2": "Görsel anlatım, toplantı sırasında hızlı geri bildirim alınmasını sağlıyor. Metin eklemeye gerek kalmadan, sahnenin hangi noktalarının geliştirileceği netleşiyor."
+      }
+    },
+    "backLink": "Tüm yazılara dön"
+  },
+  "insightSessions": {
+    "hero": {
+      "label": "Atölye Özeti",
+      "title": "Takım İçi Konsept Oturumları",
+      "meta": "Yayın Tarihi — 26 Şubat 2024",
+      "intro": "Haftalık olarak yaptığımız konsept oturumları, sunum dosyalarımızın tutarlı ve hızlı bir şekilde gelişmesini sağlıyor. Bu yazı, oturumların nasıl planlandığını, hangi çıktıları beklediğimizi ve ekip içinde görev paylaşımını nasıl yaptığımızı açıklıyor."
+    },
+    "sections": {
+      "schedule": {
+        "heading": "Toplantı düzeni",
+        "paragraph1": "Her oturum, 45 dakikalık zaman bloklarından oluşuyor. İlk bölümde bir kişi güncel sunum taslağını paylaşıyor. Diğer ekip üyeleri sorularını not alarak sadece dinliyor. Sunum tamamlandıktan sonra soruları sırayla yanıtlıyor ve gerekli revizyonları birlikte işaretliyoruz.",
+        "paragraph2": "Oturumda alınan notlar, toplantı sonrası 24 saat içinde paylaşılan kısa bir özetle dokümante ediliyor. Böylece herkes yapılacak işleri ve teslim tarihlerini net olarak görüyor."
+      },
+      "checklist": {
+        "heading": "Görsel kontrol listesi",
+        "paragraph1": "Her oturumun ikinci bölümünde, görsellerin tutarlılığını kontrol ediyoruz. Renk paleti, ışık yönleri ve malzeme anlatımı üç başlık altında değerlendiriliyor. Eksik bulunan kısımlar için sorumlu kişiyi belirleyip kısa teslim tarihleri veriyoruz.",
+        "paragraph2": "Bu yöntem, sunum dosyalarının farklı kişiler tarafından hazırlanmış olsa bile aynı dili konuşmasını sağlıyor."
+      },
+      "archive": {
+        "heading": "Arşivleme ve paylaşım",
+        "paragraph1": "Oturum sonunda kullanılan tüm görsel ve dosyaları ortak sunucuda klasörleyerek saklıyoruz. Her klasörde tarih, oturum sorumlusu ve revizyon notlarının yer aldığı bir kapak belgesi bulunuyor.",
+        "paragraph2": "Düzenli arşiv tutmak, sonraki toplantılarda referans alabileceğimiz hazır içerikler oluşturuyor ve ekibin tekrar iş üretmesini engelliyor."
+      }
+    },
+    "backLink": "Tüm yazılara dön"
+  },
+  "careers": {
+    "intro": {
+      "eyebrow": "Kariyer",
+      "title": "Sunum Odaklı Mimarlığa Katılın",
+      "body": "Alpimimarlık, küçük ama disiplinli ekibiyle konsept sunumlarını, maket çekimlerini ve şantiye öncesi iletişimi yönetiyor. Galata'daki stüdyomuzda hazırladığımız görsel anlatılara katkı sunacak meraklı çalışma arkadaşları arıyoruz."
+    },
+    "values": {
+      "rhythm": {
+        "label": "Çalışma Düzeni",
+        "title": "Atölye Tempo",
+        "body": "Haftada dört gün stüdyoda, bir gün uzaktan ortak eskiz oturumları düzenliyoruz. Sunum dosyaları ekip içinde paylaşılıyor, revizyonlar hızla ilerliyor."
+      },
+      "mentoring": {
+        "label": "Mentorluk",
+        "title": "Beraber Öğrenme",
+        "body": "Yeni katılan ekip arkadaşları, stüdyo kurucu ortaklarıyla bire bir proje takip oturumlarına giriyor. Tüm sunum şablonlarını birlikte geliştiriyoruz."
+      },
+      "atmosphere": {
+        "label": "Ortam",
+        "title": "Sıcak Stüdyo",
+        "body": "Galata sokaklarındaki ritmi stüdyoya taşıyan samimi bir ekip var. Maket masası, ses sistemi ve fotoğraf köşesi her zaman açık."
+      }
+    },
+    "roles": {
+      "eyebrow": "Açık Pozisyonlar",
+      "title": "Güncel Aradığımız Roller",
+      "description": "Aşağıdaki roller için portfolyo, kısa niyet mektubu ve iletişim bilgilerinizi paylaşırsanız bir haftalık sürede geri dönüş yapıyoruz.",
+      "cta": "Başvuruyu Gönder",
+      "positions": {
+        "presentationArchitect": {
+          "title": "Sunum Mimarı",
+          "body": "Konsept toplantılarında kullanılacak plan, kesit ve atmosfer panolarını hazırlayacak; maket çekimlerini katalog diline taşıyacak bir ekip arkadaşı arıyoruz. Rhino, Enscape ve Adobe InDesign kullanımı bekleniyor.",
+          "bullets": {
+            "one": "• 2-4 yıl mimari sunum deneyimi",
+            "two": "• Detaylı Türkçe metin ve kısa İngilizce özet yazabilme",
+            "three": "• Şantiye öncesi toplantılara katılım"
+          }
+        },
+        "visualDesigner": {
+          "title": "Görsel İletişim Tasarımcısı",
+          "body": "Kampanya lansmanlarında kullanılacak posterler, sosyal medya düzenleri ve sunum kapaklarını birlikte tasarlayacağız. Tasarım dilimizi korurken yeni tipografi önerileri getirecek bir ekip arkadaşı arıyoruz.",
+          "bullets": {
+            "one": "• Adobe Illustrator ve Figma deneyimi",
+            "two": "• Mimarlık görselleriyle çalışmaya yatkınlık",
+            "three": "• Kısa süreli freelance iş birliklerine açık"
+          }
+        },
+        "studioIntern": {
+          "title": "Stüdyo Stajyeri",
+          "body": "Yaz döneminde stüdyomuzda eskiz ve maket süreçlerine destek verecek, toplantı öncesi sunum klasörlerini düzenleyecek bir stajyer arıyoruz. Okul projelerindeki anlatım dilinizi görmek isteriz.",
+          "bullets": {
+            "one": "• 3. veya 4. sınıf mimarlık öğrencisi",
+            "two": "• Haftada en az üç gün stüdyoda bulunabilme",
+            "three": "• Model yapımında hassasiyet"
+          }
+        }
+      }
+    },
+    "application": {
+      "eyebrow": "Başvuru",
+      "title": "Nasıl Başvurulur?",
+      "body1": "Portfolyonuzu PDF formatında, maksimum 15 sayfa olacak şekilde düzenleyin. Kısa niyet mektubunda Alpimimarlık ekibiyle nasıl bir sunum geliştirmek istediğinizi anlatın. Referans olabilecek eğitmen veya önceki ekip arkadaşlarının iletişim bilgilerini eklemeyi unutmayın.",
+      "body2": "Başvurular kariyer@alpimimarlik.com adresine gönderiliyor. Bir hafta içerisinde toplantı veya portfolyo geri bildirimi için iletişime geçiyoruz.",
+      "cta": "Başvuruyu Paylaş"
+    }
+  },
+  "contact": {
+    "hero": {
+      "eyebrow": "İletişim",
+      "title": "Bize Ulaşın",
+      "body": "Kampanya odaklı mimarlık sunumlarımız hakkında konuşmak veya sunum arşivimizi incelemek isterseniz, aşağıdaki formu doldurun. İlk kez sunum hazırlayan ekipler için hızlı başlangıç oturumu planlıyoruz."
+    },
+    "form": {
+      "nameLabel": "Ad Soyad",
+      "namePlaceholder": "Adınız Soyadınız",
+      "emailLabel": "E-posta",
+      "emailPlaceholder": "ornek@studio.com",
+      "topicLabel": "Sunum İlgisi",
+      "topicOptions": {
+        "conceptBook": "Konsept kitap hazırlığı",
+        "renderSession": "Render ve görselleştirme oturumu",
+        "launchSet": "Dijital lansman seti",
+        "other": "Diğer"
+      },
+      "messageLabel": "Mesajınız",
+      "messagePlaceholder": "Ekibinizin ihtiyacını kısaca anlatın...",
+      "submit": "Gönder"
+    },
+    "aside": {
+      "studio": {
+        "label": "Stüdyo",
+        "location": "Istanbul, Galata",
+        "hours": "Hafta içi 10:00 - 18:00 arası randevu ile görüşme sağlanır."
+      },
+      "phone": {
+        "label": "Telefon",
+        "number": "+90 212 222 33 44"
+      },
+      "email": {
+        "label": "E-posta",
+        "address": "iletisim@alpimimarlik.com"
+      },
+      "archive": {
+        "label": "Sunum Arşivi",
+        "body": "Sunum öncesi paylaşılacak örnek görseller için özel bir galeri bağlantısı oluşturuyoruz. Talep formunda belirtin."
+      }
+    }
+  }
+}
