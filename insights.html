@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html class="dark" lang="tr">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title data-i18n="meta.titles.insights">Insights — Alpimimarlık</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: "#E2E2E2",
+                        "background-light": "#F5F5F5",
+                        "background-dark": "#0B0B0B",
+                        accent: "#BFBFBF",
+                    },
+                    fontFamily: {
+                        display: ["Roboto Condensed", "sans-serif"],
+                        body: ["Roboto", "sans-serif"],
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.125rem",
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        .ai-visual {
+            position: relative;
+            overflow: hidden;
+            border-radius: 0.25rem;
+            background-size: 160%;
+            background-position: center;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+        }
+
+        .ai-visual::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.18), transparent 55%);
+            mix-blend-mode: screen;
+            opacity: 0.45;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-background-dark text-primary font-body antialiased">
+    <header class="border-b border-white/10 bg-black px-8 py-5 text-white md:px-16">
+        <div class="flex items-center justify-between gap-8">
+            <div class="flex items-center gap-4">
+                <a class="text-sm font-display uppercase tracking-[0.6em] text-white/80" href="index.html">
+                    <span class="font-bold text-white" data-i18n="common.brand">Alpimimarlık</span>
+                </a>
+                <label class="sr-only" data-i18n="common.langLabel" for="langSwitcher">Dil Seçimi</label>
+                <select
+                    class="hidden appearance-none rounded-sm border border-white/30 bg-black/40 px-3 py-2 text-[0.65rem] uppercase tracking-[0.45em] text-white/80 shadow-sm transition focus:border-white focus:outline-none md:block"
+                    id="langSwitcher"
+                >
+                    <option data-i18n="common.language.tr" value="tr">TR</option>
+                    <option data-i18n="common.language.en" value="en">EN</option>
+                </select>
+            </div>
+            <div class="flex items-center gap-4">
+                <button
+                    class="flex items-center gap-2 text-xs uppercase tracking-[0.45em] text-white/70 transition-opacity hover:opacity-60"
+                    id="menu-toggle"
+                    type="button"
+                >
+                    <span class="material-icons text-base">menu</span>
+                    <span data-i18n="common.menuButton">Menü</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="px-8 py-20 text-primary md:px-20">
+        <div class="max-w-5xl space-y-12">
+            <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="insights.hero.eyebrow">Görüşler &amp; Notlar</p>
+            <h1 class="text-4xl font-display text-white md:text-5xl" data-i18n="insights.hero.title">Alpimimarlık Not Defteri</h1>
+            <p class="text-base text-white/70" data-i18n="insights.hero.body">
+                Müşterilerle paylaşılacak dosyaları hazırlarken kullandığımız yöntemleri burada toparlıyoruz.
+                Sunum akışı, görsel seçimleri ve küçük ekibimizin çalışma biçimi hakkında notlar içeren kısa makaleler paylaşıyoruz.
+            </p>
+            <div class="space-y-8">
+                <article class="space-y-3 border border-white/10 bg-black/30 p-6">
+                    <div
+                        aria-label="Lobi sahnesi için hazırlanan renk denemesi"
+                        class="ai-visual h-32 w-full"
+                        role="img"
+                        style="background-image: radial-gradient(circle at 22% 30%, rgba(255, 206, 165, 0.8) 0%, rgba(255, 206, 165, 0) 55%), radial-gradient(circle at 78% 65%, rgba(255, 126, 126, 0.45) 0%, rgba(255, 126, 126, 0) 50%), linear-gradient(150deg, #1e1f2d, #101019 58%, #2e2439);"
+                    ></div>
+                    <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent" data-i18n="insights.articles.lobby.label">Saha Notu</p>
+                    <h2 class="text-2xl font-display text-white" data-i18n="insights.articles.lobby.title">Lobi Sunumunda İlk İzlenim</h2>
+                    <p class="text-sm text-white/70" data-i18n="insights.articles.lobby.excerpt">
+                        İlk görüşmede paylaşılan lobi sahnesi, ziyaretçilerin mekânın atmosferini hızla anlamasını sağlıyor. Bizim için çalışan üç temel dokunuşu ve örnek sunum planını anlattık.
+                    </p>
+                    <a class="inline-flex items-center text-xs uppercase tracking-[0.35em] text-white/60 transition hover:text-white" data-i18n="insights.articles.lobby.link" href="insight-lobi-ilk-izlenim.html">
+                        Devamını Oku
+                        <span class="material-icons ml-2 text-sm">east</span>
+                    </a>
+                </article>
+                <article class="space-y-3 border border-white/10 bg-black/30 p-6">
+                    <div
+                        aria-label="Metinsiz sahne anlatımı için kolaj"
+                        class="ai-visual h-32 w-full"
+                        role="img"
+                        style="background-image: radial-gradient(circle at 70% 30%, rgba(160, 214, 255, 0.7) 0%, rgba(160, 214, 255, 0) 55%), radial-gradient(circle at 18% 70%, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(160deg, #1a2334, #0f131d 60%, #2a3245);"
+                    ></div>
+                    <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent" data-i18n="insights.articles.scene.label">Rehber</p>
+                    <h2 class="text-2xl font-display text-white" data-i18n="insights.articles.scene.title">Metinsiz Sahne Nasıl Anlatılır?</h2>
+                    <p class="text-sm text-white/70" data-i18n="insights.articles.scene.excerpt">
+                        Görsel olmayan bölümler için kullandığımız üç adımlı strateji: atmosferi kelimelerle kurmak, kullanıcı hikâyesi yazmak ve son kareyi destekleyecek bir kolajla tamamlamak.
+                    </p>
+                    <a class="inline-flex items-center text-xs uppercase tracking-[0.35em] text-white/60 transition hover:text-white" data-i18n="insights.articles.scene.link" href="insight-metinsiz-sahne.html">
+                        Devamını Oku
+                        <span class="material-icons ml-2 text-sm">east</span>
+                    </a>
+                </article>
+                <article class="space-y-3 border border-white/10 bg-black/30 p-6">
+                    <div
+                        aria-label="Takım içi sunum oturumu için ışık denemesi"
+                        class="ai-visual h-32 w-full"
+                        role="img"
+                        style="background-image: radial-gradient(circle at 25% 70%, rgba(255, 174, 226, 0.55) 0%, rgba(255, 174, 226, 0) 50%), radial-gradient(circle at 78% 25%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(165deg, #141522, #1c1f31 58%, #322544);"
+                    ></div>
+                    <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent" data-i18n="insights.articles.sessions.label">Atölye Özeti</p>
+                    <h2 class="text-2xl font-display text-white" data-i18n="insights.articles.sessions.title">Takım İçi Konsept Oturumları</h2>
+                    <p class="text-sm text-white/70" data-i18n="insights.articles.sessions.excerpt">
+                        Haftalık oturumlarımızda kullandığımız sahne tariflerini, ışık önerilerini ve renk paleti kombinlerini örnek dosyalarla birlikte derledik.
+                    </p>
+                    <a class="inline-flex items-center text-xs uppercase tracking-[0.35em] text-white/60 transition hover:text-white" data-i18n="insights.articles.sessions.link" href="insight-konsept-oturumlari.html">
+                        Devamını Oku
+                        <span class="material-icons ml-2 text-sm">east</span>
+                    </a>
+                </article>
+            </div>
+        </div>
+    </main>
+
+    <div
+        aria-labelledby="menu-title"
+        aria-modal="true"
+        class="fixed inset-0 z-40 hidden bg-black/70 opacity-0 backdrop-blur-md transition-opacity"
+        id="menu-panel"
+        role="dialog"
+    >
+        <div class="ml-auto flex h-full w-full max-w-xs flex-col border-l border-white/10 bg-background-dark/95 p-8 text-white shadow-2xl sm:max-w-sm">
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="common.brand" id="menu-title">Alpimimarlık</p>
+                    <h2 class="mt-3 text-2xl font-display text-white" data-i18n="common.menuPanel.title">Tanıtım Menüsü</h2>
+                </div>
+                <button class="text-white/60 transition hover:text-white" id="menu-close" type="button">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <nav class="mt-10 space-y-6 text-sm uppercase tracking-[0.4em] text-white/70">
+                <a class="block transition-opacity hover:opacity-60" href="index.html" data-i18n="common.nav.home">Ana Sayfa</a>
+                <a class="block transition-opacity hover:opacity-60" href="studio.html" data-i18n="common.nav.studio">Studio</a>
+                <a class="block transition-opacity hover:opacity-60" href="kariyer.html" data-i18n="common.nav.careers">Kariyer</a>
+                <a class="block transition-opacity hover:opacity-60" href="contact.html" data-i18n="common.nav.contact">Contact</a>
+            </nav>
+            <div class="mt-auto space-y-4 text-sm text-white/60">
+                <p class="uppercase tracking-[0.35em] text-white/40" data-i18n="common.menuPanel.contactHeading">İletişim</p>
+                <p data-i18n="common.menuPanel.contactBody">İzmir merkezli ofis, sunum ve konsept kitapçıkları hazırlıyor.</p>
+                <a class="inline-flex items-center gap-2 text-white transition hover:text-white/70" href="mailto:info@alpimimarlik.com">
+                    <span class="material-icons text-base">mail</span>
+                    <span>info@alpimimarlik.com</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="border-t border-white/10 bg-black px-8 py-16 text-primary md:px-20">
+        <div class="grid grid-cols-1 gap-12 md:grid-cols-4">
+            <div>
+                <h3 class="text-xl font-display font-bold tracking-tight text-white" data-i18n="common.footer.title">ALPI</h3>
+                <p class="mt-3 text-sm text-gray-400" data-i18n="common.footer.tagline">                    Pioneering architectural narratives shaped by context, craft, and human experience.
+                </p>
+            </div>
+            <div>
+                <h3 class="text-sm font-display uppercase tracking-[0.45em] text-white/70" data-i18n="common.footer.navigate">Navigate</h3>
+                <ul class="mt-4 space-y-3 text-sm text-gray-400">
+                    <li><a class="transition-colors hover:text-white" href="index.html" data-i18n="common.nav.home">Home</a></li>
+                    <li><a class="transition-colors hover:text-white" href="studio.html" data-i18n="common.nav.studio">Studio</a></li>
+                    <li><a class="transition-colors hover:text-white" href="kariyer.html" data-i18n="common.nav.careers">Kariyer</a></li>
+                    <li><a class="transition-colors hover:text-white" href="contact.html" data-i18n="common.nav.contact">Contact</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-sm font-display uppercase tracking-[0.45em] text-white/70" data-i18n="common.footer.connect">Connect</h3>
+                <ul class="mt-4 space-y-3 text-sm text-gray-400">
+                    <li><a class="transition-colors hover:text-white" href="https://www.instagram.com/alpiarchitects?igsh=NWRtOGY2cjRjMGY0" data-i18n="common.footer.instagram">Instagram</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="text-sm font-display uppercase tracking-[0.45em] text-white/70" data-i18n="common.footer.newsletter">Newsletter</h3>
+                <form class="mt-4 space-y-3">
+                    <input
+                        class="w-full border border-white/15 bg-white/5 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none"
+                        data-i18n-placeholder="common.footer.newsletterPlaceholder" placeholder="Enter your email"
+                        type="email"
+                    />
+                    <button class="w-full bg-white/10 py-3 text-sm font-semibold uppercase tracking-[0.35em] text-white transition hover:bg-white/20" type="submit" data-i18n="common.footer.newsletterButton">Join</button>
+                </form>
+            </div>
+        </div>
+        <div class="mt-14 border-t border-white/10 pt-6 text-xs text-white/40">
+            <p data-i18n="common.footer.copyright">© 2024 Alpimimarlık. Tüm hakları saklıdır.</p>
+        </div>
+    </footer>
+
+    <script src="assets/js/i18n.js"></script>
+    <script>
+        const menuToggle = document.getElementById('menu-toggle');
+        const menuPanel = document.getElementById('menu-panel');
+        const menuClose = document.getElementById('menu-close');
+
+        const openMenuPanel = () => {
+            if (!menuPanel) return;
+            menuPanel.classList.remove('hidden');
+            menuPanel.classList.remove('opacity-0');
+            requestAnimationFrame(() => menuPanel.classList.add('opacity-100'));
+        };
+
+        const closeMenuPanel = () => {
+            if (!menuPanel) return;
+            menuPanel.classList.remove('opacity-100');
+            menuPanel.classList.add('opacity-0');
+            setTimeout(() => menuPanel.classList.add('hidden'), 180);
+        };
+
+        if (menuToggle) {
+            menuToggle.addEventListener('click', openMenuPanel);
+        }
+
+        if (menuClose) {
+            menuClose.addEventListener('click', closeMenuPanel);
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && menuPanel && !menuPanel.classList.contains('hidden')) {
+                closeMenuPanel();
+            }
+        });
+
+        if (menuPanel) {
+            menuPanel.addEventListener('click', (event) => {
+                if (event.target === menuPanel) {
+                    closeMenuPanel();
+                }
+            });
+
+            menuPanel.querySelectorAll('a').forEach((link) => {
+                link.addEventListener('click', closeMenuPanel);
+            });
+        }
+
+    </script>
+</body>
+</html>
