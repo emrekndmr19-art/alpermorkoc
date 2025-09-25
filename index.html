@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="dark" lang="en">
+<html class="dark" lang="tr">
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -104,20 +104,34 @@
             <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-black via-black/10 to-background-dark"></div>
 
             <header class="absolute top-0 left-0 right-0 z-30 px-8 py-10 md:px-16">
-                <div class="flex items-center justify-between">
+                <div class="flex items-center justify-between gap-8">
                     <div class="text-sm font-display uppercase tracking-[0.6em] text-white/80">
                         <span class="font-bold text-white">Alper Morkoç</span> Architecture
                     </div>
                     <nav class="hidden items-center space-x-10 text-xs uppercase tracking-[0.45em] text-white/70 md:flex">
-                        <a class="transition-opacity hover:opacity-60" href="#">Studio</a>
-                        <a class="transition-opacity hover:opacity-60" href="#">Projects</a>
-                        <a class="transition-opacity hover:opacity-60" href="#">Insights</a>
-                        <a class="transition-opacity hover:opacity-60" href="#">Contact</a>
+                        <a class="transition-opacity hover:opacity-60" href="studio.html">Studio</a>
+                        <a class="transition-opacity hover:opacity-60" href="services.html">Services</a>
+                        <a class="transition-opacity hover:opacity-60" href="insights.html">Insights</a>
+                        <a class="transition-opacity hover:opacity-60" href="contact.html">Contact</a>
                     </nav>
-                    <button class="flex items-center gap-2 text-xs uppercase tracking-[0.45em] text-white/70 transition-opacity hover:opacity-60">
-                        <span class="material-icons text-base">search</span>
-                        <span>Search</span>
-                    </button>
+                    <div class="flex items-center gap-4">
+                        <label class="sr-only" for="language-select">Dil Seçimi</label>
+                        <select
+                            class="hidden appearance-none rounded-sm border border-white/30 bg-black/40 px-3 py-2 text-[0.65rem] uppercase tracking-[0.45em] text-white/80 shadow-sm transition focus:border-white focus:outline-none md:block"
+                            id="language-select"
+                        >
+                            <option value="tr" selected>TR</option>
+                            <option value="en">EN</option>
+                        </select>
+                        <button
+                            class="flex items-center gap-2 text-xs uppercase tracking-[0.45em] text-white/70 transition-opacity hover:opacity-60"
+                            id="search-toggle"
+                            type="button"
+                        >
+                            <span class="material-icons text-base">search</span>
+                            <span>Search</span>
+                        </button>
+                    </div>
                 </div>
             </header>
 
@@ -198,49 +212,72 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-16 grid grid-cols-1 gap-8 md:grid-cols-2 xl:grid-cols-3">
-                <article class="group relative overflow-hidden rounded-sm border border-white/5 bg-black/30">
-                    <img
-                        alt="Gün ışığıyla aydınlanan toplantı salonu"
-                        class="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        src="https://images.unsplash.com/photo-1670604606316-3f97b0623e58?auto=format&fit=crop&w=1100&q=80"
-                    />
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
-                    <div class="absolute bottom-0 p-6">
-                        <p class="text-[0.55rem] uppercase tracking-[0.6em] text-white/50">Tanıtım Kesiti</p>
-                        <h3 class="mt-3 text-2xl font-display text-white transition-colors duration-300 group-hover:text-primary">Toplantı Salonu Kurgusu</h3>
-                        <p class="mt-2 max-w-xs text-sm text-white/70">Şeffaf paneller ve gün ışığı ritmi, lansman sunumlarında stüdyonun açık iletişim kültürünü öne çıkaran başlıklarımızdan biri.</p>
-                    </div>
-                </article>
-                <article class="group relative overflow-hidden rounded-sm border border-white/5 bg-black/30">
-                    <img
-                        alt="Katmanlı dolaşıma sahip atrium perspektifi"
-                        class="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        src="https://images.unsplash.com/photo-1529429617124-aee575b5dbb3?auto=format&fit=crop&w=1100&q=80"
-                    />
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
-                    <div class="absolute bottom-0 p-6">
-                        <p class="text-[0.55rem] uppercase tracking-[0.6em] text-white/50">Mekânsal Hikâye</p>
-                        <h3 class="mt-3 text-2xl font-display text-white transition-colors duration-300 group-hover:text-primary">Atrium Sunumu</h3>
-                        <p class="mt-2 max-w-xs text-sm text-white/70">Katmanlı dolaşım şeması ve ışık oyunları, marka filmimizde vurgulamak istediğimiz modern kent yaşamını destekleyen temel anlatı.</p>
-                    </div>
-                </article>
-                <article class="group relative overflow-hidden rounded-sm border border-white/5 bg-black/30">
-                    <img
-                        alt="Gece vakti neon çizgilere sahip şehir silueti"
-                        class="h-64 w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1100&q=80"
-                    />
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
-                    <div class="absolute bottom-0 p-6">
-                        <p class="text-[0.55rem] uppercase tracking-[0.6em] text-white/50">Dijital Lansman</p>
-                        <h3 class="mt-3 text-2xl font-display text-white transition-colors duration-300 group-hover:text-primary">Gökyüzüne Uzanan Marka Manifestosu</h3>
-                        <p class="mt-2 max-w-xs text-sm text-white/70">Metaverse turumuz, imza kule portföyümüzü artırılmış gerçeklikte gezdirerek AMA'nın geleceğin kentlerini nasıl kurduğunu duyuruyor.</p>
-                    </div>
-                </article>
+            <div class="mt-16 grid grid-cols-1 gap-10 md:grid-cols-3">
+                <div class="space-y-4 border border-white/10 bg-black/30 p-6">
+                    <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent">Kampanya Rehberi</p>
+                    <h3 class="text-2xl font-display text-white">Tanıtım Akışları</h3>
+                    <p class="text-sm text-white/70">
+                        Sunum paketi; giriş deneyimini, çalışma adalarını ve cephe anlatılarını kapsayan üç sahnede toplanıyor.
+                        Her sahne için yapay zekâ ile üretilmiş görsel brief’ler, müşterilerinize ilk toplantıda paylaşmanız için hazır.
+                    </p>
+                </div>
+                <div class="space-y-4 border border-white/10 bg-black/30 p-6">
+                    <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent">AI Görsel Dizisi</p>
+                    <h3 class="text-2xl font-display text-white">Sunum Paketleri</h3>
+                    <p class="text-sm text-white/70">
+                        Proje anlatımı olmayan durumlarda dahi, etkileyici render ve kolajlarla konsept atmosferi kuruyoruz.
+                        Metinsiz bölümleri parlak görsellerle tamamlayan bu paket, yeni ofisinizi dijitalde sergilemenin en hızlı yolu.
+                    </p>
+                </div>
+                <div class="space-y-4 border border-white/10 bg-black/30 p-6">
+                    <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent">İletişim Tonu</p>
+                    <h3 class="text-2xl font-display text-white">Butik Yaklaşım</h3>
+                    <p class="text-sm text-white/70">
+                        Tüm metinler iki dilde hazırlandığından, yatırımcı sunumlarınızda sıcak ama profesyonel bir ton yakalarsınız.
+                        Geri bildirim formlarımız, projeye göre özelleştirilen yeni görsel setleri için rehber niteliğinde.
+                    </p>
+                </div>
             </div>
         </section>
     </main>
+
+    <div
+        class="fixed inset-0 z-40 hidden opacity-0 bg-black/70 backdrop-blur-md transition-opacity"
+        id="search-panel"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="search-title"
+    >
+        <div class="mx-auto mt-32 w-full max-w-2xl rounded-sm border border-white/15 bg-background-dark p-8 text-white shadow-2xl">
+            <div class="flex items-start justify-between">
+                <div>
+                    <p class="text-xs uppercase tracking-[0.55em] text-accent" id="search-title">Site İçi Arama</p>
+                    <h2 class="mt-3 text-3xl font-display text-white">Sunum İçeriklerinde Ara</h2>
+                </div>
+                <button class="text-white/60 transition hover:text-white" id="search-close" type="button">
+                    <span class="material-icons">close</span>
+                </button>
+            </div>
+            <form class="mt-8 space-y-4" role="search">
+                <label class="block text-sm uppercase tracking-[0.35em] text-white/60" for="search-input">Anahtar Kelime</label>
+                <input
+                    class="w-full border border-white/20 bg-black/40 p-4 text-base text-white placeholder:text-white/40 focus:border-white focus:outline-none"
+                    id="search-input"
+                    placeholder="Örn. lobi görseli, gece cephesi"
+                    type="search"
+                />
+                <button
+                    class="w-full bg-white/10 py-3 text-sm font-semibold uppercase tracking-[0.35em] text-white transition hover:bg-white/20"
+                    type="submit"
+                >
+                    Arama Yap
+                </button>
+            </form>
+            <p class="mt-6 text-sm text-white/60">
+                Yapay zekâ ile üretilen görsel arşivimizi, başlık ve tema bazlı filtrelerle düzenliyoruz. İlk sürümde sonuç listesi taslağı gösterilir.
+            </p>
+        </div>
+    </div>
 
     <footer class="border-t border-white/10 bg-black px-8 py-16 text-primary md:px-20">
         <div class="grid grid-cols-1 gap-12 md:grid-cols-4">
@@ -298,6 +335,11 @@
         const slideLocation = document.getElementById('slide-location');
         const slideIndex = document.getElementById('slide-index');
         const slideTotal = document.getElementById('slide-total');
+        const searchToggle = document.getElementById('search-toggle');
+        const searchPanel = document.getElementById('search-panel');
+        const searchClose = document.getElementById('search-close');
+        const searchInput = document.getElementById('search-input');
+        const languageSelect = document.getElementById('language-select');
         const totalItems = items.length;
 
         let currentIndex = 0;
@@ -366,6 +408,58 @@
             showPrev();
             startAutoplay();
         });
+
+        const openSearchPanel = () => {
+            if (!searchPanel) return;
+            searchPanel.classList.remove('hidden');
+            searchPanel.classList.remove('opacity-0');
+            setTimeout(() => {
+                searchPanel.classList.add('opacity-100');
+            }, 10);
+            if (searchInput) {
+                setTimeout(() => searchInput.focus(), 120);
+            }
+            stopAutoplay();
+        };
+
+        const closeSearchPanel = () => {
+            if (!searchPanel) return;
+            searchPanel.classList.remove('opacity-100');
+            searchPanel.classList.add('opacity-0');
+            setTimeout(() => {
+                searchPanel.classList.add('hidden');
+            }, 180);
+            startAutoplay();
+        };
+
+        if (searchToggle) {
+            searchToggle.addEventListener('click', openSearchPanel);
+        }
+
+        if (searchClose) {
+            searchClose.addEventListener('click', closeSearchPanel);
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && searchPanel && !searchPanel.classList.contains('hidden')) {
+                closeSearchPanel();
+            }
+        });
+
+        if (searchPanel) {
+            searchPanel.addEventListener('click', (event) => {
+                if (event.target === searchPanel) {
+                    closeSearchPanel();
+                }
+            });
+        }
+
+        if (languageSelect) {
+            languageSelect.addEventListener('change', (event) => {
+                const value = event.target.value;
+                document.documentElement.lang = value === 'en' ? 'en' : 'tr';
+            });
+        }
 
         slideTotal.textContent = padNumber(totalItems);
         goToSlide(0);
