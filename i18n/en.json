@@ -39,9 +39,6 @@
       "tagline": "Pioneering architectural narratives shaped by context, craft, and human experience.",
       "navigate": "Navigate",
       "connect": "Connect",
-      "newsletter": "Newsletter",
-      "newsletterPlaceholder": "Enter your email",
-      "newsletterButton": "Join",
       "instagram": "Instagram",
       "linkedin": "LinkedIn",
       "behance": "Behance",
@@ -323,12 +320,6 @@
       "namePlaceholder": "Your name",
       "emailLabel": "Email",
       "emailPlaceholder": "sample@studio.com",
-      "topicLabel": "Presentation Interest",
-      "topicOptions": {
-        "renderSession": "Render and visualization session",
-        "launchSet": "Digital launch set",
-        "other": "Other"
-      },
       "messageLabel": "Your Message",
       "submit": "Send"
     },

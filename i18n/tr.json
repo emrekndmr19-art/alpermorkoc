@@ -39,9 +39,6 @@
       "tagline": "Bağlam, zanaat ve insan deneyimiyle şekillenen mimari anlatılar.",
       "navigate": "Gezin",
       "connect": "İletişim",
-      "newsletter": "Bülten",
-      "newsletterPlaceholder": "E-posta adresinizi girin",
-      "newsletterButton": "Katıl",
       "instagram": "Instagram",
       "linkedin": "LinkedIn",
       "behance": "Behance",
@@ -323,12 +320,6 @@
       "namePlaceholder": "Adınız Soyadınız",
       "emailLabel": "E-posta",
       "emailPlaceholder": "ornek@studio.com",
-      "topicLabel": "Sunum İlgisi",
-      "topicOptions": {
-        "renderSession": "Render ve görselleştirme oturumu",
-        "launchSet": "Dijital lansman seti",
-        "other": "Diğer"
-      },
       "messageLabel": "Mesajınız",
       "submit": "Gönder"
     },
