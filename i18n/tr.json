@@ -33,7 +33,7 @@
       "title": "Tanıtım Menüsü",
       "contactHeading": "İletişim",
       "contactBody": "Galata merkezli ofis, sunum ve konsept kitapçıkları hazırlıyor.",
-      "email": "iletisim@alpimimarlik.com"
+      "email": "info@alpimimarlik.com"
     },
     "footer": {
       "title": "Alpimimarlık",
@@ -330,7 +330,7 @@
       },
       "email": {
         "label": "E-posta",
-        "address": "iletisim@alpimimarlik.com"
+        "address": "info@alpimimarlik.com"
       },
       "archive": {
         "label": "Sunum Arşivi",

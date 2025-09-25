@@ -33,7 +33,7 @@
       "title": "Showcase Menu",
       "contactHeading": "Contact",
       "contactBody": "Galata-based studio crafting presentation booklets.",
-      "email": "iletisim@alpimimarlik.com"
+      "email": "info@alpimimarlik.com"
     },
     "footer": {
       "title": "Alpimimarlık",
@@ -330,7 +330,7 @@
       },
       "email": {
         "label": "Email",
-        "address": "iletisim@alpimimarlik.com"
+        "address": "info@alpimimarlik.com"
       },
       "archive": {
         "label": "Presentation Archive",
