@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Paneli</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        background: #f3f4f6;
+        color: #1f2933;
+      }
+      header {
+        background: #111827;
+        color: #f9fafb;
+        padding: 1.5rem 2rem;
+        text-align: center;
+      }
+      main {
+        max-width: 1100px;
+        margin: 2rem auto;
+        padding: 0 1rem 3rem;
+      }
+      section {
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 12px 32px rgba(15, 23, 42, 0.08);
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+      }
+      h2 {
+        margin-top: 0;
+      }
+      form {
+        display: grid;
+        gap: 1rem;
+      }
+      label {
+        font-weight: 600;
+      }
+      input[type='text'],
+      input[type='password'],
+      textarea {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+        font-size: 1rem;
+      }
+      textarea {
+        min-height: 120px;
+      }
+      input[type='file'] {
+        padding: 0.75rem 0;
+      }
+      button {
+        background: #2563eb;
+        color: #ffffff;
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 1rem;
+        font-weight: 600;
+      }
+      button.secondary {
+        background: #6b7280;
+      }
+      button.danger {
+        background: #dc2626;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        border-bottom: 1px solid #e5e7eb;
+        padding: 0.75rem;
+        text-align: left;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      .actions {
+        display: flex;
+        gap: 0.5rem;
+      }
+      .hidden {
+        display: none !important;
+      }
+      .status {
+        margin-top: 1rem;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        background: #eff6ff;
+        color: #1e40af;
+        display: none;
+      }
+      @media (max-width: 768px) {
+        table {
+          display: block;
+          overflow-x: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Admin Paneli</h1>
+    </header>
+    <main>
+      <section id="login-section">
+        <h2>Admin Girişi</h2>
+        <form id="login-form">
+          <div>
+            <label for="username">Kullanıcı Adı</label>
+            <input type="text" id="username" name="username" required />
+          </div>
+          <div>
+            <label for="password">Parola</label>
+            <input type="password" id="password" name="password" required />
+          </div>
+          <button type="submit">Giriş Yap</button>
+        </form>
+        <div class="status" id="login-status"></div>
+      </section>
+
+      <section id="admin-section" class="hidden">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+          <h2>Yönetim</h2>
+          <button id="logout-button" class="secondary">Çıkış Yap</button>
+        </div>
+
+        <section>
+          <h3>Yeni İçerik Ekle</h3>
+          <form id="create-content-form">
+            <div>
+              <label for="create-title">Başlık</label>
+              <input type="text" id="create-title" name="title" required />
+            </div>
+            <div>
+              <label for="create-body">İçerik</label>
+              <textarea id="create-body" name="body" required></textarea>
+            </div>
+            <button type="submit">Ekle</button>
+          </form>
+        </section>
+
+        <section>
+          <h3>İçerikler</h3>
+          <div style="overflow-x: auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Başlık</th>
+                  <th>İçerik</th>
+                  <th>Tarih</th>
+                  <th>İşlemler</th>
+                </tr>
+              </thead>
+              <tbody id="content-table-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="update-section" class="hidden">
+          <h3>İçerik Güncelle</h3>
+          <form id="update-content-form">
+            <input type="hidden" id="update-id" />
+            <div>
+              <label for="update-title">Başlık</label>
+              <input type="text" id="update-title" name="title" required />
+            </div>
+            <div>
+              <label for="update-body">İçerik</label>
+              <textarea id="update-body" name="body" required></textarea>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button type="submit">Güncelle</button>
+              <button type="button" id="cancel-update" class="secondary">İptal</button>
+            </div>
+          </form>
+        </section>
+
+        <section>
+          <h3>CV Yükle</h3>
+          <form id="upload-cv-form">
+            <div>
+              <label for="cv-file">PDF Seç</label>
+              <input type="file" id="cv-file" name="cv" accept="application/pdf" required />
+            </div>
+            <button type="submit">Yükle</button>
+          </form>
+        </section>
+
+        <section>
+          <h3>CV Listesi</h3>
+          <div style="overflow-x: auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Dosya Adı</th>
+                  <th>Tip</th>
+                  <th>Boyut</th>
+                  <th>Yüklenme Tarihi</th>
+                  <th>İşlemler</th>
+                </tr>
+              </thead>
+              <tbody id="cv-table-body"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <div class="status" id="admin-status"></div>
+      </section>
+    </main>
+    <script src="admin.js" defer></script>
+  </body>
+</html>
