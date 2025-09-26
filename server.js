@@ -1,0 +1,251 @@
+const path = require('path');
+const fs = require('fs');
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const multer = require('multer');
+require('dotenv').config();
+
+const User = require('./models/User');
+const Content = require('./models/Content');
+const CV = require('./models/CV');
+const auth = require('./middleware/auth');
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/alpermorkoc';
+const JWT_SECRET = process.env.JWT_SECRET || 'supersecretjwt';
+const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
+
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true });
+}
+
+app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use('/uploads', express.static(uploadsDir));
+
+mongoose
+  .connect(MONGO_URI, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+  .then(() => {
+    console.log('MongoDB bağlantısı başarılı');
+    return ensureDefaultAdmin();
+  })
+  .catch((error) => {
+    console.error('MongoDB bağlantı hatası:', error.message);
+  });
+
+async function ensureDefaultAdmin() {
+  try {
+    const existingAdmin = await User.findOne({ username: ADMIN_USERNAME });
+    if (!existingAdmin) {
+      const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10);
+      await User.create({ username: ADMIN_USERNAME, password: hashedPassword });
+      console.log(`Varsayılan admin oluşturuldu → kullanıcı adı: ${ADMIN_USERNAME}`);
+    }
+  } catch (error) {
+    console.error('Varsayılan admin oluşturulurken hata oluştu:', error.message);
+  }
+}
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, uploadsDir);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+    const extension = path.extname(file.originalname);
+    cb(null, `${uniqueSuffix}${extension}`);
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === 'application/pdf') {
+    cb(null, true);
+  } else {
+    cb(new Error('Sadece PDF dosyaları yükleyebilirsiniz.'));
+  }
+};
+
+const upload = multer({ storage, fileFilter });
+
+app.post('/api/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+      return res.status(400).json({ message: 'Kullanıcı adı ve parola gereklidir.' });
+    }
+
+    const user = await User.findOne({ username });
+
+    if (!user) {
+      return res.status(401).json({ message: 'Geçersiz kullanıcı adı veya parola.' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      return res.status(401).json({ message: 'Geçersiz kullanıcı adı veya parola.' });
+    }
+
+    const token = jwt.sign(
+      {
+        id: user._id,
+        username: user.username,
+      },
+      JWT_SECRET,
+      { expiresIn: '2h' }
+    );
+
+    res.json({ token });
+  } catch (error) {
+    console.error('Login hatası:', error.message);
+    res.status(500).json({ message: 'Sunucu hatası.' });
+  }
+});
+
+app.get('/api/content', async (req, res) => {
+  try {
+    const contents = await Content.find().sort({ date: -1 });
+    res.json(contents);
+  } catch (error) {
+    console.error('İçerikler alınamadı:', error.message);
+    res.status(500).json({ message: 'Sunucu hatası.' });
+  }
+});
+
+app.post('/api/content', auth, async (req, res) => {
+  try {
+    const { title, body } = req.body;
+
+    if (!title || !body) {
+      return res.status(400).json({ message: 'Başlık ve içerik gereklidir.' });
+    }
+
+    const content = await Content.create({ title, body });
+    res.status(201).json(content);
+  } catch (error) {
+    console.error('İçerik oluşturulamadı:', error.message);
+    res.status(500).json({ message: 'Sunucu hatası.' });
+  }
+});
+
+app.put('/api/content/:id', auth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, body } = req.body;
+
+    if (!title || !body) {
+      return res.status(400).json({ message: 'Başlık ve içerik gereklidir.' });
+    }
+
+    const updated = await Content.findByIdAndUpdate(
+      id,
+      { title, body },
+      { new: true, runValidators: true }
+    );
+
+    if (!updated) {
+      return res.status(404).json({ message: 'İçerik bulunamadı.' });
+    }
+
+    res.json(updated);
+  } catch (error) {
+    console.error('İçerik güncellenemedi:', error.message);
+    res.status(500).json({ message: 'Sunucu hatası.' });
+  }
+});
+
+app.delete('/api/content/:id', auth, async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deleted = await Content.findByIdAndDelete(id);
+
+    if (!deleted) {
+      return res.status(404).json({ message: 'İçerik bulunamadı.' });
+    }
+
+    res.json({ message: 'İçerik silindi.' });
+  } catch (error) {
+    console.error('İçerik silinemedi:', error.message);
+    res.status(500).json({ message: 'Sunucu hatası.' });
+  }
+});
+
+app.post('/api/upload-cv', auth, (req, res) => {
+  upload.single('cv')(req, res, async (err) => {
+    if (err) {
+      console.error('CV yükleme hatası:', err.message);
+      return res.status(400).json({ message: err.message });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ message: 'PDF dosyası yükleyiniz.' });
+    }
+
+    try {
+      const { filename, originalname, mimetype, size } = req.file;
+      const cv = await CV.create({ filename, originalname, mimetype, size });
+      res.status(201).json(cv);
+    } catch (error) {
+      console.error('CV kaydedilemedi:', error.message);
+      res.status(500).json({ message: 'Sunucu hatası.' });
+    }
+  });
+});
+
+app.get('/api/cvs', auth, async (req, res) => {
+  try {
+    const cvs = await CV.find().sort({ uploadDate: -1 });
+    res.json(cvs);
+  } catch (error) {
+    console.error('CV listesi alınamadı:', error.message);
+    res.status(500).json({ message: 'Sunucu hatası.' });
+  }
+});
+
+app.get('/api/cv/download/:id', auth, async (req, res) => {
+  try {
+    const cv = await CV.findById(req.params.id);
+
+    if (!cv) {
+      return res.status(404).json({ message: 'CV bulunamadı.' });
+    }
+
+    const filePath = path.join(uploadsDir, cv.filename);
+    if (!fs.existsSync(filePath)) {
+      return res.status(404).json({ message: 'Dosya mevcut değil.' });
+    }
+
+    res.download(filePath, cv.originalname);
+  } catch (error) {
+    console.error('CV indirilemedi:', error.message);
+    res.status(500).json({ message: 'Sunucu hatası.' });
+  }
+});
+
+app.get('/admin-panel', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
+app.use((err, req, res, next) => {
+  console.error('Beklenmeyen hata:', err);
+  res.status(500).json({ message: 'Sunucu hatası.' });
+});
+
+app.listen(PORT, () => {
+  console.log(`Sunucu ${PORT} portunda çalışıyor`);
+});
