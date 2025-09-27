@@ -1,98 +1,206 @@
-# Backend ve Admin Panel Kullanım Kılavuzu
+# Kolay Anlatımlı Backend ve Admin Panel Kılavuzu
 
-Bu proje mevcut statik web sitesine Node.js, Express ve MongoDB tabanlı bir backend ile JWT korumalı bir admin panel ekler. Aşağıda backend'i kendi ortamınızda çalıştırmak, admin paneline giriş yapmak ve içerik/CV yönetimi yapmak için adımlar bulunmaktadır.
+Bu dosya bilgisayardan çok anlamayan biri için hazırlandı. Aşağıdaki adımları tek tek takip ederek mevcut HTML/CSS/JS tabanlı sitenizi Node.js + Express + MongoDB ile çalışan backend ve admin panel ile kullanabilirsiniz. Acele etmeyin, sırayla giderseniz sorun yaşamazsınız.
 
-## 1. Gerekli bağımlılıkları yükleyin
+---
 
-1. [Node.js](https://nodejs.org/) (>= 18) ve npm kurulu olmalıdır.
-2. Yerelinizde çalışan bir MongoDB sunucusu olması gerekir. Varsayılan olarak `mongodb://127.0.0.1:27017/alpermorkoc` adresi kullanılır.
-3. Proje klasöründe aşağıdaki komutu çalıştırın:
+## 0. Paket içinden neler çıktı?
 
-```bash
-npm install
+| Klasör/Dosya | Ne işe yarıyor? |
+| --- | --- |
+| `server.js` | Sunucuyu başlatan ana dosya. |
+| `models/` | Veritabanı şablonları (kullanıcı, içerik, CV). |
+| `middleware/auth.js` | Admin işlemlerini koruyan güvenlik katmanı. |
+| `public/admin.html` | Admin panelinin HTML dosyası. |
+| `public/admin.js` | Admin panelinin çalışan JavaScript kodu. |
+| `uploads/` | Yüklediğiniz CV dosyalarının saklanacağı klasör. |
+| `README.md` | Elinizde tuttuğunuz bu rehber. |
+
+> **Not:** `index.html`, `services.html` gibi var olan tüm sayfalarınız aynı klasörde durmaya devam eder. Backend bunların üzerine eklenen ayrı bir katmandır.
+
+---
+
+## 1. Bilgisayarınızı hazırlayın
+
+1. **Node.js kurulu mu?**
+   - [nodejs.org](https://nodejs.org/) adresine girin, "Recommended" (önerilen) yazan büyük yeşil butonu tıklayıp kurulumu tamamlayın. Kurulum sonunda bilgisayarı yeniden başlatmanız gerekebilir.
+   - Kurulum sonrası "Komut İstemi" (Windows) veya "Terminal" (Mac) açıp şu komutu yazın:
+     ```bash
+     node -v
+     ```
+     Karşınıza `v18.XX` gibi bir şey geliyorsa Node hazır demektir.
+
+2. **MongoDB gerekli.**
+   - Bilgisayarınızda MongoDB yoksa [mongodb.com/try/download/community](https://www.mongodb.com/try/download/community) adresinden "Community Server" sürümünü indirin.
+   - Kurulumda karşınıza çıkan ekranlarda "Complete" seçeneğini seçin ve servis olarak çalışmasına izin verin. Kurulum bitince MongoDB arka planda otomatik başlar.
+
+3. **Proje dosyalarını bir klasöre çıkarın.**
+   - ZIP aldıysanız istediğiniz bir klasöre (ör. `C:\\projem`) çıkarın.
+   - Terminalde bu klasöre geçin:
+     ```bash
+     cd C:\\projem
+     ```
+
+4. **Gerekli paketleri yükleyin.**
+   - Aynı terminalde şu komutu yazın:
+     ```bash
+     npm install
+     ```
+   - Birkaç dakika sürebilir. Komut bittikten sonra hata görmüyorsanız her şey yolunda demektir.
+
+---
+
+## 2. Ortam ayarlarını (şifreleri, portu) belirleyin
+
+Backend'in hangi kapıyı (portu) kullanacağını, veritabanı adresini ve admin şifresini `.env` isimli küçük bir dosyada tutuyoruz.
+
+1. Proje klasörünüzün içinde `.env` adında yeni bir dosya oluşturun. Windows'ta Not Defteri ile `dosyaadi.env` şeklinde kaydedebilirsiniz.
+2. Aşağıdaki satırları dosyaya kopyalayın ve isterseniz değerleri değiştirin:
+   ```env
+   PORT=3000
+   MONGO_URI=mongodb://127.0.0.1:27017/alpermorkoc
+   JWT_SECRET=cok-gizli-bir-kelime
+   ADMIN_USERNAME=admin
+   ADMIN_PASSWORD=admin123
+   ```
+3. "ADMIN" satırlarını müşteriniz için anlamlı bir kullanıcı adı ve şifre ile değiştirin. İlk kez sunucuyu çalıştırdığınızda bu bilgilerle admin hesabı otomatik oluşur.
+4. Dosyayı kaydedin ve kapatın.
+
+> **Önemli:** Şifreyi sonradan değiştirirseniz, MongoDB'deki kullanıcıyı da güncellemeniz gerekir. En kolayı eski kullanıcıyı silip sunucuyu yeniden başlatmak (sunucu yeni şifre ile kullanıcıyı tekrar oluşturur).
+
+---
+
+## 3. Sunucuyu başlatma adımları
+
+1. Terminal hâlâ proje klasörünüzdeyken şu komutu yazın:
+   ```bash
+   npm start
+   ```
+2. Ekranda aşağıdakine benzer satırlar görünür:
+   ```
+MongoDB bağlantısı başarılı
+Sunucu 3000 portunda çalışıyor
 ```
+3. Bu yazıları görüyorsanız sunucu ayaktadır. Tarayıcınızda `http://localhost:3000` yazarak sitenizi açabilirsiniz.
+4. Sunucuyu durdurmak isterseniz terminalde `Ctrl + C` tuşlarına basın.
 
-## 2. Ortam değişkenlerini yapılandırın
+> **Sık yapılan hata:** MongoDB servisi çalışmıyorsa `MongoDB bağlantı hatası` mesajı alırsınız. Windows'ta "Services" uygulamasından MongoDB'yi başlatın. Linux'ta `sudo systemctl start mongodb`.
 
-İsteğe bağlı olarak `.env` dosyası oluşturup aşağıdaki değerleri özelleştirebilirsiniz. Dosya oluşturmazsanız dosyada belirtilen varsayılan değerler kullanılır.
+---
 
-```env
-PORT=3000
-MONGO_URI=mongodb://127.0.0.1:27017/alpermorkoc
-JWT_SECRET=supersecretjwt
-ADMIN_USERNAME=admin
-ADMIN_PASSWORD=admin123
-```
+## 4. Admin paneline giriş
 
-İlk çalıştırmada `ADMIN_USERNAME` ve `ADMIN_PASSWORD` bilgileriyle bir admin kullanıcısı otomatik olarak oluşturulur. Daha sonra bu değerleri değiştirirseniz veri tabanındaki kullanıcıyı manuel olarak güncellemeniz gerekir.
-
-## 3. Sunucuyu başlatın
-
-Gerekli servisler hazır olduğunda Express sunucusunu başlatmak için:
-
-```bash
-npm start
-```
-
-Komut başarılı olduğunda konsolda aşağıdaki mesajlar görünür:
-
-- "MongoDB bağlantısı başarılı"
-- "Sunucu 3000 portunda çalışıyor" (veya `.env` dosyasında belirlediğiniz port)
-
-Sunucu, proje kök dizinini ve `public/` klasörünü statik olarak servis eder.
-
-## 4. Admin paneline erişim
-
-Tarayıcınızda aşağıdaki adresi açın:
-
-```
+1. Tarayıcıda şu adrese gidin:
+   ```
 http://localhost:3000/admin-panel
 ```
+2. Karşınıza kullanıcı adı ve şifre isteyen bir ekran gelir. `.env` dosyasındaki değerleri girin.
+3. Giriş başarılı olduğunda sayfanın üst kısmında "Hoş geldiniz" mesajı, alt kısımlarında ise içerik listeleri ve formlar görünür.
+4. Panel arka planda bir güvenlik anahtarı (JWT) alır ve bunu tarayıcının hafızasında saklar. Bu anahtar 2 saat geçerlidir. Süre dolarsa panel sizi otomatik çıkışa gönderir, tekrar giriş yapmanız yeterlidir.
 
-Karşınıza gelen giriş formuna admin kullanıcı adı ve parolasını girin. Giriş başarılı olduğunda JWT token `localStorage` içine kaydedilir ve içerik/CV yönetim bileşenleri görünür hale gelir.
+---
 
-## 5. API uç noktalarının kullanımı
+## 5. İçerikleri yönetme (haber, blog, duyuru vb.)
 
-### 5.1. Kimlik doğrulama
+1. Admin panelindeki "İçerik Yönetimi" başlığını bulun.
+2. **Yeni içerik eklemek** için:
+   - Formdaki "Başlık" ve "Metin" alanlarını doldurun.
+   - "Yeni İçerik Ekle" düğmesine basın.
+   - Liste otomatik güncellenir ve yeni içerik en üstte görünür.
+3. **Var olan içerikleri düzenlemek** için listedeki herhangi bir kaydın sağındaki "Düzenle" butonuna basın. Alanlar formda doldurulur, düzenlemelerinizi yapıp "Güncelle" düğmesine tıklayın.
+4. **Silmek** isterseniz aynı satırdaki "Sil" butonuna basın. İşlem geri alınamaz, emin olun.
+5. Tüm bu işlemler arka planda `/api/content` adresine güvenli istekler gönderir; siz ekstra bir şey yapmazsınız.
 
-- `POST /api/login`
-  - İstek gövdesi: `{ "username": "admin", "password": "admin123" }`
-  - Yanıt: `{ "token": "<JWT>" }`
-  - Admin paneli bu endpoint'i `fetch` ile çağırır ve token'ı saklar.
+---
 
-### 5.2. İçerik yönetimi (herkese açık listeleme, admin kontrollü CRUD)
+## 6. CV yükleme ve indirme
 
-- `GET /api/content`: İçerik listesini döndürür.
-- `POST /api/content`: Başlık ve içerik alır, yeni içerik oluşturur. Header'da `Authorization: Bearer <JWT>` bulunmalıdır.
-- `PUT /api/content/:id`: Mevcut içeriği günceller (JWT gerekli).
-- `DELETE /api/content/:id`: İçeriği siler (JWT gerekli).
+1. Panelde "CV Yönetimi" başlığını açın.
+2. "Dosya Seç" butonuna tıklayın ve bilgisayarınızdan **PDF** uzantılı dosyayı seçin.
+3. "CV Yükle" butonuna bastığınızda dosya sunucuya gönderilir, `uploads/` klasörüne kaydedilir ve veritabanına kaydı eklenir.
+4. Alt kısımda "CV Listesi" tablosu görünür. Her satırda yüklediğiniz dosyalar listelenir.
+5. "İndir" butonu dosyayı bilgisayarınıza indirir.
+6. Bir CV’yi veritabanından silmek isterseniz listedeki "Sil" butonunu kullanın (dosya da klasörden kaldırılır).
 
-Admin panelindeki "İçerik Yönetimi" bölümü bu endpoint'leri kullanır.
+---
 
-### 5.3. CV yükleme ve indirme (yalnızca admin)
+## 7. Sitenizi müşterinin alan adına (domain) bağlama
 
-- `POST /api/upload-cv`: `multipart/form-data` formatında `cv` isimli alanla PDF yükler. Yüklenen dosya `uploads/` klasörüne kaydedilir ve veritabanına metadata eklenir.
-- `GET /api/cvs`: Yüklenen tüm CV kayıtlarını listeler.
-- `GET /api/cv/download/:id`: Belirli bir CV'yi indirir.
+1. **Bir sunucu kiralayın.** DigitalOcean, Hetzner, AWS Lightsail gibi sağlayıcılardan aylık birkaç dolara Linux sunucu alabilirsiniz. Windows seviyorsanız Windows sunucusu da olur, ancak talimatlar Linux içindir.
+2. **Sunucuya Node.js ve MongoDB kurun.**
+   - Ubuntu için hızlı kurulum:
+     ```bash
+     curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
+     sudo apt-get install -y nodejs
+     sudo apt-get install -y mongodb
+     ```
+   - MongoDB servisinin çalıştığından emin olun: `sudo systemctl status mongodb`
+3. **Projeyi sunucuya aktarın.**
+   - `scp` veya FTP ile tüm dosyaları sunucudaki bir klasöre yükleyin (ör. `/var/www/site`).
+   - Sunucuda `npm install` ve `npm start` komutlarını aynı şekilde çalıştırın.
+4. **Sunucunun sürekli açık kalması için süreç yöneticisi kullanın.**
+   - Örnek: `npm install -g pm2`, sonra `pm2 start server.js --name site-backend`.
+5. **Domain ayarları (DNS).**
+   - Alan adınızı aldığınız firmaya girin, DNS bölümünde `A` kaydını sunucunuzun IP adresine yönlendirin.
+   - Örnek: `@` kaydı → `203.0.113.10` (sizin IP'niz neyse).
+6. **80/443 portlarını Node.js sunucunuza yönlendirin.**
+   - Sunucuda Nginx kurup gelen istekleri Node uygulamasına iletin:
+     ```bash
+     sudo apt-get install -y nginx
+     sudo nano /etc/nginx/sites-available/site.conf
+     ```
+   - Dosya içeriği:
+     ```nginx
+     server {
+         listen 80;
+         server_name alanadiniz.com www.alanadiniz.com;
 
-Admin panelinde "CV Yönetimi" başlığı altında yükleme formu ve liste bulunmaktadır. Liste üzerindeki "İndir" butonları ilgili `download` endpoint'ine yönlenir.
+         location / {
+             proxy_pass http://127.0.0.1:3000;
+             proxy_set_header Host $host;
+             proxy_set_header X-Real-IP $remote_addr;
+         }
+     }
+     ```
+   - Kaydedin, sonra:
+     ```bash
+     sudo ln -s /etc/nginx/sites-available/site.conf /etc/nginx/sites-enabled/
+     sudo nginx -t
+     sudo systemctl reload nginx
+     ```
+7. Artık tarayıcıdan `https://alanadiniz.com/admin-panel` adresine gidince aynı paneli göreceksiniz. HTTPS sertifikası için ücretsiz [Let’s Encrypt](https://letsencrypt.org/) kullanabilirsiniz (komut: `sudo certbot --nginx`).
 
-## 6. Statik site ile entegrasyon
+---
 
-Backend çalıştığında, halihazırda var olan statik HTML sayfalarınız (`index.html`, `services.html` vb.) aynı sunucu üzerinden servis edilir. Frontend tarafında içeriği dinamikleştirmek isterseniz `GET /api/content` ile dönen verileri ilgili sayfalarda kullanabilirsiniz.
+## 8. Sık karşılaşılan sorunlar ve çözümleri
 
-## 7. Dosya yapısı özeti
+| Problem | Sebep | Çözüm |
+| --- | --- | --- |
+| `MongoDB bağlantı hatası` | MongoDB çalışmıyor | Windows'ta "Services" uygulamasından MongoDB'yi başlatın. Linux'ta `sudo systemctl start mongodb`. |
+| `Sunucu portu kullanımda` | Aynı portu kullanan başka uygulama var | `.env` dosyasında `PORT` değerini 4000 gibi başka bir sayıya değiştirin. Nginx proxy ayarını da güncelleyin. |
+| Admin paneli "Yetkisiz" uyarısı veriyor | JWT süresi doldu veya şifre yanlış | Panelde oturumu kapatıp tekrar giriş yapın. Şifreyi `.env` dosyasından kontrol edin. |
+| Dosya yüklerken hata | PDF değil veya dosya çok büyük | Dosyanın `.pdf` olduğundan ve 10 MB'tan küçük olduğundan emin olun. |
 
-- `server.js`: Express uygulaması ve tüm API route'ları.
-- `models/`: Mongoose modelleri (`User`, `Content`, `CV`).
-- `middleware/auth.js`: JWT doğrulama middleware'i.
-- `public/admin.html` & `public/admin.js`: Admin panel arayüzü ve istemci tarafı işlevleri.
-- `uploads/`: Yüklenen PDF dosyalarının tutulduğu klasör.
+---
 
-## 8. Faydalı ipuçları
+## 9. Teknik ekler (meraklısına)
 
-- Admin paneline giriş yaptıktan sonra token 2 saat boyunca geçerlidir. Süre dolduğunda panel sizi otomatik olarak çıkışa yönlendirir.
-- Varsayılan admin parolasını değiştirmek için yeni bir hash üretip veritabanındaki kaydı güncelleyin ya da `.env` ayarlarını güncelledikten sonra eski kullanıcıyı silip sunucuyu yeniden başlatın.
-- Endpoint'leri test etmek için [Postman](https://www.postman.com/) veya [Insomnia](https://insomnia.rest/) gibi REST istemcilerini kullanabilirsiniz. Yetkili isteklerde `Authorization: Bearer <JWT>` header'ını eklemeyi unutmayın.
+- **API uç noktaları:**
+  - `POST /api/login` → JWT üretir.
+  - `GET /api/content` → Herkese açık içerik listesi.
+  - `POST /api/content` → JWT gerektirir, yeni içerik ekler.
+  - `PUT /api/content/:id` → JWT gerektirir, içerik günceller.
+  - `DELETE /api/content/:id` → JWT gerektirir, içerik siler.
+  - `POST /api/upload-cv` → PDF yükler (JWT gerektirir).
+  - `GET /api/cvs` → Tüm CV kayıtları (JWT gerektirir).
+  - `GET /api/cv/download/:id` → CV indirme (JWT gerektirir).
+- **Güvenlik:** Parolalar `bcrypt` ile şifrelenir, tüm admin işlemleri `Authorization: Bearer <token>` başlığı ile doğrulanır.
+- **CORS:** Açık olduğu için isterseniz farklı bir domain üzerinden de API'ye erişebilirsiniz.
 
-Bu adımları takip ederek backend'i çalıştırabilir, admin panelini kullanabilir ve MongoDB üzerinde içerik ile CV yönetimi yapabilirsiniz.
+---
+
+## 10. Yardım mı lazım?
+
+Takıldığınız bir yer olursa adım numarasını not alın, tekrar baştan okuyun. Çok zorlanırsanız bilgisayardan anlayan bir arkadaşınıza bu README'yi gösterin; burada yazan bilgilerle sizi kolayca yönlendirebilir.
+
+Başarılar! 👋
