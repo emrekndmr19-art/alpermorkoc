@@ -1,47 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://www.alpimimarlik.com/</loc>
+    <loc>https://www.alpimimarlik.com/index.html</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.alpimimarlik.com/services</loc>
+    <loc>https://www.alpimimarlik.com/services.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.alpimimarlik.com/studio</loc>
+    <loc>https://www.alpimimarlik.com/studio.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.alpimimarlik.com/insights</loc>
+    <loc>https://www.alpimimarlik.com/insights.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://www.alpimimarlik.com/insight-konsept-oturumlari</loc>
+    <loc>https://www.alpimimarlik.com/insight-konsept-oturumlari.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.alpimimarlik.com/insight-lobi-ilk-izlenim</loc>
+    <loc>https://www.alpimimarlik.com/insight-lobi-ilk-izlenim.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.alpimimarlik.com/insight-metinsiz-sahne</loc>
+    <loc>https://www.alpimimarlik.com/insight-metinsiz-sahne.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://www.alpimimarlik.com/contact</loc>
+    <loc>https://www.alpimimarlik.com/contact.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://www.alpimimarlik.com/kariyer</loc>
+    <loc>https://www.alpimimarlik.com/kariyer.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
