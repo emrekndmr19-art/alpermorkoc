@@ -120,7 +120,7 @@ http://localhost:3000/admin-panel
 3. "CV Yükle" butonuna bastığınızda dosya sunucuya gönderilir, `uploads/` klasörüne kaydedilir ve veritabanına kaydı eklenir.
 4. Alt kısımda "CV Listesi" tablosu görünür. Her satırda yüklediğiniz dosyalar listelenir.
 5. "İndir" butonu dosyayı bilgisayarınıza indirir.
-6. Bir CV’yi veritabanından silmek isterseniz listedeki "Sil" butonunu kullanın (dosya da klasörden kaldırılır).
+6. Bir CV’yi silmek isterseniz listedeki "Sil" butonunu kullanın; işlem tamamlandığında tablo otomatik yenilenir ve dosya `uploads/` klasöründen de kaldırılır.
 
 ---
 
@@ -194,6 +194,7 @@ http://localhost:3000/admin-panel
   - `POST /api/upload-cv` → PDF yükler (JWT gerektirir).
   - `GET /api/cvs` → Tüm CV kayıtları (JWT gerektirir).
   - `GET /api/cv/download/:id` → CV indirme (JWT gerektirir).
+  - `DELETE /api/cv/:id` → CV kaydını ve dosyasını siler (JWT gerektirir).
 - **Güvenlik:** Parolalar `bcrypt` ile şifrelenir, tüm admin işlemleri `Authorization: Bearer <token>` başlığı ile doğrulanır.
 - **CORS:** Açık olduğu için isterseniz farklı bir domain üzerinden de API'ye erişebilirsiniz.
 

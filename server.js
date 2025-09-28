@@ -268,6 +268,40 @@ app.get('/api/cv/download/:id', auth, async (req, res) => {
   }
 });
 
+app.delete('/api/cv/:id', auth, async (req, res) => {
+  try {
+    const cv = await CV.findById(req.params.id);
+
+    if (!cv) {
+      return res.status(404).json({ message: 'CV bulunamadı.' });
+    }
+
+    const filePath = path.join(uploadsDir, cv.filename);
+
+    try {
+      await new Promise((resolve, reject) => {
+        fs.unlink(filePath, (err) => {
+          if (!err || (err && err.code === 'ENOENT')) {
+            resolve();
+            return;
+          }
+          reject(err);
+        });
+      });
+    } catch (error) {
+      console.error('CV dosyası silinemedi:', error.message);
+      return res.status(500).json({ message: 'CV dosyası silinemedi.' });
+    }
+
+    await cv.deleteOne();
+
+    res.json({ message: 'CV silindi.' });
+  } catch (error) {
+    console.error('CV silinemedi:', error.message);
+    res.status(500).json({ message: 'Sunucu hatası.' });
+  }
+});
+
 app.get('/admin-panel', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'));
 });
