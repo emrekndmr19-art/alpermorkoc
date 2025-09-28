@@ -53,8 +53,57 @@ if (!fs.existsSync(uploadsDir)) {
 }
 
 app.use(express.static(PUBLIC_SITE_DIR));
-app.use(express.static(ADMIN_ASSETS_DIR));
 app.use('/uploads', express.static(uploadsDir));
+
+const ensureBasicAuthHeader = (res) => {
+  res.set('WWW-Authenticate', 'Basic realm="Admin Panel"');
+};
+
+const adminBasicAuth = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith('Basic ')) {
+    ensureBasicAuthHeader(res);
+    return res.status(401).send('Authentication required.');
+  }
+
+  const base64Credentials = authHeader.slice('Basic '.length).trim();
+  let credentials;
+
+  try {
+    credentials = Buffer.from(base64Credentials, 'base64').toString('utf8');
+  } catch (error) {
+    ensureBasicAuthHeader(res);
+    return res.status(401).send('Invalid authentication token.');
+  }
+
+  const separatorIndex = credentials.indexOf(':');
+
+  if (separatorIndex === -1) {
+    ensureBasicAuthHeader(res);
+    return res.status(401).send('Invalid authentication token.');
+  }
+
+  const username = credentials.slice(0, separatorIndex);
+  const password = credentials.slice(separatorIndex + 1);
+
+  if (username !== ADMIN_USERNAME || password !== ADMIN_PASSWORD) {
+    ensureBasicAuthHeader(res);
+    return res.status(401).send('Invalid credentials.');
+  }
+
+  return next();
+};
+
+app.get('/admin-panel', adminBasicAuth, (req, res) => {
+  res.sendFile(path.join(ADMIN_ASSETS_DIR, 'admin.html'));
+});
+
+app.use(
+  '/admin-panel',
+  adminBasicAuth,
+  express.static(ADMIN_ASSETS_DIR, { index: false })
+);
 
 mongoose
   .connect(MONGO_URI, {
