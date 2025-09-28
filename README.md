@@ -155,20 +155,29 @@ http://localhost:3000/admin-panel
          listen 80;
          server_name alanadiniz.com www.alanadiniz.com;
 
-         location / {
-             proxy_pass http://127.0.0.1:3000;
-             proxy_set_header Host $host;
-             proxy_set_header X-Real-IP $remote_addr;
-         }
-     }
-     ```
+        location / {
+            proxy_pass http://127.0.0.1:3000;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+        }
+
+        location /admin-panel {
+            auth_basic "Admin Panel";
+            auth_basic_user_file /etc/nginx/.htpasswd_admin_panel;
+            proxy_pass http://127.0.0.1:3000;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+        }
+    }
+    ```
    - Kaydedin, sonra:
      ```bash
      sudo ln -s /etc/nginx/sites-available/site.conf /etc/nginx/sites-enabled/
      sudo nginx -t
      sudo systemctl reload nginx
      ```
-7. Artık tarayıcıdan `https://alanadiniz.com/admin-panel` adresine gidince aynı paneli göreceksiniz. HTTPS sertifikası için ücretsiz [Let’s Encrypt](https://letsencrypt.org/) kullanabilirsiniz (komut: `sudo certbot --nginx`).
+7. `auth_basic_user_file` için kullanıcı/şifre üretmek üzere `sudo apt-get install -y apache2-utils` sonrası `sudo htpasswd -c /etc/nginx/.htpasswd_admin_panel admin` komutunu çalıştırın. Daha fazla kullanıcı eklemek isterseniz `-c` parametresini kaldırın.
+8. Artık tarayıcıdan `https://alanadiniz.com/admin-panel` adresine gidince Nginx sizden önce temel kimlik doğrulaması isteyecek, ardından Node.js tarafındaki aynı korumalı panele ulaşacaksınız. HTTPS sertifikası için ücretsiz [Let’s Encrypt](https://letsencrypt.org/) kullanabilirsiniz (komut: `sudo certbot --nginx`).
 
 ---
 
@@ -195,7 +204,7 @@ http://localhost:3000/admin-panel
   - `GET /api/cvs` → Tüm CV kayıtları (JWT gerektirir).
   - `GET /api/cv/download/:id` → CV indirme (JWT gerektirir).
   - `DELETE /api/cv/:id` → CV kaydını ve dosyasını siler (JWT gerektirir).
-- **Güvenlik:** Parolalar `bcrypt` ile şifrelenir, tüm admin işlemleri `Authorization: Bearer <token>` başlığı ile doğrulanır.
+- **Güvenlik:** Parolalar `bcrypt` ile şifrelenir, admin paneline erişim için ek olarak HTTP Basic Auth (ENV değişkenlerindeki `ADMIN_USERNAME` ve `ADMIN_PASSWORD`) zorunludur ve panel içindeki tüm işlemler `Authorization: Bearer <token>` başlığı ile doğrulanır.
 - **CORS:** Açık olduğu için isterseniz farklı bir domain üzerinden de API'ye erişebilirsiniz.
 
 ---
