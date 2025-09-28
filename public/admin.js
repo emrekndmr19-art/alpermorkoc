@@ -413,7 +413,14 @@ function renderCvList(cvs) {
     downloadButton.textContent = 'İndir';
     downloadButton.addEventListener('click', () => downloadCv(cv._id, cv.originalname));
 
+    const deleteButton = document.createElement('button');
+    deleteButton.type = 'button';
+    deleteButton.textContent = 'Sil';
+    deleteButton.classList.add('danger');
+    deleteButton.addEventListener('click', () => deleteCv(cv._id, cv.originalname || cv.filename));
+
     actionsCell.appendChild(downloadButton);
+    actionsCell.appendChild(deleteButton);
 
     row.appendChild(nameCell);
     row.appendChild(typeCell);
@@ -470,6 +477,41 @@ async function downloadCv(id, originalName = 'cv.pdf') {
   } catch (error) {
     console.error('CV indirilemedi:', error);
     setStatus(adminStatus, 'CV indirilemedi.', true);
+  }
+}
+
+async function deleteCv(id, originalName = 'CV') {
+  if (!id) return;
+
+  const confirmMessage = `${originalName} dosyasını silmek istediğinize emin misiniz? Bu işlem geri alınamaz.`;
+  if (!window.confirm(confirmMessage)) {
+    return;
+  }
+
+  setStatus(adminStatus, 'CV siliniyor...');
+
+  try {
+    const response = await fetch(`${API_BASE}/cv/${id}`, {
+      method: 'DELETE',
+      headers: {
+        ...authHeaders(),
+      },
+    });
+
+    if (response.status === 401) {
+      handleUnauthorized();
+      return;
+    }
+
+    if (!response.ok) {
+      throw new Error('CV silinemedi.');
+    }
+
+    setStatus(adminStatus, 'CV silindi.');
+    await fetchCvs();
+  } catch (error) {
+    console.error('CV silinemedi:', error);
+    setStatus(adminStatus, 'CV silinemedi.', true);
   }
 }
 
