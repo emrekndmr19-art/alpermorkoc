@@ -19,7 +19,7 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/alpermorko
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretjwt';
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
-const PUBLIC_SITE_DIR = path.join(__dirname, 'public-site');
+const PUBLIC_SITE_DIR = __dirname;
 const ADMIN_ASSETS_DIR = path.join(__dirname, 'public');
 
 const DEFAULT_CONTENT_LANGUAGE = 'tr';
@@ -52,7 +52,49 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
-app.use(express.static(PUBLIC_SITE_DIR));
+const PUBLIC_SITE_STATIC_FOLDERS = ['assets', 'i18n'];
+
+const servePublicSiteFile = (res, next, relativePath) => {
+  const sanitizedRelativePath = relativePath.replace(/^\/+/, '');
+  const targetPath = path.resolve(PUBLIC_SITE_DIR, sanitizedRelativePath);
+
+  if (
+    targetPath !== PUBLIC_SITE_DIR &&
+    !targetPath.startsWith(`${PUBLIC_SITE_DIR}${path.sep}`)
+  ) {
+    return next();
+  }
+
+  fs.access(targetPath, fs.constants.F_OK, (error) => {
+    if (error) {
+      return next();
+    }
+
+    return res.sendFile(targetPath);
+  });
+};
+
+app.get('/', (req, res, next) => {
+  servePublicSiteFile(res, next, 'index.html');
+});
+
+app.get(/^\/[\w-]+\.html$/, (req, res, next) => {
+  servePublicSiteFile(res, next, req.path);
+});
+
+['robots.txt', 'sitemap.xml'].forEach((filename) => {
+  app.get(`/${filename}`, (req, res, next) => {
+    servePublicSiteFile(res, next, filename);
+  });
+});
+
+PUBLIC_SITE_STATIC_FOLDERS.forEach((folder) => {
+  const folderPath = path.join(PUBLIC_SITE_DIR, folder);
+
+  if (fs.existsSync(folderPath)) {
+    app.use(`/${folder}`, express.static(folderPath));
+  }
+});
 app.use('/uploads', express.static(uploadsDir));
 
 const ensureBasicAuthHeader = (res) => {
