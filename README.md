@@ -88,15 +88,18 @@ Sunucu 3000 portunda çalışıyor
 
 ---
 
-## 4. Admin paneline giriş
+## 4. Admin paneline giriş (müşteriniz için)
 
-1. Tarayıcıda şu adrese gidin:
+Siteniz ve admin paneliniz hâlihazırda `https://alpimimarlik.com` alan adında yayın yapıyor. Yönetim alanına erişmek için aşağıdaki adımları müşterinize aynen iletebilirsiniz.
+
+1. Tarayıcı adres çubuğuna şu adresi yazın:
    ```
-http://localhost:3000/admin-panel
+https://alpimimarlik.com/admin-panel
 ```
-2. Karşınıza kullanıcı adı ve şifre isteyen bir ekran gelir. `.env` dosyasındaki değerleri girin.
-3. Giriş başarılı olduğunda sayfanın üst kısmında "Hoş geldiniz" mesajı, alt kısımlarında ise içerik listeleri ve formlar görünür.
-4. Panel arka planda bir güvenlik anahtarı (JWT) alır ve bunu tarayıcının hafızasında saklar. Bu anahtar 2 saat geçerlidir. Süre dolarsa panel sizi otomatik çıkışa gönderir, tekrar giriş yapmanız yeterlidir.
+2. İlk olarak küçük bir açılır pencere sizden kullanıcı adı ve şifre ister. Bu ekran sunucuyu koruyan ekstra güvenlik katmanıdır. Size ilettiğim "Yönetici Girişi" kullanıcı adı ve şifresini buraya girip "Oturum Aç" deyin.
+3. Bu adımın ardından admin paneli yüklenir ve ekranda tekrar bir giriş formu görürsünüz. Aynı kullanıcı adı ve şifreyi (veya tarafınıza özel olarak belirlenen bilgileri) form alanlarına yazıp "Giriş yap" düğmesine tıklayın.
+4. Panelin üst kısmında adınızı selamlayan bir mesaj, alt kısmında da içerik ve CV yönetimi gibi bölümler görünür. Sayfanın sağ üstündeki "Çıkış" bağlantısı ile güvenle oturumu kapatabilirsiniz.
+5. Güvenliğiniz için panel, giriş yaptıktan yaklaşık 2 saat sonra oturumu otomatik kapatır. Yeniden çalışmaya devam etmek için adım 1'den itibaren aynı işlemleri tekrarlamanız yeterlidir.
 
 ---
 
