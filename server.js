@@ -19,6 +19,8 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/alpermorko
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretjwt';
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
+const PUBLIC_SITE_DIR = path.join(__dirname, 'public-site');
+const ADMIN_ASSETS_DIR = path.join(__dirname, 'public');
 
 app.use(cors());
 app.use(express.json());
@@ -29,8 +31,8 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
-app.use(express.static(path.join(__dirname)));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(PUBLIC_SITE_DIR));
+app.use(express.static(ADMIN_ASSETS_DIR));
 app.use('/uploads', express.static(uploadsDir));
 
 mongoose
