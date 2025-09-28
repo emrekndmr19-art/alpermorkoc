@@ -8,6 +8,7 @@ const updateContentForm = document.getElementById('update-content-form');
 const uploadCvForm = document.getElementById('upload-cv-form');
 const logoutButton = document.getElementById('logout-button');
 const cancelUpdateButton = document.getElementById('cancel-update');
+const createLanguageSelect = document.getElementById('create-language');
 const loginStatus = document.getElementById('login-status');
 const adminStatus = document.getElementById('admin-status');
 const contentTableBody = document.getElementById('content-table-body');
@@ -16,6 +17,27 @@ const updateSection = document.getElementById('update-section');
 const updateIdInput = document.getElementById('update-id');
 const updateTitleInput = document.getElementById('update-title');
 const updateBodyInput = document.getElementById('update-body');
+const updateLanguageSelect = document.getElementById('update-language');
+
+const LANGUAGE_LABELS = {
+  tr: 'Türkçe',
+  en: 'İngilizce',
+  multi: 'Çok Dilli',
+};
+
+const normalizeLanguageValue = (value) => {
+  if (typeof value !== 'string') {
+    return 'tr';
+  }
+  const normalized = value.trim().toLowerCase();
+  if (!normalized) {
+    return 'tr';
+  }
+  if (['tr', 'en', 'multi'].includes(normalized)) {
+    return normalized;
+  }
+  return 'tr';
+};
 
 let token = localStorage.getItem('adminToken') || '';
 
@@ -112,7 +134,7 @@ function renderContents(contents) {
   if (contents.length === 0) {
     const row = document.createElement('tr');
     const cell = document.createElement('td');
-    cell.colSpan = 4;
+    cell.colSpan = 5;
     cell.textContent = 'Henüz içerik yok.';
     row.appendChild(cell);
     contentTableBody.appendChild(row);
@@ -127,6 +149,10 @@ function renderContents(contents) {
 
     const bodyCell = document.createElement('td');
     bodyCell.textContent = content.body;
+
+    const languageCell = document.createElement('td');
+    const normalizedLanguage = normalizeLanguageValue(content.language);
+    languageCell.textContent = LANGUAGE_LABELS[normalizedLanguage] || normalizedLanguage.toUpperCase();
 
     const dateCell = document.createElement('td');
     dateCell.textContent = formatDate(content.date || content.createdAt);
@@ -150,6 +176,7 @@ function renderContents(contents) {
 
     row.appendChild(titleCell);
     row.appendChild(bodyCell);
+    row.appendChild(languageCell);
     row.appendChild(dateCell);
     row.appendChild(actionsCell);
 
@@ -197,6 +224,9 @@ async function createContent(event) {
     }
 
     createContentForm.reset();
+    if (createLanguageSelect) {
+      createLanguageSelect.value = 'tr';
+    }
     setStatus(adminStatus, 'İçerik başarıyla eklendi.');
     await fetchContents();
   } catch (error) {
@@ -210,6 +240,9 @@ function startUpdate(content) {
   updateIdInput.value = content._id;
   updateTitleInput.value = content.title || '';
   updateBodyInput.value = content.body || '';
+  if (updateLanguageSelect) {
+    updateLanguageSelect.value = normalizeLanguageValue(content.language);
+  }
   window.scrollTo({ top: updateSection.offsetTop - 20, behavior: 'smooth' });
 }
 
@@ -247,6 +280,9 @@ async function updateContent(event) {
     setStatus(adminStatus, 'İçerik güncellendi.');
     updateContentForm.reset();
     updateSection.classList.add('hidden');
+    if (updateLanguageSelect) {
+      updateLanguageSelect.value = 'tr';
+    }
     await fetchContents();
   } catch (error) {
     console.error('İçerik güncellenemedi:', error);
@@ -447,6 +483,12 @@ function logout() {
   localStorage.removeItem('adminToken');
   updateContentForm.reset();
   updateSection.classList.add('hidden');
+  if (createLanguageSelect) {
+    createLanguageSelect.value = 'tr';
+  }
+  if (updateLanguageSelect) {
+    updateLanguageSelect.value = 'tr';
+  }
   toggleSections();
 }
 
@@ -458,6 +500,9 @@ logoutButton.addEventListener('click', logout);
 cancelUpdateButton.addEventListener('click', () => {
   updateContentForm.reset();
   updateSection.classList.add('hidden');
+  if (updateLanguageSelect) {
+    updateLanguageSelect.value = 'tr';
+  }
 });
 
 document.addEventListener('DOMContentLoaded', () => {

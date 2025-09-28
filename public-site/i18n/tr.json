@@ -18,7 +18,8 @@
     "langLabel": "Dil Seçimi",
     "language": {
       "tr": "TR",
-      "en": "EN"
+      "en": "EN",
+      "multi": "Çok Dilli"
     },
     "menuButton": "Menü",
     "nav": {
@@ -130,6 +131,12 @@
       "eyebrow": "Görüşler & Notlar",
       "title": "Alpimimarlık Not Defteri",
       "body": "Müşterilerle paylaşılacak dosyaları hazırlarken kullandığımız yöntemleri burada toparlıyoruz. Sunum akışı, görsel seçimleri ve küçük ekibimizin çalışma biçimi hakkında notlar içeren kısa makaleler paylaşıyoruz."
+    },
+    "feed": {
+      "loading": "İçerikler yükleniyor...",
+      "empty": "Henüz paylaşılacak içerik bulunmuyor.",
+      "error": "İçerikleri yüklerken bir sorun oluştu. Lütfen daha sonra tekrar deneyin.",
+      "multiBadge": "TR · EN"
     },
     "articles": {
       "lobby": {

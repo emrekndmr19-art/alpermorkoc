@@ -22,6 +22,27 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 const PUBLIC_SITE_DIR = path.join(__dirname, 'public-site');
 const ADMIN_ASSETS_DIR = path.join(__dirname, 'public');
 
+const DEFAULT_CONTENT_LANGUAGE = 'tr';
+const ALLOWED_CONTENT_LANGUAGES = new Set(['tr', 'en', 'multi']);
+
+const normalizeContentLanguage = (value) => {
+  if (typeof value !== 'string') {
+    return DEFAULT_CONTENT_LANGUAGE;
+  }
+
+  const normalized = value.trim().toLowerCase();
+
+  if (!normalized) {
+    return DEFAULT_CONTENT_LANGUAGE;
+  }
+
+  if (ALLOWED_CONTENT_LANGUAGES.has(normalized)) {
+    return normalized;
+  }
+
+  return DEFAULT_CONTENT_LANGUAGE;
+};
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -130,13 +151,17 @@ app.get('/api/content', async (req, res) => {
 
 app.post('/api/content', auth, async (req, res) => {
   try {
-    const { title, body } = req.body;
+    const { title, body, language } = req.body;
 
     if (!title || !body) {
       return res.status(400).json({ message: 'Başlık ve içerik gereklidir.' });
     }
 
-    const content = await Content.create({ title, body });
+    const content = await Content.create({
+      title,
+      body,
+      language: normalizeContentLanguage(language),
+    });
     res.status(201).json(content);
   } catch (error) {
     console.error('İçerik oluşturulamadı:', error.message);
@@ -147,7 +172,7 @@ app.post('/api/content', auth, async (req, res) => {
 app.put('/api/content/:id', auth, async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, body } = req.body;
+    const { title, body, language } = req.body;
 
     if (!title || !body) {
       return res.status(400).json({ message: 'Başlık ve içerik gereklidir.' });
@@ -155,7 +180,11 @@ app.put('/api/content/:id', auth, async (req, res) => {
 
     const updated = await Content.findByIdAndUpdate(
       id,
-      { title, body },
+      {
+        title,
+        body,
+        language: normalizeContentLanguage(language),
+      },
       { new: true, runValidators: true }
     );
 

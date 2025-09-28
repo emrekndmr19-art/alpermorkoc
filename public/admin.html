@@ -54,6 +54,15 @@
       textarea {
         min-height: 120px;
       }
+      select {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+        font-size: 1rem;
+        background-color: #ffffff;
+        color: inherit;
+      }
       input[type='file'] {
         padding: 0.75rem 0;
       }
@@ -147,6 +156,14 @@
               <label for="create-body">İçerik</label>
               <textarea id="create-body" name="body" required></textarea>
             </div>
+            <div>
+              <label for="create-language">Dil</label>
+              <select id="create-language" name="language">
+                <option value="tr" selected>Türkçe</option>
+                <option value="en">İngilizce</option>
+                <option value="multi">Çok Dilli</option>
+              </select>
+            </div>
             <button type="submit">Ekle</button>
           </form>
         </section>
@@ -159,6 +176,7 @@
                 <tr>
                   <th>Başlık</th>
                   <th>İçerik</th>
+                  <th>Dil</th>
                   <th>Tarih</th>
                   <th>İşlemler</th>
                 </tr>
@@ -179,6 +197,14 @@
             <div>
               <label for="update-body">İçerik</label>
               <textarea id="update-body" name="body" required></textarea>
+            </div>
+            <div>
+              <label for="update-language">Dil</label>
+              <select id="update-language" name="language">
+                <option value="tr" selected>Türkçe</option>
+                <option value="en">İngilizce</option>
+                <option value="multi">Çok Dilli</option>
+              </select>
             </div>
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
               <button type="submit">Güncelle</button>

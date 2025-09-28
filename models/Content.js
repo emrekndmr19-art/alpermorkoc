@@ -11,6 +11,12 @@ const contentSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    language: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      default: 'tr',
+    },
     date: {
       type: Date,
       default: Date.now,
