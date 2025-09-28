@@ -393,10 +393,6 @@ app.delete('/api/cv/:id', auth, async (req, res) => {
   }
 });
 
-app.get('/admin-panel', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
-});
-
 app.use((err, req, res, next) => {
   console.error('Beklenmeyen hata:', err);
   res.status(500).json({ message: 'Sunucu hatası.' });
