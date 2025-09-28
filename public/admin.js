@@ -1,4 +1,26 @@
-const API_BASE = '/api';
+const DEFAULT_API_BASE = '/api';
+
+function normalizeApiBase(base) {
+  if (typeof base !== 'string') {
+    return DEFAULT_API_BASE;
+  }
+
+  const trimmed = base.trim();
+
+  if (!trimmed) {
+    return DEFAULT_API_BASE;
+  }
+
+  if (trimmed === '/') {
+    return '';
+  }
+
+  return trimmed.replace(/\/$/, '');
+}
+
+const API_BASE = normalizeApiBase(
+  window.__ADMIN_CONFIG__?.apiBase ?? DEFAULT_API_BASE
+);
 
 const loginSection = document.getElementById('login-section');
 const adminSection = document.getElementById('admin-section');

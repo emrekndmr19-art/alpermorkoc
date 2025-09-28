@@ -19,11 +19,50 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/alpermorko
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretjwt';
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
+const ADMIN_API_BASE_URL = normalizeAdminApiBase(process.env.ADMIN_API_BASE_URL);
+const { allowAllOrigins, allowedOrigins } = parseAllowedOrigins(
+  process.env.CORS_ALLOWED_ORIGINS
+);
 const PUBLIC_SITE_DIR = __dirname;
 const ADMIN_ASSETS_DIR = path.join(__dirname, 'public');
 
 const DEFAULT_CONTENT_LANGUAGE = 'tr';
 const ALLOWED_CONTENT_LANGUAGES = new Set(['tr', 'en', 'multi']);
+
+function normalizeAdminApiBase(value) {
+  if (typeof value !== 'string') {
+    return '/api';
+  }
+
+  const trimmed = value.trim();
+
+  if (!trimmed) {
+    return '/api';
+  }
+
+  if (trimmed === '/') {
+    return '';
+  }
+
+  return trimmed.replace(/\/$/, '');
+}
+
+function parseAllowedOrigins(rawValue) {
+  if (typeof rawValue !== 'string' || !rawValue.trim()) {
+    return { allowAllOrigins: true, allowedOrigins: new Set() };
+  }
+
+  const entries = rawValue
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean);
+
+  if (entries.includes('*')) {
+    return { allowAllOrigins: true, allowedOrigins: new Set() };
+  }
+
+  return { allowAllOrigins: false, allowedOrigins: new Set(entries) };
+}
 
 const normalizeContentLanguage = (value) => {
   if (typeof value !== 'string') {
@@ -43,7 +82,48 @@ const normalizeContentLanguage = (value) => {
   return DEFAULT_CONTENT_LANGUAGE;
 };
 
-app.use(cors());
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || allowAllOrigins) {
+      return callback(null, true);
+    }
+
+    if (allowedOrigins.has(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(new Error('CORS_ORIGIN_NOT_ALLOWED'));
+  },
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+const corsMiddleware = cors(corsOptions);
+
+app.use((req, res, next) => {
+  corsMiddleware(req, res, (error) => {
+    if (error) {
+      console.warn(
+        'CORS engellendi:',
+        req.headers.origin || 'origin yok',
+        error.message
+      );
+      if (req.method === 'OPTIONS') {
+        return res.status(403).send('CORS policy: origin not allowed');
+      }
+
+      return res
+        .status(403)
+        .json({ message: 'Bu origin için erişime izin verilmiyor.' });
+    }
+
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(204);
+    }
+
+    return next();
+  });
+});
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -139,6 +219,16 @@ const adminBasicAuth = (req, res, next) => {
 
 app.get('/admin-panel', adminBasicAuth, (req, res) => {
   res.sendFile(path.join(ADMIN_ASSETS_DIR, 'admin.html'));
+});
+
+app.get('/admin-panel/admin-config.js', adminBasicAuth, (req, res) => {
+  const config = {
+    apiBase: ADMIN_API_BASE_URL,
+  };
+
+  res.type('application/javascript').send(
+    `window.__ADMIN_CONFIG__ = Object.freeze(${JSON.stringify(config)});\n`
+  );
 });
 
 app.use(
@@ -394,8 +484,13 @@ app.delete('/api/cv/:id', auth, async (req, res) => {
 });
 
 app.use((err, req, res, next) => {
+  if (err && err.message === 'CORS_ORIGIN_NOT_ALLOWED') {
+    console.warn('CORS politikası erişimi reddetti:', req.headers.origin);
+    return res.status(403).json({ message: 'CORS politikası bu isteği engelledi.' });
+  }
+
   console.error('Beklenmeyen hata:', err);
-  res.status(500).json({ message: 'Sunucu hatası.' });
+  return res.status(500).json({ message: 'Sunucu hatası.' });
 });
 
 app.listen(PORT, () => {

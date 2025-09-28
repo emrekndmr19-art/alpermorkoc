@@ -182,6 +182,40 @@ https://alpimimarlik.com/admin-panel
 7. `auth_basic_user_file` için kullanıcı/şifre üretmek üzere `sudo apt-get install -y apache2-utils` sonrası `sudo htpasswd -c /etc/nginx/.htpasswd_admin_panel admin` komutunu çalıştırın. Daha fazla kullanıcı eklemek isterseniz `-c` parametresini kaldırın.
 8. Artık tarayıcıdan `https://alanadiniz.com/admin-panel` adresine gidince Nginx sizden önce temel kimlik doğrulaması isteyecek, ardından Node.js tarafındaki aynı korumalı panele ulaşacaksınız. HTTPS sertifikası için ücretsiz [Let’s Encrypt](https://letsencrypt.org/) kullanabilirsiniz (komut: `sudo certbot --nginx`).
 
+### Üretim ortamı için `.env` dosyası
+
+- Depoda yer alan `.env.production.example` dosyası, canlı ortamda ihtiyaç duyacağınız tüm değişkenlerin örnek değerlerini içerir.
+- Sunucuda aşağıdaki komutla dosyayı kopyalayıp gerçek değerlerle doldurun:
+  ```bash
+  cp .env.production.example .env
+  nano .env
+  ```
+- `ADMIN_API_BASE_URL` değerini backend'in dışarıdan erişilen adresi ile eşleştirin (ör. `https://api.sirketiniz.com/api`).
+- `CORS_ALLOWED_ORIGINS` alanına yalnızca frontend'in yayınlandığı alan adlarını yazın. GitHub Pages kullanıyorsanız sayfanın tam URL'sini ekleyin (örn. `https://kullanici.github.io`).
+
+### Admin panelinin API adresini güncelleme
+
+- Admin paneli açılırken `/admin-panel/admin-config.js` dosyasını otomatik yükler ve `.env` içindeki `ADMIN_API_BASE_URL` değerini kullanır.
+- Paneli Node.js sunucusundan servis etmeye devam ediyorsanız bu adres genellikle `/api` olarak kalabilir.
+- Paneli GitHub Pages üzerinde tutmak istiyorsanız `ADMIN_API_BASE_URL` değerini backend'in tam alan adına ayarlayın, GitHub Pages deposunda da aynı içerikle bir `admin-config.js` dosyası barındırın ve sayfada kullanılan Basic Auth korumasını Nginx benzeri bir ters proxy üzerinden sağlamayı unutmayın.
+
+### CORS izinlerini doğrulama
+
+- GitHub Pages ile backend arasında bağlantı kurarken tarayıcı konsolunda `CORS` hatası görürseniz backend'deki `CORS_ALLOWED_ORIGINS` ayarını güncelleyin.
+- Birden fazla origin'i virgülle ayırabilirsiniz: `CORS_ALLOWED_ORIGINS=https://kullanici.github.io,https://admin.sirketiniz.com`.
+- Değişiklikten sonra Node.js sürecini yeniden başlatın; `pm2 restart site-backend` veya uygulamayı nasıl çalıştırıyorsanız o komutu kullanın.
+
+### Yayını canlıya alma adımları (özet)
+
+1. Sunucuda proje klasörüne geçin ve bağımlılıkları kurun: `npm install`.
+2. `.env` dosyanızın üretim değerleri ile dolu olduğundan emin olun.
+3. Uygulamayı kalıcı olarak çalıştırmak için süreç yöneticisi kullanın:
+   ```bash
+   pm2 start server.js --name site-backend --env production
+   ```
+   veya basit testler için `npm start` komutu ile manuel başlatın.
+4. Gerekirse `pm2 save` ve `pm2 startup` komutları ile sunucu yeniden başladığında uygulamanın otomatik açılmasını sağlayın.
+
 ---
 
 ## 8. Sık karşılaşılan sorunlar ve çözümleri
@@ -208,7 +242,7 @@ https://alpimimarlik.com/admin-panel
   - `GET /api/cv/download/:id` → CV indirme (JWT gerektirir).
   - `DELETE /api/cv/:id` → CV kaydını ve dosyasını siler (JWT gerektirir).
 - **Güvenlik:** Parolalar `bcrypt` ile şifrelenir, admin paneline erişim için ek olarak HTTP Basic Auth (ENV değişkenlerindeki `ADMIN_USERNAME` ve `ADMIN_PASSWORD`) zorunludur ve panel içindeki tüm işlemler `Authorization: Bearer <token>` başlığı ile doğrulanır.
-- **CORS:** Açık olduğu için isterseniz farklı bir domain üzerinden de API'ye erişebilirsiniz.
+- **CORS:** Varsayılan olarak `.env` dosyasındaki `CORS_ALLOWED_ORIGINS` ile sınırlandırılır; ihtiyaç halinde bu listeyi güncelleyebilirsiniz.
 
 ---
 
