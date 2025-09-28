@@ -18,7 +18,8 @@
     "langLabel": "Language",
     "language": {
       "tr": "TR",
-      "en": "EN"
+      "en": "EN",
+      "multi": "Multi"
     },
     "menuButton": "Menu",
     "nav": {
@@ -130,6 +131,12 @@
       "eyebrow": "Insights & Notes",
       "title": "Alpimimarlık Notebook",
       "body": "We collect the methods we rely on while preparing client-ready files. Short articles share notes on presentation flow, visual selection, and how our small team works."
+    },
+    "feed": {
+      "loading": "Loading notes...",
+      "empty": "No content has been published yet.",
+      "error": "We couldn’t load the articles. Please try again later.",
+      "multiBadge": "TR · EN"
     },
     "articles": {
       "lobby": {
