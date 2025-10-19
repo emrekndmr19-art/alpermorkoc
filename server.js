@@ -1,3 +1,5 @@
+require('dotenv').config();
+console.log("ENV'den okunan port:", process.env.PORT);
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
