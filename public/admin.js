@@ -61,7 +61,49 @@ const normalizeLanguageValue = (value) => {
   return 'tr';
 };
 
-let token = localStorage.getItem('adminToken') || '';
+let token = '';
+
+function sanitizeToken(value) {
+  if (typeof value !== 'string') {
+    return '';
+  }
+
+  return value.trim();
+}
+
+function persistToken(value) {
+  const sanitized = sanitizeToken(value);
+  token = sanitized;
+
+  if (sanitized) {
+    localStorage.setItem('adminToken', sanitized);
+  } else {
+    localStorage.removeItem('adminToken');
+  }
+
+  return sanitized;
+}
+
+function getBootstrapTokenFromConfig() {
+  const bootstrapToken = window.__ADMIN_CONFIG__?.bootstrapToken;
+
+  if (typeof bootstrapToken !== 'string') {
+    return '';
+  }
+
+  return sanitizeToken(bootstrapToken);
+}
+
+function applyBootstrapTokenFromConfig() {
+  const bootstrapToken = getBootstrapTokenFromConfig();
+
+  if (bootstrapToken) {
+    persistToken(bootstrapToken);
+  }
+}
+
+token = persistToken(localStorage.getItem('adminToken'));
+applyBootstrapTokenFromConfig();
 
 function setStatus(element, message, isError = false) {
   if (!element) return;
@@ -112,8 +154,7 @@ async function login(event) {
     }
 
     const data = await response.json();
-    token = data.token;
-    localStorage.setItem('adminToken', token);
+    persistToken(data.token);
     loginForm.reset();
     setStatus(loginStatus, 'Giriş başarılı.');
     toggleSections();
@@ -236,7 +277,7 @@ async function createContent(event) {
     });
 
     if (response.status === 401) {
-      handleUnauthorized();
+      await handleUnauthorized();
       return;
     }
 
@@ -290,7 +331,7 @@ async function updateContent(event) {
     });
 
     if (response.status === 401) {
-      handleUnauthorized();
+      await handleUnauthorized();
       return;
     }
 
@@ -326,7 +367,7 @@ async function deleteContent(id) {
     });
 
     if (response.status === 401) {
-      handleUnauthorized();
+      await handleUnauthorized();
       return;
     }
 
@@ -359,7 +400,7 @@ async function uploadCv(event) {
     });
 
     if (response.status === 401) {
-      handleUnauthorized();
+      await handleUnauthorized();
       return;
     }
 
@@ -386,7 +427,7 @@ async function fetchCvs() {
     });
 
     if (response.status === 401) {
-      handleUnauthorized();
+      await handleUnauthorized();
       return;
     }
 
@@ -472,7 +513,7 @@ async function downloadCv(id, originalName = 'cv.pdf') {
     });
 
     if (response.status === 401) {
-      handleUnauthorized();
+      await handleUnauthorized();
       return;
     }
 
@@ -521,7 +562,7 @@ async function deleteCv(id, originalName = 'CV') {
     });
 
     if (response.status === 401) {
-      handleUnauthorized();
+      await handleUnauthorized();
       return;
     }
 
@@ -537,14 +578,11 @@ async function deleteCv(id, originalName = 'CV') {
   }
 }
 
-function handleUnauthorized() {
-  setStatus(adminStatus, 'Oturumunuzun süresi doldu, lütfen tekrar giriş yapın.', true);
-  logout();
-}
-
 function logout() {
-  token = '';
-  localStorage.removeItem('adminToken');
+  persistToken('');
+  if (loginForm) {
+    loginForm.reset();
+  }
   updateContentForm.reset();
   updateSection.classList.add('hidden');
   if (createLanguageSelect) {
@@ -554,6 +592,49 @@ function logout() {
     updateLanguageSelect.value = 'tr';
   }
   toggleSections();
+}
+
+async function refreshBootstrapToken() {
+  try {
+    const response = await fetch(`/admin-panel/bootstrap-token?ts=${Date.now()}`, {
+      method: 'GET',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest',
+      },
+      credentials: 'same-origin',
+      cache: 'no-store',
+    });
+
+    if (!response.ok) {
+      return false;
+    }
+
+    const data = await response.json();
+    if (data && typeof data.token === 'string') {
+      const sanitized = sanitizeToken(data.token);
+      if (sanitized) {
+        persistToken(sanitized);
+        return true;
+      }
+    }
+  } catch (error) {
+    console.error('Bootstrap token yenilenemedi:', error);
+  }
+
+  return false;
+}
+
+async function handleUnauthorized() {
+  const refreshed = await refreshBootstrapToken();
+
+  if (refreshed) {
+    setStatus(adminStatus, 'Oturumunuz yenilendi, lütfen işlemi tekrar deneyin.');
+    return true;
+  }
+
+  logout();
+  setStatus(loginStatus, 'Oturumunuzun süresi doldu, lütfen tekrar giriş yapın.', true);
+  return false;
 }
 
 loginForm.addEventListener('submit', login);
