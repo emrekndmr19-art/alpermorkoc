@@ -181,6 +181,12 @@ const ensureBasicAuthHeader = (res) => {
   res.set('WWW-Authenticate', 'Basic realm="Admin Panel"');
 };
 
+const setNoCacheHeaders = (res) => {
+  res.set('Cache-Control', 'no-store, no-cache, must-revalidate, private');
+  res.set('Pragma', 'no-cache');
+  res.set('Expires', '0');
+};
+
 const adminBasicAuth = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
@@ -214,6 +220,8 @@ const adminBasicAuth = (req, res, next) => {
     return res.status(401).send('Invalid credentials.');
   }
 
+  req.adminBasicAuthUser = username;
+
   return next();
 };
 
@@ -221,14 +229,43 @@ app.get('/admin-panel', adminBasicAuth, (req, res) => {
   res.sendFile(path.join(ADMIN_ASSETS_DIR, 'admin.html'));
 });
 
-app.get('/admin-panel/admin-config.js', adminBasicAuth, (req, res) => {
+app.get('/admin-panel/admin-config.js', adminBasicAuth, async (req, res) => {
   const config = {
     apiBase: ADMIN_API_BASE_URL,
+    bootstrapToken: null,
   };
 
-  res.type('application/javascript').send(
-    `window.__ADMIN_CONFIG__ = Object.freeze(${JSON.stringify(config)});\n`
-  );
+  const basicAuthUser = req.adminBasicAuthUser || ADMIN_USERNAME;
+
+  try {
+    const token = await issueAdminToken(basicAuthUser);
+    if (token) {
+      config.bootstrapToken = token;
+    }
+  } catch (error) {
+    console.error('Admin config token oluşturulamadı:', error.message);
+  }
+
+  setNoCacheHeaders(res);
+  res
+    .type('application/javascript')
+    .send(`window.__ADMIN_CONFIG__ = Object.freeze(${JSON.stringify(config)});\n`);
+});
+
+app.get('/admin-panel/bootstrap-token', adminBasicAuth, async (req, res) => {
+  try {
+    const token = await issueAdminToken(req.adminBasicAuthUser || ADMIN_USERNAME);
+
+    if (!token) {
+      return res.status(500).json({ message: 'Yeni token üretilemedi.' });
+    }
+
+    setNoCacheHeaders(res);
+    return res.json({ token });
+  } catch (error) {
+    console.error('Bootstrap token alınamadı:', error.message);
+    return res.status(500).json({ message: 'Token alınırken bir hata oluştu.' });
+  }
 });
 
 app.use(
@@ -252,14 +289,45 @@ mongoose
 
 async function ensureDefaultAdmin() {
   try {
-    const existingAdmin = await User.findOne({ username: ADMIN_USERNAME });
+    let existingAdmin = await User.findOne({ username: ADMIN_USERNAME });
     if (!existingAdmin) {
       const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10);
-      await User.create({ username: ADMIN_USERNAME, password: hashedPassword });
+      existingAdmin = await User.create({
+        username: ADMIN_USERNAME,
+        password: hashedPassword,
+      });
       console.log(`Varsayılan admin oluşturuldu → kullanıcı adı: ${ADMIN_USERNAME}`);
     }
+    return existingAdmin;
   } catch (error) {
     console.error('Varsayılan admin oluşturulurken hata oluştu:', error.message);
+    return null;
+  }
+}
+
+async function issueAdminToken(username = ADMIN_USERNAME) {
+  try {
+    let adminUser = await User.findOne({ username });
+
+    if (!adminUser && username === ADMIN_USERNAME) {
+      adminUser = await ensureDefaultAdmin();
+    }
+
+    if (!adminUser) {
+      return null;
+    }
+
+    return jwt.sign(
+      {
+        id: adminUser._id,
+        username: adminUser.username,
+      },
+      JWT_SECRET,
+      { expiresIn: '2h' }
+    );
+  } catch (error) {
+    console.error('Admin JWT oluşturulamadı:', error.message);
+    return null;
   }
 }
 
