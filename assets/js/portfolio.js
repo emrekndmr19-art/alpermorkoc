@@ -315,11 +315,21 @@
         return normalized.toUpperCase();
     };
 
-    const resolvePhotoUrl = (content) => {
-        if (!content || !content.image || typeof content.image.url !== 'string') {
+    const getConceptPdfLabel = () => {
+        if (window.I18N && typeof window.I18N.translate === 'function') {
+            const translated = window.I18N.translate('portfolioPage.feed.conceptPdfCta');
+            if (translated) {
+                return translated;
+            }
+        }
+        return 'Konsept PDF\'ini İncele';
+    };
+
+    const resolveUploadUrl = (value) => {
+        if (typeof value !== 'string') {
             return '';
         }
-        const trimmed = content.image.url.trim();
+        const trimmed = value.trim();
         if (!trimmed) {
             return '';
         }
@@ -330,6 +340,20 @@
             return `${apiOrigin}${trimmed}`;
         }
         return `${apiOrigin}/${trimmed}`.replace(/([^:]\/)\/+/g, '$1');
+    };
+
+    const resolvePhotoUrl = (content) => {
+        if (!content || !content.image) {
+            return '';
+        }
+        return resolveUploadUrl(content.image.url);
+    };
+
+    const resolveConceptPdfUrl = (content) => {
+        if (!content || !content.conceptPdf) {
+            return '';
+        }
+        return resolveUploadUrl(content.conceptPdf.url);
     };
 
     const applyVisual = (element, index, photoUrl) => {
@@ -364,6 +388,8 @@
             const languageElement = fragment.querySelector('[data-role="language"]');
             const titleElement = fragment.querySelector('[data-role="title"]');
             const excerptElement = fragment.querySelector('[data-role="excerpt"]');
+            const pdfLinkElement = fragment.querySelector('[data-role="concept-pdf"]');
+            const pdfLinkText = fragment.querySelector('[data-role="concept-pdf-text"]');
 
             if (article && content && content._id) {
                 article.setAttribute('data-content-id', content._id);
@@ -417,6 +443,30 @@
             if (excerptElement) {
                 const excerpt = getExcerpt(content && content.body);
                 excerptElement.textContent = excerpt;
+            }
+
+            if (pdfLinkElement && pdfLinkText) {
+                const pdfUrl = resolveConceptPdfUrl(content);
+                const isConcept = normalizeProjectType(content && content.projectType) === 'concept';
+                if (pdfUrl && isConcept) {
+                    pdfLinkElement.href = pdfUrl;
+                    setHidden(pdfLinkElement, false);
+                    pdfLinkElement.setAttribute('rel', 'noopener');
+                    pdfLinkElement.setAttribute('target', '_blank');
+                    const originalName =
+                        content && content.conceptPdf && content.conceptPdf.originalname;
+                    if (originalName) {
+                        pdfLinkElement.setAttribute('download', originalName);
+                    } else {
+                        pdfLinkElement.removeAttribute('download');
+                    }
+                    pdfLinkText.textContent = getConceptPdfLabel();
+                } else {
+                    setHidden(pdfLinkElement, true);
+                    pdfLinkElement.removeAttribute('href');
+                    pdfLinkElement.removeAttribute('download');
+                    pdfLinkText.textContent = '';
+                }
             }
 
             listElement.appendChild(fragment);
