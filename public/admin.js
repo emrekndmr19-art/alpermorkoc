@@ -35,6 +35,7 @@ const createImageInput = document.getElementById('create-image');
 const loginStatus = document.getElementById('login-status');
 const adminStatus = document.getElementById('admin-status');
 const contentTableBody = document.getElementById('content-table-body');
+const deletedContentTableBody = document.getElementById('deleted-content-table-body');
 const cvTableBody = document.getElementById('cv-table-body');
 const updateSection = document.getElementById('update-section');
 const updateIdInput = document.getElementById('update-id');
@@ -206,7 +207,7 @@ async function login(event) {
 }
 
 async function initializeAdminData() {
-  await Promise.all([fetchContents(), fetchCvs()]);
+  await Promise.all([fetchContents(), fetchDeletedContents(), fetchCvs()]);
 }
 
 function authHeaders() {
@@ -301,6 +302,62 @@ function renderContents(contents) {
   });
 }
 
+function renderDeletedContents(contents) {
+  if (!deletedContentTableBody) {
+    return;
+  }
+
+  deletedContentTableBody.innerHTML = '';
+
+  if (!Array.isArray(contents) || contents.length === 0) {
+    const row = document.createElement('tr');
+    const cell = document.createElement('td');
+    cell.colSpan = 4;
+    cell.textContent = 'Şu anda silinen içerik yok.';
+    row.appendChild(cell);
+    deletedContentTableBody.appendChild(row);
+    return;
+  }
+
+  contents.forEach((content) => {
+    const row = document.createElement('tr');
+
+    const titleCell = document.createElement('td');
+    titleCell.textContent = content.title || '-';
+
+    const languageCell = document.createElement('td');
+    const normalizedLanguage = normalizeLanguageValue(content.language);
+    languageCell.textContent = LANGUAGE_LABELS[normalizedLanguage] || normalizedLanguage.toUpperCase();
+
+    const deletedAtCell = document.createElement('td');
+    deletedAtCell.textContent = formatDate(content.deletedAt);
+
+    const actionsCell = document.createElement('td');
+    actionsCell.classList.add('actions');
+
+    const restoreButton = document.createElement('button');
+    restoreButton.type = 'button';
+    restoreButton.textContent = 'Geri Yükle';
+    restoreButton.addEventListener('click', () => restoreContent(content._id));
+
+    const purgeButton = document.createElement('button');
+    purgeButton.type = 'button';
+    purgeButton.textContent = 'Kalıcı Sil';
+    purgeButton.classList.add('danger');
+    purgeButton.addEventListener('click', () => permanentlyDeleteContent(content._id, content.title));
+
+    actionsCell.appendChild(restoreButton);
+    actionsCell.appendChild(purgeButton);
+
+    row.appendChild(titleCell);
+    row.appendChild(languageCell);
+    row.appendChild(deletedAtCell);
+    row.appendChild(actionsCell);
+
+    deletedContentTableBody.appendChild(row);
+  });
+}
+
 function formatDate(dateString) {
   if (!dateString) return '-';
   const date = new Date(dateString);
@@ -346,7 +403,7 @@ async function createContent(event) {
       createImageInput.value = '';
     }
     setStatus(adminStatus, 'İçerik başarıyla eklendi.');
-    await fetchContents();
+    await Promise.all([fetchContents(), fetchDeletedContents()]);
   } catch (error) {
     console.error('İçerik eklenemedi:', error);
     setStatus(adminStatus, error.message || 'İçerik eklenemedi.', true);
@@ -403,7 +460,7 @@ async function updateContent(event) {
     if (updateLanguageSelect) {
       updateLanguageSelect.value = 'tr';
     }
-    await fetchContents();
+    await Promise.all([fetchContents(), fetchDeletedContents()]);
   } catch (error) {
     console.error('İçerik güncellenemedi:', error);
     setStatus(adminStatus, error.message || 'İçerik güncellenemedi.', true);
@@ -433,8 +490,9 @@ async function deleteContent(id) {
       throw new Error(data.message);
     }
 
-    setStatus(adminStatus, 'İçerik silindi.');
-    await fetchContents();
+    const data = await response.json().catch(() => ({ message: 'İçerik silindi.' }));
+    setStatus(adminStatus, data.message || 'İçerik silindi.');
+    await Promise.all([fetchContents(), fetchDeletedContents()]);
   } catch (error) {
     console.error('İçerik silinemedi:', error);
     setStatus(adminStatus, error.message || 'İçerik silinemedi.', true);
@@ -472,6 +530,107 @@ async function uploadCv(event) {
   } catch (error) {
     console.error('CV yüklenemedi:', error);
     setStatus(adminStatus, error.message || 'CV yüklenemedi.', true);
+  }
+}
+
+async function fetchDeletedContents() {
+  if (!deletedContentTableBody) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE}/content/deleted`, {
+      headers: {
+        ...authHeaders(),
+      },
+    });
+
+    if (response.status === 401) {
+      await handleUnauthorized();
+      return;
+    }
+
+    if (!response.ok) {
+      throw new Error('Silinen içerikler alınamadı.');
+    }
+
+    const contents = await response.json();
+    renderDeletedContents(contents);
+  } catch (error) {
+    console.error(error);
+    setStatus(adminStatus, 'Silinen içerikler alınamadı.', true);
+  }
+}
+
+async function restoreContent(id) {
+  if (!id) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE}/content/${id}/restore`, {
+      method: 'POST',
+      headers: {
+        ...authHeaders(),
+      },
+    });
+
+    if (response.status === 401) {
+      await handleUnauthorized();
+      return;
+    }
+
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({ message: 'İçerik geri yüklenemedi.' }));
+      throw new Error(data.message);
+    }
+
+    const data = await response.json().catch(() => ({}));
+    setStatus(adminStatus, data.message || 'İçerik geri yüklendi.');
+    await Promise.all([fetchContents(), fetchDeletedContents()]);
+  } catch (error) {
+    console.error('İçerik geri yüklenemedi:', error);
+    setStatus(adminStatus, error.message || 'İçerik geri yüklenemedi.', true);
+  }
+}
+
+async function permanentlyDeleteContent(id, title = 'bu içerik') {
+  if (!id) {
+    return;
+  }
+
+  const confirmed = window.confirm(
+    `${title} kaydını kalıcı olarak silmek istediğinize emin misiniz? Bu işlem geri alınamaz.`
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE}/content/${id}/permanent`, {
+      method: 'DELETE',
+      headers: {
+        ...authHeaders(),
+      },
+    });
+
+    if (response.status === 401) {
+      await handleUnauthorized();
+      return;
+    }
+
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({ message: 'İçerik kalıcı olarak silinemedi.' }));
+      throw new Error(data.message);
+    }
+
+    const data = await response.json().catch(() => ({}));
+    setStatus(adminStatus, data.message || 'İçerik kalıcı olarak silindi.');
+    await fetchDeletedContents();
+  } catch (error) {
+    console.error('İçerik kalıcı olarak silinemedi:', error);
+    setStatus(adminStatus, error.message || 'İçerik kalıcı olarak silinemedi.', true);
   }
 }
 

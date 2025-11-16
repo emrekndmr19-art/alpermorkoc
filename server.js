@@ -500,9 +500,11 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+const ACTIVE_CONTENT_FILTER = { deletedAt: null };
+
 app.get('/api/content', async (req, res) => {
   try {
-    const contents = await Content.find().sort({ date: -1 });
+    const contents = await Content.find(ACTIVE_CONTENT_FILTER).sort({ date: -1 });
     res.json(contents);
   } catch (error) {
     console.error('İçerikler alınamadı:', error.message);
@@ -530,7 +532,7 @@ app.post('/api/content', auth, handleContentImageUpload, async (req, res) => {
       contentPayload.image = imageMetadata;
     }
 
-    const content = await Content.create(contentPayload);
+    const content = await Content.create({ ...contentPayload, deletedAt: null });
     res.status(201).json(content);
   } catch (error) {
     console.error('İçerik oluşturulamadı:', error.message);
@@ -549,7 +551,7 @@ app.put('/api/content/:id', auth, handleContentImageUpload, async (req, res) => 
 
     const content = await Content.findById(id);
 
-    if (!content) {
+    if (!content || content.deletedAt) {
       return res.status(404).json({ message: 'İçerik bulunamadı.' });
     }
 
@@ -593,23 +595,91 @@ app.delete('/api/content/:id', auth, async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deleted = await Content.findByIdAndDelete(id);
+    const content = await Content.findById(id);
 
-    if (!deleted) {
+    if (!content) {
       return res.status(404).json({ message: 'İçerik bulunamadı.' });
     }
 
-    if (deleted.image?.filename) {
+    if (content.deletedAt) {
+      return res.status(409).json({ message: 'İçerik zaten silinmiş.' });
+    }
+
+    content.deletedAt = new Date();
+    await content.save();
+
+    res.json({
+      message: 'İçerik silindi. Silinen İçerikler bölümünden tekrar yayına alabilirsiniz.',
+      content,
+    });
+  } catch (error) {
+    console.error('İçerik silinemedi:', error.message);
+    res.status(500).json({ message: 'Sunucu hatası.' });
+  }
+});
+
+app.get('/api/content/deleted', auth, async (req, res) => {
+  try {
+    const deletedContents = await Content.find({ deletedAt: { $ne: null } }).sort({ deletedAt: -1 });
+    res.json(deletedContents);
+  } catch (error) {
+    console.error('Silinen içerikler alınamadı:', error.message);
+    res.status(500).json({ message: 'Sunucu hatası.' });
+  }
+});
+
+app.post('/api/content/:id/restore', auth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const content = await Content.findById(id);
+
+    if (!content) {
+      return res.status(404).json({ message: 'İçerik bulunamadı.' });
+    }
+
+    if (!content.deletedAt) {
+      return res
+        .status(409)
+        .json({ message: 'İçerik zaten yayında. Silinenler listesinden kaldırılmış olabilir.' });
+    }
+
+    content.deletedAt = null;
+    await content.save();
+
+    res.json({ message: 'İçerik yeniden yayına alındı.', content });
+  } catch (error) {
+    console.error('İçerik geri yüklenemedi:', error.message);
+    res.status(500).json({ message: 'Sunucu hatası.' });
+  }
+});
+
+app.delete('/api/content/:id/permanent', auth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const content = await Content.findById(id);
+
+    if (!content) {
+      return res.status(404).json({ message: 'İçerik bulunamadı.' });
+    }
+
+    if (!content.deletedAt) {
+      return res.status(409).json({ message: 'İçerik yayında olduğu için kalıcı silinemez.' });
+    }
+
+    const imageFilename = content.image?.filename;
+    await content.deleteOne();
+
+    if (imageFilename) {
       try {
-        await deleteUploadedFile(deleted.image.filename);
+        await deleteUploadedFile(imageFilename);
       } catch (error) {
         console.warn('Fotoğraf silinirken hata oluştu:', error.message);
       }
     }
 
-    res.json({ message: 'İçerik silindi.' });
+    res.json({ message: 'İçerik kalıcı olarak silindi.' });
   } catch (error) {
-    console.error('İçerik silinemedi:', error.message);
+    console.error('İçerik kalıcı olarak silinemedi:', error.message);
     res.status(500).json({ message: 'Sunucu hatası.' });
   }
 });

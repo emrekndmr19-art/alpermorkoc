@@ -29,6 +29,10 @@ const contentSchema = new mongoose.Schema(
       url: String,
       uploadedAt: Date,
     },
+    deletedAt: {
+      type: Date,
+      default: null,
+    },
   },
   {
     timestamps: true,
