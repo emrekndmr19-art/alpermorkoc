@@ -43,7 +43,7 @@ const ALLOWED_PROJECT_TYPES = new Set([
   'concept',
 ]);
 
-const makeRelativeUploadPath = (subdir, filename) =>
+const buildRelativeUploadPath = (subdir, filename) =>
   path.posix.join(String(subdir || '').replace(/\\+/g, '/'), filename);
 
 const toPublicUploadUrl = (relativePath) => {
@@ -59,62 +59,7 @@ const buildStoredFileMetadata = (file, subdir) => {
     return null;
   }
 
-  const relativePath = makeRelativeUploadPath(subdir, file.filename);
-
-  return {
-    filename: relativePath,
-    originalname: file.originalname,
-    mimetype: file.mimetype,
-    size: file.size,
-    url: toPublicUploadUrl(relativePath),
-    uploadedAt: new Date(),
-  };
-};
-
-const resolveUploadsPath = (relativePath = '') => path.join(uploadsDir, relativePath);
-
-const deleteUploadedFile = async (relativePath, { ignoreNotFound = true } = {}) => {
-  if (!relativePath) {
-    return true;
-  }
-
-  try {
-    await fsPromises.unlink(resolveUploadsPath(relativePath));
-    return true;
-  } catch (error) {
-    if (ignoreNotFound && error && error.code === 'ENOENT') {
-      return true;
-    }
-
-    throw error;
-  }
-};
-
-const parseBoolean = (value) => {
-  if (typeof value === 'string') {
-    return ['true', '1', 'yes', 'on'].includes(value.trim().toLowerCase());
-  }
-
-  return Boolean(value);
-};
-
-const makeRelativeUploadPath = (subdir, filename) =>
-  path.posix.join(String(subdir || '').replace(/\\+/g, '/'), filename);
-
-const toPublicUploadUrl = (relativePath) => {
-  if (!relativePath) {
-    return '';
-  }
-
-  return `/uploads/${String(relativePath).replace(/\\+/g, '/')}`;
-};
-
-const buildStoredFileMetadata = (file, subdir) => {
-  if (!file || !file.filename) {
-    return null;
-  }
-
-  const relativePath = makeRelativeUploadPath(subdir, file.filename);
+  const relativePath = buildRelativeUploadPath(subdir, file.filename);
 
   return {
     filename: relativePath,
@@ -826,7 +771,7 @@ app.post('/api/upload-cv', auth, (req, res) => {
 
     try {
       const { filename, originalname, mimetype, size } = req.file;
-      const storedFilename = makeRelativeUploadPath(CV_UPLOAD_SUBDIR, filename);
+      const storedFilename = buildRelativeUploadPath(CV_UPLOAD_SUBDIR, filename);
       const cv = await CV.create({ filename: storedFilename, originalname, mimetype, size });
       res.status(201).json(cv);
     } catch (error) {
