@@ -35,6 +35,14 @@ const contentSchema = new mongoose.Schema(
       lowercase: true,
       default: 'workplace',
     },
+    conceptPdf: {
+      filename: String,
+      originalname: String,
+      mimetype: String,
+      size: Number,
+      url: String,
+      uploadedAt: Date,
+    },
     deletedAt: {
       type: Date,
       default: null,

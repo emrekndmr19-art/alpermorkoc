@@ -33,6 +33,7 @@ const cancelUpdateButton = document.getElementById('cancel-update');
 const createLanguageSelect = document.getElementById('create-language');
 const createProjectTypeSelect = document.getElementById('create-project-type');
 const createImageInput = document.getElementById('create-image');
+const createConceptPdfInput = document.getElementById('create-concept-pdf');
 const loginStatus = document.getElementById('login-status');
 const adminStatus = document.getElementById('admin-status');
 const contentTableBody = document.getElementById('content-table-body');
@@ -49,6 +50,11 @@ const updateImagePreviewContainer = document.getElementById('update-image-previe
 const updateImagePreview = document.getElementById('update-image-preview');
 const updateImageLink = document.getElementById('update-image-link');
 const updateRemoveImageCheckbox = document.getElementById('update-remove-image');
+const updateConceptPdfInput = document.getElementById('update-concept-pdf');
+const updatePdfPreviewContainer = document.getElementById('update-pdf-preview');
+const updatePdfLink = document.getElementById('update-pdf-link');
+const updatePdfFilename = document.getElementById('update-pdf-filename');
+const updateRemovePdfCheckbox = document.getElementById('update-remove-pdf');
 const siteCopyForm = document.getElementById('site-copy-form');
 const siteCopyLanguageSelect = document.getElementById('site-copy-language');
 const siteCopyKeyInput = document.getElementById('site-copy-key');
@@ -567,6 +573,39 @@ function resetUpdateImageInputs() {
   }
 }
 
+function toggleUpdatePdfPreview(pdfData) {
+  if (!updatePdfPreviewContainer) {
+    return;
+  }
+
+  if (pdfData && pdfData.url) {
+    updatePdfPreviewContainer.classList.remove('hidden');
+    if (updatePdfLink) {
+      updatePdfLink.href = pdfData.url;
+    }
+    if (updatePdfFilename) {
+      updatePdfFilename.textContent = pdfData.originalname || 'konsept.pdf';
+    }
+  } else {
+    updatePdfPreviewContainer.classList.add('hidden');
+    if (updatePdfLink) {
+      updatePdfLink.removeAttribute('href');
+    }
+    if (updatePdfFilename) {
+      updatePdfFilename.textContent = '';
+    }
+  }
+}
+
+function resetUpdatePdfInputs() {
+  if (updateConceptPdfInput) {
+    updateConceptPdfInput.value = '';
+  }
+  if (updateRemovePdfCheckbox) {
+    updateRemovePdfCheckbox.checked = false;
+  }
+}
+
 function toggleSections() {
   if (token) {
     loginSection.classList.add('hidden');
@@ -688,7 +727,7 @@ function renderContents(contents) {
   if (contents.length === 0) {
     const row = document.createElement('tr');
     const cell = document.createElement('td');
-    cell.colSpan = 7;
+    cell.colSpan = 8;
     cell.textContent = 'Henüz içerik yok.';
     row.appendChild(cell);
     contentTableBody.appendChild(row);
@@ -724,6 +763,18 @@ function renderContents(contents) {
       imageCell.textContent = '—';
     }
 
+    const pdfCell = document.createElement('td');
+    if (content.conceptPdf && content.conceptPdf.url) {
+      const link = document.createElement('a');
+      link.href = content.conceptPdf.url;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.textContent = 'PDF';
+      pdfCell.appendChild(link);
+    } else {
+      pdfCell.textContent = '—';
+    }
+
     const dateCell = document.createElement('td');
     dateCell.textContent = formatDate(content.date || content.createdAt);
 
@@ -749,6 +800,7 @@ function renderContents(contents) {
     row.appendChild(languageCell);
     row.appendChild(projectTypeCell);
     row.appendChild(imageCell);
+    row.appendChild(pdfCell);
     row.appendChild(dateCell);
     row.appendChild(actionsCell);
 
@@ -864,6 +916,9 @@ async function createContent(event) {
     if (createImageInput) {
       createImageInput.value = '';
     }
+    if (createConceptPdfInput) {
+      createConceptPdfInput.value = '';
+    }
     setStatus(adminStatus, 'İçerik başarıyla eklendi.');
     await Promise.all([fetchContents(), fetchDeletedContents()]);
   } catch (error) {
@@ -885,6 +940,8 @@ function startUpdate(content) {
   }
   resetUpdateImageInputs();
   toggleUpdateImagePreview(content.image);
+  resetUpdatePdfInputs();
+  toggleUpdatePdfPreview(content.conceptPdf);
   window.scrollTo({ top: updateSection.offsetTop - 20, behavior: 'smooth' });
 }
 
@@ -921,6 +978,8 @@ async function updateContent(event) {
     updateContentForm.reset();
     resetUpdateImageInputs();
     toggleUpdateImagePreview(null);
+    resetUpdatePdfInputs();
+    toggleUpdatePdfPreview(null);
     updateSection.classList.add('hidden');
     if (updateLanguageSelect) {
       updateLanguageSelect.value = 'tr';
@@ -1345,6 +1404,8 @@ cancelUpdateButton.addEventListener('click', () => {
   updateContentForm.reset();
   resetUpdateImageInputs();
   toggleUpdateImagePreview(null);
+  resetUpdatePdfInputs();
+  toggleUpdatePdfPreview(null);
   updateSection.classList.add('hidden');
   if (updateLanguageSelect) {
     updateLanguageSelect.value = 'tr';
