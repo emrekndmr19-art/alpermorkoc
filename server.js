@@ -22,11 +22,16 @@ const JWT_SECRET = process.env.JWT_SECRET || 'supersecretjwt';
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 const ADMIN_API_BASE_URL = normalizeAdminApiBase(process.env.ADMIN_API_BASE_URL);
+const PUBLIC_CONTENT_API_BASE_URL = normalizeAdminApiBase(
+  process.env.PUBLIC_CONTENT_API_BASE_URL || process.env.ADMIN_API_BASE_URL
+);
 const { allowAllOrigins, allowedOrigins } = parseAllowedOrigins(
   process.env.CORS_ALLOWED_ORIGINS
 );
 const PUBLIC_SITE_DIR = __dirname;
 const ADMIN_ASSETS_DIR = path.join(__dirname, 'public');
+
+const DEFAULT_CONTENT_API_BASE = '/api';
 
 const DEFAULT_CONTENT_LANGUAGE = 'tr';
 const ALLOWED_CONTENT_LANGUAGES = new Set(['tr', 'en', 'multi']);
@@ -103,6 +108,36 @@ function normalizeAdminApiBase(value) {
 
   return trimmed.replace(/\/$/, '');
 }
+
+function buildContentApiEndpoint(base) {
+  const fallback = DEFAULT_CONTENT_API_BASE;
+
+  if (typeof base !== 'string') {
+    return `${fallback}/content`;
+  }
+
+  const trimmed = base.trim();
+
+  if (!trimmed) {
+    return `${fallback}/content`;
+  }
+
+  const sanitized = trimmed === '/' ? fallback : trimmed.replace(/\/$/, '');
+
+  if (/^https?:\/\//i.test(sanitized)) {
+    return `${sanitized}/content`;
+  }
+
+  const withLeadingSlash = sanitized.startsWith('/')
+    ? sanitized
+    : `/${sanitized}`;
+
+  return `${withLeadingSlash}/content`;
+}
+
+const PUBLIC_CONTENT_API_ENDPOINT = buildContentApiEndpoint(
+  PUBLIC_CONTENT_API_BASE_URL || DEFAULT_CONTENT_API_BASE
+);
 
 function parseAllowedOrigins(rawValue) {
   if (typeof rawValue !== 'string' || !rawValue.trim()) {
@@ -257,6 +292,18 @@ const setNoCacheHeaders = (res) => {
   res.set('Pragma', 'no-cache');
   res.set('Expires', '0');
 };
+
+app.get('/site-config.js', (req, res) => {
+  const config = {
+    contentApiBase: PUBLIC_CONTENT_API_BASE_URL,
+    contentEndpoint: PUBLIC_CONTENT_API_ENDPOINT,
+  };
+
+  setNoCacheHeaders(res);
+  res
+    .type('application/javascript')
+    .send(`window.__SITE_CONFIG__ = Object.freeze(${JSON.stringify(config)});\n`);
+});
 
 const adminBasicAuth = (req, res, next) => {
   const authHeader = req.headers.authorization;
