@@ -1,5 +1,98 @@
 (function () {
-    const API_ENDPOINT = '/api/content';
+    const ABSOLUTE_URL_REGEX = /^https?:\/\//i;
+    const DEFAULT_API_BASE = '/api';
+    const DEFAULT_CONTENT_ENDPOINT = `${DEFAULT_API_BASE}/content`;
+
+    const readMetaContent = (name) => {
+        const element = document.querySelector(`meta[name="${name}"]`);
+        if (!element) return '';
+        return element.getAttribute('content') || '';
+    };
+
+    const sanitizeEndpoint = (value) => {
+        if (typeof value !== 'string') {
+            return '';
+        }
+        const trimmed = value.trim();
+        if (!trimmed) {
+            return '';
+        }
+        if (ABSOLUTE_URL_REGEX.test(trimmed)) {
+            return trimmed.replace(/\/+$/, '');
+        }
+        return `/${trimmed.replace(/^\/+/, '').replace(/\/+$/, '')}`;
+    };
+
+    const normalizeBase = (value) => {
+        if (typeof value !== 'string') {
+            return '';
+        }
+        const trimmed = value.trim();
+        if (!trimmed || trimmed === '/') {
+            return '';
+        }
+        if (ABSOLUTE_URL_REGEX.test(trimmed)) {
+            return trimmed.replace(/\/+$/, '');
+        }
+        return `/${trimmed.replace(/^\/+/, '').replace(/\/+$/, '')}`;
+    };
+
+    const buildEndpointFromBase = (base) => {
+        const normalized = normalizeBase(base);
+        if (!normalized) {
+            return '';
+        }
+        return `${normalized}/content`;
+    };
+
+    const getSiteConfig = () => {
+        const config = window.__SITE_CONFIG__;
+        if (!config || typeof config !== 'object') {
+            return null;
+        }
+        return config;
+    };
+
+    const resolveContentEndpoint = () => {
+        const config = getSiteConfig();
+        const configEndpoint = sanitizeEndpoint(config && config.contentEndpoint);
+        const configBase = config && config.contentApiBase;
+        const metaEndpoint = sanitizeEndpoint(
+            readMetaContent('portfolio:content-endpoint') ||
+                readMetaContent('projects:content-endpoint') ||
+                readMetaContent('content:endpoint') ||
+                readMetaContent('insights:content-endpoint')
+        );
+        const metaBase =
+            readMetaContent('portfolio:content-api-base') ||
+            readMetaContent('projects:content-api-base') ||
+            readMetaContent('content:api-base') ||
+            readMetaContent('insights:content-api-base');
+
+        return (
+            configEndpoint ||
+            buildEndpointFromBase(configBase) ||
+            metaEndpoint ||
+            buildEndpointFromBase(metaBase) ||
+            DEFAULT_CONTENT_ENDPOINT
+        );
+    };
+
+    const API_ENDPOINT = resolveContentEndpoint();
+    let apiOrigin = '';
+    try {
+        const endpointUrl = new URL(API_ENDPOINT, window.location.origin);
+        apiOrigin = endpointUrl.origin;
+    } catch (error) {
+        apiOrigin = window.location.origin;
+    }
+    const fallbackProjectTypeLabels = {
+        workplace: 'Ofis Projesi',
+        residential: 'Konut Projesi',
+        hospitality: 'Misafirperverlik',
+        concept: 'Konsept Çalışması',
+    };
+
     const visualThemes = [
         'radial-gradient(circle at 22% 30%, rgba(255, 206, 165, 0.8) 0%, rgba(255, 206, 165, 0) 55%), radial-gradient(circle at 78% 65%, rgba(255, 126, 126, 0.45) 0%, rgba(255, 126, 126, 0) 50%), linear-gradient(150deg, #1e1f2d, #101019 58%, #2e2439)',
         'radial-gradient(circle at 70% 30%, rgba(160, 214, 255, 0.7) 0%, rgba(160, 214, 255, 0) 55%), radial-gradient(circle at 18% 70%, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(160deg, #1a2334, #0f131d 60%, #2a3245)',
@@ -7,11 +100,12 @@
         'radial-gradient(circle at 80% 20%, rgba(140, 255, 210, 0.55) 0%, rgba(140, 255, 210, 0) 55%), radial-gradient(circle at 18% 75%, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(170deg, #101d1c, #142932 60%, #273b4a)',
     ];
 
-    const listElement = document.getElementById('insights-list');
-    const template = document.getElementById('insight-card-template');
-    const loadingElement = document.getElementById('insights-loading');
-    const emptyElement = document.getElementById('insights-empty');
-    const errorElement = document.getElementById('insights-error');
+    const listElement = document.getElementById('portfolio-list');
+    const template = document.getElementById('portfolio-card-template');
+    const loadingElement = document.getElementById('portfolio-loading');
+    const emptyElement = document.getElementById('portfolio-empty');
+    const errorElement = document.getElementById('portfolio-error');
+    const filtersContainer = document.getElementById('portfolio-type-filters');
 
     if (!listElement || !template) {
         return;
@@ -21,6 +115,7 @@
     let hasLoadedOnce = false;
     let isFetching = false;
     let hasError = false;
+    let activeTypeFilter = 'all';
 
     const setHidden = (element, hidden) => {
         if (!element) return;
@@ -45,6 +140,43 @@
         });
 
         hasError = state === 'error';
+    };
+
+    const updateFilterButtons = () => {
+        if (!filtersContainer) {
+            return;
+        }
+        const buttons = filtersContainer.querySelectorAll('[data-filter]');
+        buttons.forEach((button) => {
+            const value = normalizeFilterValue(button.getAttribute('data-filter'));
+            const isActive = value === activeTypeFilter;
+            button.setAttribute('data-active', isActive ? 'true' : 'false');
+            button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            button.classList.toggle('border-white/70', isActive);
+            button.classList.toggle('text-white', isActive);
+            button.classList.toggle('border-white/25', !isActive);
+            button.classList.toggle('text-white/80', !isActive);
+        });
+    };
+
+    const setTypeFilter = (value) => {
+        const normalized = normalizeFilterValue(value);
+        if (normalized === activeTypeFilter) {
+            return;
+        }
+        activeTypeFilter = normalized;
+        updateFilterButtons();
+        if (!hasLoadedOnce) {
+            return;
+        }
+        const count = render(getActiveLanguage());
+        if (!hasError) {
+            if (count === 0) {
+                setState('empty');
+            } else {
+                setState(null);
+            }
+        }
     };
 
     const normalizeLanguage = (value) => {
@@ -119,6 +251,47 @@
         return `${truncated.trim()}…`;
     };
 
+    const normalizeProjectType = (value) => {
+        if (typeof value !== 'string') {
+            return 'workplace';
+        }
+        const normalized = value.trim().toLowerCase();
+        if (!normalized) {
+            return 'workplace';
+        }
+        return normalized;
+    };
+
+    const normalizeFilterValue = (value) => {
+        if (typeof value !== 'string') {
+            return 'all';
+        }
+        const normalized = value.trim().toLowerCase();
+        if (!normalized) {
+            return 'all';
+        }
+        return normalized;
+    };
+
+    const filterByType = (items, type) => {
+        const normalizedType = normalizeFilterValue(type);
+        if (normalizedType === 'all') {
+            return items;
+        }
+        return items.filter((item) => normalizeProjectType(item && item.projectType) === normalizedType);
+    };
+
+    const getProjectTypeLabel = (code) => {
+        const normalized = normalizeProjectType(code);
+        if (window.I18N && typeof window.I18N.translate === 'function') {
+            const translated = window.I18N.translate(`content.projectTypes.${normalized}`);
+            if (translated) {
+                return translated;
+            }
+        }
+        return fallbackProjectTypeLabels[normalized] || fallbackProjectTypeLabels.workplace;
+    };
+
     const getLanguageLabel = (code) => {
         const normalized = normalizeLanguage(code);
         if (!normalized) {
@@ -126,7 +299,7 @@
         }
         if (normalized === 'multi') {
             if (window.I18N && typeof window.I18N.translate === 'function') {
-                const multiLabel = window.I18N.translate('insights.feed.multiBadge');
+                const multiLabel = window.I18N.translate('content.language.multi');
                 if (multiLabel) {
                     return multiLabel;
                 }
@@ -142,15 +315,40 @@
         return normalized.toUpperCase();
     };
 
-    const applyVisual = (element, index) => {
+    const resolvePhotoUrl = (content) => {
+        if (!content || !content.image || typeof content.image.url !== 'string') {
+            return '';
+        }
+        const trimmed = content.image.url.trim();
+        if (!trimmed) {
+            return '';
+        }
+        if (ABSOLUTE_URL_REGEX.test(trimmed)) {
+            return trimmed;
+        }
+        if (trimmed.startsWith('/')) {
+            return `${apiOrigin}${trimmed}`;
+        }
+        return `${apiOrigin}/${trimmed}`.replace(/([^:]\/)\/+/g, '$1');
+    };
+
+    const applyVisual = (element, index, photoUrl) => {
         if (!element) return;
+
+        if (photoUrl) {
+            element.style.backgroundImage = `linear-gradient(145deg, rgba(2, 6, 23, 0.45), rgba(0, 0, 0, 0.65)), url('${photoUrl}')`;
+            element.setAttribute('data-has-photo', 'true');
+            return;
+        }
+
         const theme = visualThemes[index % visualThemes.length];
         element.style.backgroundImage = theme;
+        element.removeAttribute('data-has-photo');
     };
 
     const render = (lang) => {
         const items = Array.isArray(cache) ? cache : [];
-        const filtered = filterByLanguage(items, lang);
+        const filtered = filterByType(filterByLanguage(items, lang), activeTypeFilter);
         listElement.innerHTML = '';
 
         if (filtered.length === 0) {
@@ -161,6 +359,7 @@
             const fragment = template.content.cloneNode(true);
             const article = fragment.querySelector('article');
             const visual = fragment.querySelector('[data-role="visual"]');
+            const typeElement = fragment.querySelector('[data-role="project-type"]');
             const dateElement = fragment.querySelector('[data-role="date"]');
             const languageElement = fragment.querySelector('[data-role="language"]');
             const titleElement = fragment.querySelector('[data-role="title"]');
@@ -170,7 +369,8 @@
                 article.setAttribute('data-content-id', content._id);
             }
 
-            applyVisual(visual, index);
+            const photoUrl = resolvePhotoUrl(content);
+            applyVisual(visual, index, photoUrl);
 
             if (dateElement) {
                 const formattedDate = formatDate(content && (content.date || content.createdAt), lang);
@@ -185,6 +385,17 @@
                     }
                 } else {
                     dateElement.textContent = '';
+                }
+            }
+
+            if (typeElement) {
+                const label = getProjectTypeLabel(content && content.projectType);
+                if (label) {
+                    typeElement.textContent = label;
+                    typeElement.hidden = false;
+                } else {
+                    typeElement.textContent = '';
+                    typeElement.hidden = true;
                 }
             }
 
@@ -267,7 +478,19 @@
         }
     };
 
+    if (filtersContainer) {
+        filtersContainer.addEventListener('click', (event) => {
+            const target = event.target.closest('[data-filter]');
+            if (!target) {
+                return;
+            }
+            event.preventDefault();
+            setTypeFilter(target.getAttribute('data-filter'));
+        });
+    }
+
     const init = () => {
+        updateFilterButtons();
         fetchContents();
     };
 

@@ -3,7 +3,9 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title data-i18n="meta.titles.services">Services — Alpimimarlık</title>
+    <title data-i18n="meta.titles.projects">Projeler — Alpimimarlık</title>
+    <meta content="/api" name="content:api-base" />
+    <meta content="/api/content" name="content:endpoint" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
@@ -30,22 +32,22 @@
         };
     </script>
     <style>
-        .concept-visual {
+        .project-card-visual {
             position: relative;
             overflow: hidden;
             border-radius: 0.25rem;
-            background-size: 160%;
+            background-size: cover;
             background-position: center;
             box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
         }
 
-        .concept-visual::after {
+        .project-card-visual::after {
             content: "";
             position: absolute;
             inset: 0;
             background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.18), transparent 55%);
             mix-blend-mode: screen;
-            opacity: 0.45;
+            opacity: 0.3;
             pointer-events: none;
         }
     </style>
@@ -78,73 +80,62 @@
     </header>
 
     <main class="px-8 py-20 text-primary md:px-20">
-        <div class="max-w-5xl space-y-12">
-            <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="services.hero.eyebrow">Hizmet Paketleri</p>
-            <h1 class="text-4xl font-display text-white md:text-5xl" data-i18n="services.hero.title">Sunum Odaklı Mimarlık Servisleri</h1>
-            <p class="text-base text-white/70" data-i18n="services.hero.body">
-                Küçük ölçekli ofislerin konseptlerini sahneleyen tanıtım paketleri hazırlıyoruz.
-                Ölçekli çizimler, atmosfer görselleri ve kısa metin blokları, ilk görüşmede güven veren bir vitrin sunmanıza yardımcı oluyor.
-            </p>
-            <div class="grid gap-10 md:grid-cols-2">
-                <div class="space-y-4 border border-white/10 bg-black/30 p-6">
-                    <div
-                        aria-label="Vizyon kitabı için hazırlanan konsept görsel"
-                        class="concept-visual h-40 w-full"
-                        role="img"
-                        style="background-image: radial-gradient(circle at 22% 25%, rgba(255, 206, 165, 0.8) 0%, rgba(255, 206, 165, 0) 55%), radial-gradient(circle at 78% 70%, rgba(255, 132, 132, 0.48) 0%, rgba(255, 132, 132, 0) 50%), linear-gradient(150deg, #1f1f2f, #101019 58%, #2f253a);"
-                    ></div>
-                    <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent" data-i18n="services.packages.visionBook.index">01</p>
-                    <h2 class="text-2xl font-display text-white" data-i18n="services.packages.visionBook.title">Vizyon Kitabı</h2>
-                    <p class="text-sm text-white/70" data-i18n="services.packages.visionBook.body">
-                        Üç bölümlü dijital kitap, lobi, çalışma alanı ve cephe sahnelerini aynı dilde anlatır.
-                        Renderlar ve fotoğraf düzenlemeleri, başlıklarla birlikte kullanılmaya hazır halde teslim edilir.
+        <div class="space-y-14">
+            <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
+                <div class="space-y-5 lg:max-w-3xl">
+                    <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="projectsPage.hero.eyebrow">Projeler</p>
+                    <h1 class="text-4xl font-display text-white md:text-5xl" data-i18n="projectsPage.hero.title">Stüdyodan güncel dosyalar</h1>
+                    <p class="text-base text-white/70" data-i18n="projectsPage.hero.body">
+                        Admin panelinde yeni bir proje oluşturduğunuzda başlık, açıklama ve fotoğraf bilgileri bu sayfada otomatik olarak yayınlanır. Dil seçimi ziyaretçinin tercihiyle eşleşir; “Çok Dilli” projeler her iki dilde de görünür.
                     </p>
                 </div>
-                <div class="space-y-4 border border-white/10 bg-black/30 p-6">
-                    <div
-                        aria-label="Sunum sahnesi paketine ait storyboard"
-                        class="concept-visual h-40 w-full"
-                        role="img"
-                        style="background-image: radial-gradient(circle at 65% 35%, rgba(162, 216, 255, 0.7) 0%, rgba(162, 216, 255, 0) 55%), radial-gradient(circle at 20% 75%, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(160deg, #1b2436, #0f141f 60%, #293347);"
-                    ></div>
-                    <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent" data-i18n="services.packages.presentationScene.index">02</p>
-                    <h2 class="text-2xl font-display text-white" data-i18n="services.packages.presentationScene.title">Sunum Sahnesi</h2>
-                    <p class="text-sm text-white/70" data-i18n="services.packages.presentationScene.body">
-                        Pitch toplantıları için hazırlanan bu paket, hareketli slayt akışı ve kısa tanıtım filmiyle desteklenir.
-                        Boş ekranları, ofis kimliğinize uygun kolaj ve plan detaylarıyla tamamlıyoruz.
-                    </p>
+                <div class="flex gap-3">
+                    <a class="inline-flex items-center gap-2 border border-white/20 px-4 py-2 text-xs uppercase tracking-[0.4em] text-white transition hover:bg-white/10" href="portfolio.html" data-i18n="projectsPage.hero.cta">Portfolyoyu incele</a>
                 </div>
+            </div>
+
+            <div class="grid gap-10 lg:grid-cols-[minmax(0,360px)_1fr]">
                 <div class="space-y-4 border border-white/10 bg-black/30 p-6">
-                    <div
-                        aria-label="Dijital basın dosyasına ait kolaj"
-                        class="concept-visual h-40 w-full"
-                        role="img"
-                        style="background-image: radial-gradient(circle at 25% 70%, rgba(255, 174, 226, 0.55) 0%, rgba(255, 174, 226, 0) 50%), radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(165deg, #131422, #1d1f31 58%, #332645);"
-                    ></div>
-                    <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent" data-i18n="services.packages.pressKit.index">03</p>
-                    <h2 class="text-2xl font-display text-white" data-i18n="services.packages.pressKit.title">Dijital Basın Dosyası</h2>
-                    <p class="text-sm text-white/70" data-i18n="services.packages.pressKit.body">
-                        Basın bültenleri ve sosyal medya lansmanları için hızlıca özelleştirebileceğiniz şablonlar içerir.
-                        Her görsel, stüdyonuzun tonunu anlatan kısa açıklamalarla birlikte gelir.
-                    </p>
+                    <h2 class="text-2xl font-display text-white" data-i18n="projectsPage.guide.title">Bu liste nasıl çalışır?</h2>
+                    <p class="text-sm text-white/70" data-i18n="projectsPage.guide.body">Projelerin ziyaretçilere nasıl gösterildiğini bilmeniz için kısa notlar:</p>
+                    <ul class="list-disc space-y-3 text-sm text-white/70" style="padding-left: 1.5rem;">
+                        <li data-i18n="projectsPage.guide.items.one">Fotoğraf yüklediğiniz kartlar hem ana sayfada hem de burada büyük görsel ile yer alır.</li>
+                        <li data-i18n="projectsPage.guide.items.two">Proje tipini seçtiğinizde kartın üstündeki etiket güncellenir ve Portfolyo sayfasındaki filtreler doğru çalışır.</li>
+                        <li data-i18n="projectsPage.guide.items.three">Bir projeyi silip daha sonra geri yüklediğinizde konumu ve fotoğrafı korunur.</li>
+                    </ul>
                 </div>
-                <div class="space-y-4 border border-white/10 bg-black/30 p-6">
-                    <div
-                        aria-label="Atölye oturumu için hazırlanan görsel"
-                        class="concept-visual h-40 w-full"
-                        role="img"
-                        style="background-image: radial-gradient(circle at 70% 25%, rgba(255, 208, 158, 0.7) 0%, rgba(255, 208, 158, 0) 52%), radial-gradient(circle at 20% 70%, rgba(161, 218, 255, 0.6) 0%, rgba(161, 218, 255, 0) 45%), linear-gradient(155deg, #181a27, #0f1119 58%, #2b253a);"
-                    ></div>
-                    <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent" data-i18n="services.packages.consulting.index">04</p>
-                    <h2 class="text-2xl font-display text-white" data-i18n="services.packages.consulting.title">Danışmanlık &amp; Koordinasyon</h2>
-                    <p class="text-sm text-white/70" data-i18n="services.packages.consulting.body">
-                        Sunum hazırlıkları sırasında ekiplerinizi yönlendiren toplantılar planlıyoruz.
-                        Malzeme seçimi, metin tonu ve görsel yerleşimleri için paylaşılabilir rehberler sunuyoruz.
-                    </p>
+                <div class="space-y-6">
+                    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                        <div>
+                            <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="projectsPage.hero.eyebrow">Projeler</p>
+                            <h2 class="text-3xl font-display text-white" data-i18n="projectsPage.feed.title">Paylaşılan projeler</h2>
+                        </div>
+                    </div>
+                    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" data-feed-limit="all" id="project-feed"></div>
+                    <div class="space-y-2 text-sm text-white/60" id="project-feed-feedback">
+                        <p id="project-feed-loading" data-i18n="projectsPage.feed.loading">Projeler yükleniyor...</p>
+                        <p hidden id="project-feed-empty" data-i18n="projectsPage.feed.empty">Henüz proje eklenmedi.</p>
+                        <p hidden id="project-feed-error" data-i18n="projectsPage.feed.error">Projeleri yüklerken bir sorun oluştu.</p>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
+
+    <template id="project-card-template">
+        <article class="flex flex-col gap-4 border border-white/10 bg-white/5 p-4">
+            <div aria-hidden="true" class="project-card-visual h-48 w-full" data-role="visual"></div>
+            <div class="flex items-center justify-between text-[0.65rem] uppercase tracking-[0.35em] text-white/60">
+                <div class="flex items-center gap-3">
+                    <span class="rounded-sm border border-white/30 px-2 py-0.5 text-[0.55rem] tracking-[0.35em]" data-role="project-type"></span>
+                    <span class="text-white/50" data-role="language"></span>
+                </div>
+                <time class="text-white/60" data-role="date"></time>
+            </div>
+            <h3 class="text-xl font-display text-white" data-role="title"></h3>
+            <p class="text-sm text-white/70" data-role="excerpt"></p>
+        </article>
+    </template>
 
     <div
         class="fixed inset-x-4 bottom-6 z-50 max-w-3xl translate-x-0 rounded border border-white/15 bg-black/90 p-6 text-sm text-white shadow-2xl md:inset-x-auto md:left-1/2 md:-translate-x-1/2"
@@ -199,6 +190,8 @@
             <nav class="mt-10 space-y-6 text-sm uppercase tracking-[0.4em] text-white/70">
                 <a class="block transition-opacity hover:opacity-60" href="index.html" data-i18n="common.nav.home">Ana Sayfa</a>
                 <a class="block transition-opacity hover:opacity-60" href="studio.html" data-i18n="common.nav.studio">Studio</a>
+                <a class="block transition-opacity hover:opacity-60" href="projeler.html" data-i18n="common.nav.projects">Projeler</a>
+                <a class="block transition-opacity hover:opacity-60" href="portfolio.html" data-i18n="common.nav.portfolio">Portfolyo</a>
                 <a class="block transition-opacity hover:opacity-60" href="kariyer.html" data-i18n="common.nav.careers">Kariyer</a>
                 <a class="block transition-opacity hover:opacity-60" href="contact.html" data-i18n="common.nav.contact">Contact</a>
             </nav>
@@ -225,6 +218,8 @@
                 <ul class="mt-4 space-y-3 text-sm text-gray-400">
                     <li><a class="transition-colors hover:text-white" href="index.html" data-i18n="common.nav.home">Home</a></li>
                     <li><a class="transition-colors hover:text-white" href="studio.html" data-i18n="common.nav.studio">Studio</a></li>
+                    <li><a class="transition-colors hover:text-white" href="projeler.html" data-i18n="common.nav.projects">Projeler</a></li>
+                    <li><a class="transition-colors hover:text-white" href="portfolio.html" data-i18n="common.nav.portfolio">Portfolyo</a></li>
                     <li><a class="transition-colors hover:text-white" href="kariyer.html" data-i18n="common.nav.careers">Kariyer</a></li>
                     <li><a class="transition-colors hover:text-white" href="contact.html" data-i18n="common.nav.contact">Contact</a></li>
                 </ul>
@@ -243,6 +238,8 @@
 
     <script src="assets/js/i18n.js"></script>
     <script src="assets/js/cookie-consent.js"></script>
+    <script src="site-config.js" defer></script>
+    <script src="assets/js/projects-feed.js" defer></script>
     <script>
         const menuToggle = document.getElementById('menu-toggle');
         const menuPanel = document.getElementById('menu-panel');

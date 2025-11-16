@@ -2,6 +2,7 @@
     const STORAGE_KEY = 'alpimimarlik-lang';
     const DEFAULT_LANG = 'tr';
     const SUPPORTED_LANGS = ['tr', 'en'];
+    const SITE_COPY_ENDPOINT_BASE = '/api/site-copy';
     const translations = {};
     let currentLang = DEFAULT_LANG;
     const changeCallbacks = new Set();
@@ -103,17 +104,50 @@
         });
     };
 
-    const loadDictionary = async (lang) => {
-        if (translations[lang]) {
-            return translations[lang];
-        }
+    const loadDictionaryFromFile = async (lang) => {
         const response = await fetch(`i18n/${lang}.json`, { cache: 'no-store' });
         if (!response.ok) {
             throw new Error(`Failed to load translations for ${lang}`);
         }
-        const data = await response.json();
-        translations[lang] = data;
-        return data;
+        return response.json();
+    };
+
+    const loadDictionaryFromApi = async (lang) => {
+        try {
+            const response = await fetch(`${SITE_COPY_ENDPOINT_BASE}/${lang}`, {
+                cache: 'no-store',
+            });
+            if (!response.ok) {
+                return null;
+            }
+            const data = await response.json();
+            if (data && typeof data.entries === 'object') {
+                return data.entries;
+            }
+            if (data && typeof data === 'object') {
+                return data;
+            }
+            return null;
+        } catch (error) {
+            console.warn('Site copy API yüklenemedi:', error);
+            return null;
+        }
+    };
+
+    const loadDictionary = async (lang) => {
+        if (translations[lang]) {
+            return translations[lang];
+        }
+
+        const apiDictionary = await loadDictionaryFromApi(lang);
+        if (apiDictionary) {
+            translations[lang] = apiDictionary;
+            return apiDictionary;
+        }
+
+        const fileDictionary = await loadDictionaryFromFile(lang);
+        translations[lang] = fileDictionary;
+        return fileDictionary;
     };
 
     const persistLanguage = (lang) => {
