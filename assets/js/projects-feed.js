@@ -1,7 +1,28 @@
 (function () {
+    const feedElement = document.getElementById('project-feed');
+    const template = document.getElementById('project-card-template');
+    const loadingElement = document.getElementById('project-feed-loading');
+    const emptyElement = document.getElementById('project-feed-empty');
+    const errorElement = document.getElementById('project-feed-error');
+
+    if (!feedElement || !template) {
+        return;
+    }
+
     const ABSOLUTE_URL_REGEX = /^https?:\/\//i;
     const DEFAULT_API_BASE = '/api';
     const DEFAULT_CONTENT_ENDPOINT = `${DEFAULT_API_BASE}/content`;
+    const fallbackProjectTypeLabels = {
+        workplace: 'Ofis Projesi',
+        residential: 'Konut Projesi',
+        hospitality: 'Misafirperverlik',
+        concept: 'Konsept Çalışması',
+    };
+    const visualThemes = [
+        'radial-gradient(circle at 30% 20%, rgba(255, 255, 255, 0.18), rgba(0, 0, 0, 0)), linear-gradient(135deg, #1f2937, #0f172a)',
+        'radial-gradient(circle at 70% 60%, rgba(45, 212, 191, 0.35), rgba(0, 0, 0, 0)), linear-gradient(160deg, #0f172a, #1e293b)',
+        'radial-gradient(circle at 20% 80%, rgba(248, 113, 113, 0.4), rgba(0, 0, 0, 0)), linear-gradient(145deg, #1c1917, #0f172a)'
+    ];
 
     const readMetaContent = (name) => {
         const element = document.querySelector(`meta[name="${name}"]`);
@@ -71,34 +92,12 @@
 
     const API_ENDPOINT = resolveContentEndpoint();
     let apiOrigin = '';
+
     try {
         const endpointUrl = new URL(API_ENDPOINT, window.location.origin);
         apiOrigin = endpointUrl.origin;
     } catch (error) {
         apiOrigin = window.location.origin;
-    }
-    const fallbackProjectTypeLabels = {
-        workplace: 'Ofis Projesi',
-        residential: 'Konut Projesi',
-        hospitality: 'Misafirperverlik',
-        concept: 'Konsept Çalışması',
-    };
-
-    const visualThemes = [
-        'radial-gradient(circle at 22% 30%, rgba(255, 206, 165, 0.8) 0%, rgba(255, 206, 165, 0) 55%), radial-gradient(circle at 78% 65%, rgba(255, 126, 126, 0.45) 0%, rgba(255, 126, 126, 0) 50%), linear-gradient(150deg, #1e1f2d, #101019 58%, #2e2439)',
-        'radial-gradient(circle at 70% 30%, rgba(160, 214, 255, 0.7) 0%, rgba(160, 214, 255, 0) 55%), radial-gradient(circle at 18% 70%, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(160deg, #1a2334, #0f131d 60%, #2a3245)',
-        'radial-gradient(circle at 25% 70%, rgba(255, 174, 226, 0.55) 0%, rgba(255, 174, 226, 0) 50%), radial-gradient(circle at 78% 25%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(165deg, #141522, #1c1f31 58%, #322544)',
-        'radial-gradient(circle at 80% 20%, rgba(140, 255, 210, 0.55) 0%, rgba(140, 255, 210, 0) 55%), radial-gradient(circle at 18% 75%, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(170deg, #101d1c, #142932 60%, #273b4a)',
-    ];
-
-    const listElement = document.getElementById('insights-list');
-    const template = document.getElementById('insight-card-template');
-    const loadingElement = document.getElementById('insights-loading');
-    const emptyElement = document.getElementById('insights-empty');
-    const errorElement = document.getElementById('insights-error');
-
-    if (!listElement || !template) {
-        return;
     }
 
     let cache = [];
@@ -131,18 +130,18 @@
         hasError = state === 'error';
     };
 
-    const normalizeLanguage = (value) => {
-        if (typeof value !== 'string') {
-            return '';
-        }
-        return value.trim().toLowerCase();
-    };
-
     const getActiveLanguage = () => {
         if (window.I18N && typeof window.I18N.getCurrentLanguage === 'function') {
             return window.I18N.getCurrentLanguage();
         }
         return document.documentElement.lang || 'tr';
+    };
+
+    const normalizeLanguage = (value) => {
+        if (typeof value !== 'string') {
+            return '';
+        }
+        return value.trim().toLowerCase();
     };
 
     const filterByLanguage = (items, lang) => {
@@ -154,6 +153,25 @@
             }
             return itemLang === activeLang;
         });
+    };
+
+    const stripHtml = (value) => {
+        if (typeof value !== 'string') {
+            return '';
+        }
+        return value.replace(/<[^>]*>/g, ' ');
+    };
+
+    const getExcerpt = (value, limit = 180) => {
+        const text = stripHtml(value).replace(/\s+/g, ' ').trim();
+        if (!text) {
+            return '';
+        }
+        if (text.length <= limit) {
+            return text;
+        }
+        const truncated = text.slice(0, limit).replace(/\s+\S*$/, '');
+        return `${truncated.trim()}…`;
     };
 
     const formatDate = (dateString, lang) => {
@@ -175,47 +193,46 @@
                 year: 'numeric',
                 month: '2-digit',
                 day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
             }).format(date);
         } catch (error) {
-            console.warn('Date formatting failed:', error);
-            return date.toLocaleString();
+            return date.toLocaleDateString();
         }
     };
 
-    const stripHtml = (value) => {
-        if (typeof value !== 'string') {
+    const resolvePhotoUrl = (content) => {
+        if (!content || !content.image || typeof content.image.url !== 'string') {
             return '';
         }
-        return value.replace(/<[^>]*>/g, ' ');
-    };
-
-    const getExcerpt = (value, limit = 240) => {
-        const text = stripHtml(value).replace(/\s+/g, ' ').trim();
-        if (!text) {
+        const trimmed = content.image.url.trim();
+        if (!trimmed) {
             return '';
         }
-        if (text.length <= limit) {
-            return text;
+        if (ABSOLUTE_URL_REGEX.test(trimmed)) {
+            return trimmed;
         }
-        const truncated = text.slice(0, limit).replace(/\s+\S*$/, '');
-        return `${truncated.trim()}…`;
+        if (trimmed.startsWith('/')) {
+            return `${apiOrigin}${trimmed}`;
+        }
+        return `${apiOrigin}/${trimmed}`.replace(/([^:]\/)\/+/g, '$1');
     };
 
-    const normalizeProjectType = (value) => {
-        if (typeof value !== 'string') {
-            return 'workplace';
+    const applyVisual = (element, index, photoUrl) => {
+        if (!element) return;
+        if (photoUrl) {
+            element.style.backgroundImage = `linear-gradient(145deg, rgba(0,0,0,0.45), rgba(0,0,0,0.55)), url('${photoUrl}')`;
+            element.setAttribute('data-has-photo', 'true');
+            return;
         }
-        const normalized = value.trim().toLowerCase();
-        if (!normalized) {
-            return 'workplace';
-        }
-        return normalized;
+        const theme = visualThemes[index % visualThemes.length];
+        element.style.backgroundImage = theme;
+        element.removeAttribute('data-has-photo');
     };
 
     const getProjectTypeLabel = (code) => {
-        const normalized = normalizeProjectType(code);
+        const normalized = normalizeLanguage(code);
+        if (!normalized) {
+            return fallbackProjectTypeLabels.workplace;
+        }
         if (window.I18N && typeof window.I18N.translate === 'function') {
             const translated = window.I18N.translate(`content.projectTypes.${normalized}`);
             if (translated) {
@@ -248,41 +265,9 @@
         return normalized.toUpperCase();
     };
 
-    const resolvePhotoUrl = (content) => {
-        if (!content || !content.image || typeof content.image.url !== 'string') {
-            return '';
-        }
-        const trimmed = content.image.url.trim();
-        if (!trimmed) {
-            return '';
-        }
-        if (ABSOLUTE_URL_REGEX.test(trimmed)) {
-            return trimmed;
-        }
-        if (trimmed.startsWith('/')) {
-            return `${apiOrigin}${trimmed}`;
-        }
-        return `${apiOrigin}/${trimmed}`.replace(/([^:]\/)\/+/g, '$1');
-    };
-
-    const applyVisual = (element, index, photoUrl) => {
-        if (!element) return;
-
-        if (photoUrl) {
-            element.style.backgroundImage = `linear-gradient(145deg, rgba(2, 6, 23, 0.45), rgba(0, 0, 0, 0.65)), url('${photoUrl}')`;
-            element.setAttribute('data-has-photo', 'true');
-            return;
-        }
-
-        const theme = visualThemes[index % visualThemes.length];
-        element.style.backgroundImage = theme;
-        element.removeAttribute('data-has-photo');
-    };
-
     const render = (lang) => {
-        const items = Array.isArray(cache) ? cache : [];
-        const filtered = filterByLanguage(items, lang);
-        listElement.innerHTML = '';
+        const filtered = filterByLanguage(Array.isArray(cache) ? cache : [], lang).slice(0, 3);
+        feedElement.innerHTML = '';
 
         if (filtered.length === 0) {
             return 0;
@@ -293,8 +278,8 @@
             const article = fragment.querySelector('article');
             const visual = fragment.querySelector('[data-role="visual"]');
             const typeElement = fragment.querySelector('[data-role="project-type"]');
-            const dateElement = fragment.querySelector('[data-role="date"]');
             const languageElement = fragment.querySelector('[data-role="language"]');
+            const dateElement = fragment.querySelector('[data-role="date"]');
             const titleElement = fragment.querySelector('[data-role="title"]');
             const excerptElement = fragment.querySelector('[data-role="excerpt"]');
 
@@ -305,42 +290,19 @@
             const photoUrl = resolvePhotoUrl(content);
             applyVisual(visual, index, photoUrl);
 
-            if (dateElement) {
-                const formattedDate = formatDate(content && (content.date || content.createdAt), lang);
-                if (formattedDate) {
-                    dateElement.textContent = formattedDate;
-                    const isoSource = content && (content.date || content.createdAt);
-                    if (isoSource) {
-                        const isoDate = new Date(isoSource);
-                        if (!Number.isNaN(isoDate.getTime())) {
-                            dateElement.setAttribute('datetime', isoDate.toISOString());
-                        }
-                    }
-                } else {
-                    dateElement.textContent = '';
-                }
-            }
-
             if (typeElement) {
-                const label = getProjectTypeLabel(content && content.projectType);
-                if (label) {
-                    typeElement.textContent = label;
-                    typeElement.hidden = false;
-                } else {
-                    typeElement.textContent = '';
-                    typeElement.hidden = true;
-                }
+                typeElement.textContent = getProjectTypeLabel(content && content.projectType);
             }
 
             if (languageElement) {
                 const label = getLanguageLabel(content && content.language);
-                if (label) {
-                    languageElement.textContent = label;
-                    languageElement.hidden = false;
-                } else {
-                    languageElement.textContent = '';
-                    languageElement.hidden = true;
-                }
+                languageElement.textContent = label;
+                languageElement.hidden = !label;
+            }
+
+            if (dateElement) {
+                const formattedDate = formatDate(content && (content.date || content.createdAt), lang);
+                dateElement.textContent = formattedDate;
             }
 
             if (titleElement) {
@@ -348,11 +310,10 @@
             }
 
             if (excerptElement) {
-                const excerpt = getExcerpt(content && content.body);
-                excerptElement.textContent = excerpt;
+                excerptElement.textContent = getExcerpt(content && content.body);
             }
 
-            listElement.appendChild(fragment);
+            feedElement.appendChild(fragment);
         });
 
         return filtered.length;
@@ -367,9 +328,7 @@
 
         try {
             const response = await fetch(API_ENDPOINT, {
-                headers: {
-                    Accept: 'application/json',
-                },
+                headers: { Accept: 'application/json' },
             });
 
             if (!response.ok) {
@@ -387,10 +346,7 @@
                 setState(null);
             }
         } catch (error) {
-            console.error('İçerikler alınamadı:', error);
-            if (!hasLoadedOnce) {
-                listElement.innerHTML = '';
-            }
+            console.error('Projeler alınamadı:', error);
             setState('error');
         } finally {
             isFetching = false;
