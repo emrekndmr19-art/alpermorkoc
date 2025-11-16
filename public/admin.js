@@ -212,11 +212,74 @@ const flattenSiteCopyEntries = (entries, prefix = '') => {
   });
 };
 
+<<<<<<< HEAD
+const ADMIN_TOKEN_STORAGE_KEY = 'adminToken';
+=======
+>>>>>>> origin/main
 let token = '';
 const siteCopyCache = SUPPORTED_SITE_COPY_LANGUAGES.reduce((acc, lang) => {
   acc[lang] = {};
   return acc;
 }, {});
+<<<<<<< HEAD
+
+let storageAvailable = true;
+
+function getStorage() {
+  if (!storageAvailable) {
+    return null;
+  }
+
+  try {
+    if (typeof window === 'undefined' || typeof window.localStorage === 'undefined') {
+      storageAvailable = false;
+      return null;
+    }
+
+    return window.localStorage;
+  } catch (error) {
+    storageAvailable = false;
+    console.warn('localStorage kullanılamıyor. Token sadece bu sekmede saklanacak.', error);
+    return null;
+  }
+}
+
+function readTokenFromStorage() {
+  const storage = getStorage();
+
+  if (!storage) {
+    return '';
+  }
+
+  try {
+    return storage.getItem(ADMIN_TOKEN_STORAGE_KEY) || '';
+  } catch (error) {
+    storageAvailable = false;
+    console.warn('Admin token yerel depodan okunamadı.', error);
+    return '';
+  }
+}
+
+function writeTokenToStorage(value) {
+  const storage = getStorage();
+
+  if (!storage) {
+    return;
+  }
+
+  try {
+    if (value) {
+      storage.setItem(ADMIN_TOKEN_STORAGE_KEY, value);
+    } else {
+      storage.removeItem(ADMIN_TOKEN_STORAGE_KEY);
+    }
+  } catch (error) {
+    storageAvailable = false;
+    console.warn('Admin token yerel depoya kaydedilemedi.', error);
+  }
+}
+=======
+>>>>>>> origin/main
 
 function sanitizeToken(value) {
   if (typeof value !== 'string') {
@@ -229,12 +292,7 @@ function sanitizeToken(value) {
 function persistToken(value) {
   const sanitized = sanitizeToken(value);
   token = sanitized;
-
-  if (sanitized) {
-    localStorage.setItem('adminToken', sanitized);
-  } else {
-    localStorage.removeItem('adminToken');
-  }
+  writeTokenToStorage(sanitized);
 
   return sanitized;
 }
@@ -257,7 +315,7 @@ function applyBootstrapTokenFromConfig() {
   }
 }
 
-token = persistToken(localStorage.getItem('adminToken'));
+token = sanitizeToken(readTokenFromStorage());
 applyBootstrapTokenFromConfig();
 
 function setStatus(element, message, isError = false) {
@@ -392,7 +450,11 @@ async function handleSiteCopySubmit(event) {
 <<<<<<< HEAD
     setStatus(adminStatus, 'Lütfen düzenlenecek metnin adını yazın.', true);
 =======
+<<<<<<< HEAD
+    setStatus(adminStatus, 'Lütfen düzenlenecek metnin adını yazın.', true);
+=======
     setStatus(adminStatus, 'Lütfen güncellenecek anahtarı yazın.', true);
+>>>>>>> origin/main
 >>>>>>> origin/main
     return;
   }
@@ -447,7 +509,12 @@ async function deleteSiteCopyEntry(language, key) {
   const friendlyLabel = getSiteCopyLabel(key) || key;
   if (!window.confirm(`"${friendlyLabel}" metnini silmek istediğinize emin misiniz?`)) {
 =======
+<<<<<<< HEAD
+  const friendlyLabel = getSiteCopyLabel(key) || key;
+  if (!window.confirm(`"${friendlyLabel}" metnini silmek istediğinize emin misiniz?`)) {
+=======
   if (!window.confirm(`${key} anahtarını silmek istediğinize emin misiniz?`)) {
+>>>>>>> origin/main
 >>>>>>> origin/main
     return;
   }

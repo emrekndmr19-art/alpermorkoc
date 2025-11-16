@@ -9,7 +9,6 @@
         return;
     }
 
-<<<<<<< HEAD
     const parseFeedLimit = () => {
         const attr = feedElement.getAttribute('data-feed-limit');
         if (typeof attr !== 'string') {
@@ -31,8 +30,6 @@
 
     const feedLimit = parseFeedLimit();
 
-=======
->>>>>>> origin/main
     const ABSOLUTE_URL_REGEX = /^https?:\/\//i;
     const DEFAULT_API_BASE = '/api';
     const DEFAULT_CONTENT_ENDPOINT = `${DEFAULT_API_BASE}/content`;
@@ -102,7 +99,6 @@
         const config = getSiteConfig();
         const configEndpoint = sanitizeEndpoint(config && config.contentEndpoint);
         const configBase = config && config.contentApiBase;
-<<<<<<< HEAD
         const metaEndpoint = sanitizeEndpoint(
             readMetaContent('portfolio:content-endpoint') ||
                 readMetaContent('projects:content-endpoint') ||
@@ -114,10 +110,6 @@
             readMetaContent('projects:content-api-base') ||
             readMetaContent('content:api-base') ||
             readMetaContent('insights:content-api-base');
-=======
-        const metaEndpoint = sanitizeEndpoint(readMetaContent('insights:content-endpoint'));
-        const metaBase = readMetaContent('insights:content-api-base');
->>>>>>> origin/main
 
         return (
             configEndpoint ||
@@ -287,11 +279,7 @@
         }
         if (normalized === 'multi') {
             if (window.I18N && typeof window.I18N.translate === 'function') {
-<<<<<<< HEAD
                 const multiLabel = window.I18N.translate('content.language.multi');
-=======
-                const multiLabel = window.I18N.translate('insights.feed.multiBadge');
->>>>>>> origin/main
                 if (multiLabel) {
                     return multiLabel;
                 }
@@ -308,7 +296,6 @@
     };
 
     const render = (lang) => {
-<<<<<<< HEAD
         const filteredItems = filterByLanguage(Array.isArray(cache) ? cache : [], lang);
         const limited = Number.isFinite(feedLimit) ? filteredItems.slice(0, feedLimit) : filteredItems;
         feedElement.innerHTML = '';
@@ -318,16 +305,6 @@
         }
 
         limited.forEach((content, index) => {
-=======
-        const filtered = filterByLanguage(Array.isArray(cache) ? cache : [], lang).slice(0, 3);
-        feedElement.innerHTML = '';
-
-        if (filtered.length === 0) {
-            return 0;
-        }
-
-        filtered.forEach((content, index) => {
->>>>>>> origin/main
             const fragment = template.content.cloneNode(true);
             const article = fragment.querySelector('article');
             const visual = fragment.querySelector('[data-role="visual"]');
@@ -370,11 +347,7 @@
             feedElement.appendChild(fragment);
         });
 
-<<<<<<< HEAD
         return limited.length;
-=======
-        return filtered.length;
->>>>>>> origin/main
     };
 
     const fetchContents = async () => {

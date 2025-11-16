@@ -83,9 +83,15 @@
       "body": "Admin panelinden eklediğiniz mimarlık projeleri bu blokta öne çıkar, Projeler sayfasında detaylı olarak listelenir ve Portfolyo sayfasında hikâyeleriyle birlikte yer alır.",
       "cta": "Projeler sayfasına git",
 =======
+<<<<<<< HEAD
+      "title": "Güncel proje akışı",
+      "body": "Admin panelinden eklediğiniz mimarlık projeleri bu blokta öne çıkar, Projeler sayfasında detaylı olarak listelenir ve Portfolyo sayfasında hikâyeleriyle birlikte yer alır.",
+      "cta": "Projeler sayfasına git",
+=======
       "title": "Güncel sahne notlarımız",
       "body": "Admin panelinden yüklenen mimarlık projeleri bu blokta öne çıkar, Notlar sayfasındaki tam arşive bağlanır ve her kart proje tipine göre etiketlenir.",
       "cta": "Tüm projeleri gör",
+>>>>>>> origin/main
 >>>>>>> origin/main
       "loading": "Projeler yükleniyor...",
       "empty": "Henüz proje eklenmedi.",
@@ -120,6 +126,8 @@
       "multi": "TR · EN"
     }
   },
+<<<<<<< HEAD
+=======
 <<<<<<< HEAD
 =======
   "insights": {
@@ -241,6 +249,7 @@
     },
     "backLink": "Tüm yazılara dön"
   },
+>>>>>>> origin/main
 >>>>>>> origin/main
   "careers": {
     "intro": {

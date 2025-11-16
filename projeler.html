@@ -3,9 +3,31 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<<<<<<< HEAD
+<<<<<<<< HEAD:projeler.html
     <title data-i18n="meta.titles.projects">Projeler — Alpimimarlık</title>
     <meta content="/api" name="content:api-base" />
     <meta content="/api/content" name="content:endpoint" />
+========
+<<<<<<< HEAD:portfolio.html
+    <title data-i18n="meta.titles.portfolio">Portfolyo — Alpimimarlık</title>
+    <meta content="/api" name="content:api-base" />
+    <meta content="/api/content" name="content:endpoint" />
+=======
+    <title data-i18n="meta.titles.insights">Insights — Alpimimarlık</title>
+    <meta content="/api" name="insights:content-api-base" />
+    <meta content="/api/content" name="insights:content-endpoint" />
+>>>>>>> origin/main:insights.html
+>>>>>>>> origin/main:portfolio.html
+=======
+<<<<<<<< HEAD:portfolio.html
+    <title data-i18n="meta.titles.portfolio">Portfolyo — Alpimimarlık</title>
+========
+    <title data-i18n="meta.titles.projects">Projeler — Alpimimarlık</title>
+>>>>>>>> origin/main:projeler.html
+    <meta content="/api" name="content:api-base" />
+    <meta content="/api/content" name="content:endpoint" />
+>>>>>>> origin/main
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
@@ -32,7 +54,19 @@
         };
     </script>
     <style>
+<<<<<<< HEAD
+<<<<<<<< HEAD:projeler.html
         .project-card-visual {
+========
+        .portfolio-visual {
+>>>>>>>> origin/main:portfolio.html
+=======
+<<<<<<<< HEAD:portfolio.html
+        .portfolio-visual {
+========
+        .project-card-visual {
+>>>>>>>> origin/main:projeler.html
+>>>>>>> origin/main
             position: relative;
             overflow: hidden;
             border-radius: 0.25rem;
@@ -41,7 +75,36 @@
             box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
         }
 
+<<<<<<< HEAD
+<<<<<<<< HEAD:projeler.html
         .project-card-visual::after {
+========
+<<<<<<< HEAD:portfolio.html
+        .portfolio-visual[data-has-photo='true'] {
+=======
+        .ai-visual[data-has-photo='true'] {
+>>>>>>> origin/main:insights.html
+=======
+<<<<<<<< HEAD:portfolio.html
+        .portfolio-visual[data-has-photo='true'] {
+>>>>>>> origin/main
+            background-size: cover;
+            background-position: center;
+        }
+
+<<<<<<< HEAD
+<<<<<<< HEAD:portfolio.html
+        .portfolio-visual::after {
+=======
+        .ai-visual::after {
+>>>>>>> origin/main:insights.html
+>>>>>>>> origin/main:portfolio.html
+=======
+        .portfolio-visual::after {
+========
+        .project-card-visual::after {
+>>>>>>>> origin/main:projeler.html
+>>>>>>> origin/main
             content: "";
             position: absolute;
             inset: 0;
@@ -50,6 +113,29 @@
             opacity: 0.3;
             pointer-events: none;
         }
+<<<<<<< HEAD
+=======
+<<<<<<<< HEAD:portfolio.html
+>>>>>>> origin/main
+
+        .portfolio-message {
+            border-radius: 0.25rem;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            background: rgba(0, 0, 0, 0.4);
+            padding: 1.25rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .portfolio-message[data-variant='error'] {
+            border-color: rgba(248, 113, 113, 0.45);
+            background: rgba(248, 113, 113, 0.12);
+            color: #fecaca;
+        }
+<<<<<<< HEAD
+=======
+========
+>>>>>>>> origin/main:projeler.html
+>>>>>>> origin/main
     </style>
 </head>
 <body class="bg-background-dark text-primary font-body antialiased">
@@ -80,6 +166,62 @@
     </header>
 
     <main class="px-8 py-20 text-primary md:px-20">
+<<<<<<< HEAD
+<<<<<<<< HEAD:projeler.html
+=======
+<<<<<<<< HEAD:portfolio.html
+        <div class="space-y-12">
+            <div class="max-w-4xl space-y-6">
+                <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="portfolioPage.hero.eyebrow">Portfolyo</p>
+                <h1 class="text-4xl font-display text-white md:text-5xl" data-i18n="portfolioPage.hero.title">Sunum diliyle anlatılan projeler</h1>
+                <p class="text-base text-white/70" data-i18n="portfolioPage.hero.body">
+                    Bu sayfa admin paneline yüklenen tüm projeleri özet, etiket ve fotoğrafıyla listeler. Ziyaretçiler filtreleri kullanarak kendi ihtiyaçlarına uygun örnekleri seçebilir.
+                </p>
+                <p class="text-sm text-white/60" data-i18n="portfolioPage.hero.note">Dil filtresi ziyaretçinin seçimine göre otomatik çalışır; “Çok Dilli” kartlar her iki dilde de görünür.</p>
+            </div>
+
+            <section class="space-y-6">
+                <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                    <div class="space-y-2">
+                        <p class="text-xs uppercase tracking-[0.45em] text-white/60" data-i18n="portfolioPage.filters.label">Proje tipi</p>
+                        <div class="flex flex-wrap gap-2" id="portfolio-type-filters">
+                            <button class="rounded-sm border border-white/25 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/80 transition hover:border-white/60" data-filter="all" data-i18n="portfolioPage.filters.all" type="button">Tümü</button>
+                            <button class="rounded-sm border border-white/25 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/80 transition hover:border-white/60" data-filter="workplace" data-i18n="portfolioPage.filters.workplace" type="button">Ofis / Çalışma Alanı</button>
+                            <button class="rounded-sm border border-white/25 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/80 transition hover:border-white/60" data-filter="residential" data-i18n="portfolioPage.filters.residential" type="button">Konut</button>
+                            <button class="rounded-sm border border-white/25 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/80 transition hover:border-white/60" data-filter="hospitality" data-i18n="portfolioPage.filters.hospitality" type="button">Sosyal Alan &amp; Misafirperverlik</button>
+                            <button class="rounded-sm border border-white/25 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/80 transition hover:border-white/60" data-filter="concept" data-i18n="portfolioPage.filters.concept" type="button">Konsept Çalışması</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4" id="portfolio-feedback">
+                    <div class="portfolio-message" data-visible="false" hidden id="portfolio-loading" role="status">
+                        <span data-i18n="portfolioPage.feed.loading">Portfolyo yükleniyor...</span>
+                    </div>
+                    <div class="portfolio-message" data-visible="false" hidden id="portfolio-empty" role="status">
+                        <span data-i18n="portfolioPage.feed.empty">Henüz portfolyoda proje yok.</span>
+                    </div>
+                    <div class="portfolio-message" data-visible="false" data-variant="error" hidden id="portfolio-error" role="alert">
+                        <span data-i18n="portfolioPage.feed.error">Portfolyoyu yüklerken bir hata oluştu.</span>
+                    </div>
+                </div>
+
+                <div aria-live="polite" class="space-y-8" id="portfolio-list"></div>
+            </section>
+        </div>
+    </main>
+
+    <template id="portfolio-card-template">
+        <article class="space-y-4 border border-white/10 bg-black/30 p-6">
+            <div aria-hidden="true" class="portfolio-visual h-40 w-full" data-role="visual"></div>
+            <div class="flex items-center justify-between text-[0.6rem] uppercase tracking-[0.45em] text-accent">
+                <div class="flex items-center gap-3">
+                    <span class="rounded-sm border border-white/20 px-2 py-0.5 text-[0.5rem]" data-role="project-type"></span>
+                    <span class="text-white/50" data-role="language"></span>
+                </div>
+                <time class="text-white/70" data-role="date"></time>
+========
+>>>>>>> origin/main
         <div class="space-y-14">
             <div class="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
                 <div class="space-y-5 lg:max-w-3xl">
@@ -131,8 +273,72 @@
                     <span class="text-white/50" data-role="language"></span>
                 </div>
                 <time class="text-white/60" data-role="date"></time>
+<<<<<<< HEAD
             </div>
             <h3 class="text-xl font-display text-white" data-role="title"></h3>
+========
+        <div class="space-y-12">
+            <div class="max-w-4xl space-y-6">
+                <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="portfolioPage.hero.eyebrow">Portfolyo</p>
+                <h1 class="text-4xl font-display text-white md:text-5xl" data-i18n="portfolioPage.hero.title">Sunum diliyle anlatılan projeler</h1>
+                <p class="text-base text-white/70" data-i18n="portfolioPage.hero.body">
+                    Bu sayfa admin paneline yüklenen tüm projeleri özet, etiket ve fotoğrafıyla listeler. Ziyaretçiler filtreleri kullanarak kendi ihtiyaçlarına uygun örnekleri seçebilir.
+                </p>
+                <p class="text-sm text-white/60" data-i18n="portfolioPage.hero.note">Dil filtresi ziyaretçinin seçimine göre otomatik çalışır; “Çok Dilli” kartlar her iki dilde de görünür.</p>
+            </div>
+
+            <section class="space-y-6">
+                <div class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                    <div class="space-y-2">
+                        <p class="text-xs uppercase tracking-[0.45em] text-white/60" data-i18n="portfolioPage.filters.label">Proje tipi</p>
+                        <div class="flex flex-wrap gap-2" id="portfolio-type-filters">
+                            <button class="rounded-sm border border-white/25 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/80 transition hover:border-white/60" data-filter="all" data-i18n="portfolioPage.filters.all" type="button">Tümü</button>
+                            <button class="rounded-sm border border-white/25 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/80 transition hover:border-white/60" data-filter="workplace" data-i18n="portfolioPage.filters.workplace" type="button">Ofis / Çalışma Alanı</button>
+                            <button class="rounded-sm border border-white/25 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/80 transition hover:border-white/60" data-filter="residential" data-i18n="portfolioPage.filters.residential" type="button">Konut</button>
+                            <button class="rounded-sm border border-white/25 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/80 transition hover:border-white/60" data-filter="hospitality" data-i18n="portfolioPage.filters.hospitality" type="button">Sosyal Alan &amp; Misafirperverlik</button>
+                            <button class="rounded-sm border border-white/25 px-4 py-2 text-xs uppercase tracking-[0.3em] text-white/80 transition hover:border-white/60" data-filter="concept" data-i18n="portfolioPage.filters.concept" type="button">Konsept Çalışması</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4" id="portfolio-feedback">
+                    <div class="portfolio-message" data-visible="false" hidden id="portfolio-loading" role="status">
+                        <span data-i18n="portfolioPage.feed.loading">Portfolyo yükleniyor...</span>
+                    </div>
+                    <div class="portfolio-message" data-visible="false" hidden id="portfolio-empty" role="status">
+                        <span data-i18n="portfolioPage.feed.empty">Henüz portfolyoda proje yok.</span>
+                    </div>
+                    <div class="portfolio-message" data-visible="false" data-variant="error" hidden id="portfolio-error" role="alert">
+                        <span data-i18n="portfolioPage.feed.error">Portfolyoyu yüklerken bir hata oluştu.</span>
+                    </div>
+                </div>
+
+                <div aria-live="polite" class="space-y-8" id="portfolio-list"></div>
+            </section>
+        </div>
+    </main>
+
+    <template id="portfolio-card-template">
+        <article class="space-y-4 border border-white/10 bg-black/30 p-6">
+<<<<<<< HEAD:portfolio.html
+            <div aria-hidden="true" class="portfolio-visual h-40 w-full" data-role="visual"></div>
+=======
+            <div aria-hidden="true" class="ai-visual h-32 w-full" data-role="visual"></div>
+>>>>>>> origin/main:insights.html
+            <div class="flex items-center justify-between text-[0.6rem] uppercase tracking-[0.45em] text-accent">
+                <div class="flex items-center gap-3">
+                    <span class="rounded-sm border border-white/20 px-2 py-0.5 text-[0.5rem]" data-role="project-type"></span>
+                    <span class="text-white/50" data-role="language"></span>
+                </div>
+                <time class="text-white/70" data-role="date"></time>
+            </div>
+            <h2 class="text-2xl font-display text-white" data-role="title"></h2>
+>>>>>>>> origin/main:portfolio.html
+=======
+>>>>>>>> origin/main:projeler.html
+            </div>
+            <h3 class="text-xl font-display text-white" data-role="title"></h3>
+>>>>>>> origin/main
             <p class="text-sm text-white/70" data-role="excerpt"></p>
         </article>
     </template>
@@ -190,13 +396,31 @@
             <nav class="mt-10 space-y-6 text-sm uppercase tracking-[0.4em] text-white/70">
                 <a class="block transition-opacity hover:opacity-60" href="index.html" data-i18n="common.nav.home">Ana Sayfa</a>
                 <a class="block transition-opacity hover:opacity-60" href="studio.html" data-i18n="common.nav.studio">Studio</a>
+<<<<<<< HEAD
+<<<<<<<< HEAD:projeler.html
+                <a class="block transition-opacity hover:opacity-60" href="projeler.html" data-i18n="common.nav.projects">Projeler</a>
+                <a class="block transition-opacity hover:opacity-60" href="portfolio.html" data-i18n="common.nav.portfolio">Portfolyo</a>
+========
+<<<<<<< HEAD:portfolio.html
+=======
+<<<<<<<< HEAD:portfolio.html
+                <a class="block transition-opacity hover:opacity-60" href="projeler.html" data-i18n="common.nav.projects">Projeler</a>
+                <a class="block transition-opacity hover:opacity-60" href="portfolio.html" data-i18n="common.nav.portfolio">Portfolyo</a>
+========
 <<<<<<< HEAD:projeler.html
+>>>>>>> origin/main
                 <a class="block transition-opacity hover:opacity-60" href="projeler.html" data-i18n="common.nav.projects">Projeler</a>
                 <a class="block transition-opacity hover:opacity-60" href="portfolio.html" data-i18n="common.nav.portfolio">Portfolyo</a>
 =======
                 <a class="block transition-opacity hover:opacity-60" href="services.html" data-i18n="common.nav.services">Hizmetler</a>
                 <a class="block transition-opacity hover:opacity-60" href="insights.html" data-i18n="common.nav.insights">Notlar</a>
+<<<<<<< HEAD
+>>>>>>> origin/main:insights.html
+>>>>>>>> origin/main:portfolio.html
+=======
 >>>>>>> origin/main:insight-konsept-oturumlari.html
+>>>>>>>> origin/main:projeler.html
+>>>>>>> origin/main
                 <a class="block transition-opacity hover:opacity-60" href="kariyer.html" data-i18n="common.nav.careers">Kariyer</a>
                 <a class="block transition-opacity hover:opacity-60" href="contact.html" data-i18n="common.nav.contact">Contact</a>
             </nav>
@@ -223,13 +447,31 @@
                 <ul class="mt-4 space-y-3 text-sm text-gray-400">
                     <li><a class="transition-colors hover:text-white" href="index.html" data-i18n="common.nav.home">Home</a></li>
                     <li><a class="transition-colors hover:text-white" href="studio.html" data-i18n="common.nav.studio">Studio</a></li>
+<<<<<<< HEAD
+<<<<<<<< HEAD:projeler.html
+                    <li><a class="transition-colors hover:text-white" href="projeler.html" data-i18n="common.nav.projects">Projeler</a></li>
+                    <li><a class="transition-colors hover:text-white" href="portfolio.html" data-i18n="common.nav.portfolio">Portfolyo</a></li>
+========
+<<<<<<< HEAD:portfolio.html
+=======
+<<<<<<<< HEAD:portfolio.html
+                    <li><a class="transition-colors hover:text-white" href="projeler.html" data-i18n="common.nav.projects">Projeler</a></li>
+                    <li><a class="transition-colors hover:text-white" href="portfolio.html" data-i18n="common.nav.portfolio">Portfolyo</a></li>
+========
 <<<<<<< HEAD:projeler.html
+>>>>>>> origin/main
                     <li><a class="transition-colors hover:text-white" href="projeler.html" data-i18n="common.nav.projects">Projeler</a></li>
                     <li><a class="transition-colors hover:text-white" href="portfolio.html" data-i18n="common.nav.portfolio">Portfolyo</a></li>
 =======
                     <li><a class="transition-colors hover:text-white" href="services.html" data-i18n="common.nav.services">Hizmetler</a></li>
                     <li><a class="transition-colors hover:text-white" href="insights.html" data-i18n="common.nav.insights">Notlar</a></li>
+<<<<<<< HEAD
+>>>>>>> origin/main:insights.html
+>>>>>>>> origin/main:portfolio.html
+=======
 >>>>>>> origin/main:insight-konsept-oturumlari.html
+>>>>>>>> origin/main:projeler.html
+>>>>>>> origin/main
                     <li><a class="transition-colors hover:text-white" href="kariyer.html" data-i18n="common.nav.careers">Kariyer</a></li>
                     <li><a class="transition-colors hover:text-white" href="contact.html" data-i18n="common.nav.contact">Contact</a></li>
                 </ul>
@@ -249,7 +491,23 @@
     <script src="assets/js/i18n.js"></script>
     <script src="assets/js/cookie-consent.js"></script>
     <script src="site-config.js" defer></script>
+<<<<<<< HEAD
+<<<<<<<< HEAD:projeler.html
     <script src="assets/js/projects-feed.js" defer></script>
+========
+<<<<<<< HEAD:portfolio.html
+    <script src="assets/js/portfolio.js" defer></script>
+=======
+    <script src="assets/js/insights.js" defer></script>
+>>>>>>> origin/main:insights.html
+>>>>>>>> origin/main:portfolio.html
+=======
+<<<<<<<< HEAD:portfolio.html
+    <script src="assets/js/portfolio.js" defer></script>
+========
+    <script src="assets/js/projects-feed.js" defer></script>
+>>>>>>>> origin/main:projeler.html
+>>>>>>> origin/main
     <script>
         const menuToggle = document.getElementById('menu-toggle');
         const menuPanel = document.getElementById('menu-panel');

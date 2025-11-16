@@ -83,9 +83,15 @@
       "body": "Projects you publish in the admin panel surface here, receive a full listing on the Projects page, and carry their stories across the Portfolio view.",
       "cta": "Go to Projects",
 =======
+<<<<<<< HEAD
+      "title": "Fresh project stream",
+      "body": "Projects you publish in the admin panel surface here, receive a full listing on the Projects page, and carry their stories across the Portfolio view.",
+      "cta": "Go to Projects",
+=======
       "title": "Latest scene notes",
       "body": "Projects published through the admin panel surface here, connect to the full Insights archive, and carry project-type labels for quick context.",
       "cta": "View all projects",
+>>>>>>> origin/main
 >>>>>>> origin/main
       "loading": "Loading projects...",
       "empty": "No projects have been published yet.",
@@ -120,6 +126,8 @@
       "multi": "TR · EN"
     }
   },
+<<<<<<< HEAD
+=======
 <<<<<<< HEAD
 =======
   "insights": {
@@ -241,6 +249,7 @@
     },
     "backLink": "Back to all articles"
   },
+>>>>>>> origin/main
 >>>>>>> origin/main
   "careers": {
     "intro": {
