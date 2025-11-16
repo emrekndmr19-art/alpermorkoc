@@ -78,6 +78,15 @@
     "vision": {
       "eyebrow": "Stüdyo Vizyonu",
       "body2": "Her sunum klasöründe, giriş sahnesinden gece cephe kurgusuna kadar uzanan atmosfer anlatıları yer alıyor. Hazırlık sürecinde paylaştığımız eskizler ve maket fotoğrafları, anlatının tonunu koruyarak ekiplerin tanıtım adımlarını hızlandırıyor."
+    },
+    "projects": {
+      "eyebrow": "Mimarlık Projeleri",
+      "title": "Güncel sahne notlarımız",
+      "body": "Admin panelinden yüklenen mimarlık projeleri bu blokta öne çıkar, Notlar sayfasındaki tam arşive bağlanır ve her kart proje tipine göre etiketlenir.",
+      "cta": "Tüm projeleri gör",
+      "loading": "Projeler yükleniyor...",
+      "empty": "Henüz proje eklenmedi.",
+      "error": "Projeler yüklenirken bir sorun oluştu."
     }
   },
   "studio": {
@@ -128,9 +137,9 @@
   },
   "insights": {
     "hero": {
-      "eyebrow": "Görüşler & Notlar",
-      "title": "Alpimimarlık Not Defteri",
-      "body": "Müşterilerle paylaşılacak dosyaları hazırlarken kullandığımız yöntemleri burada toparlıyoruz. Sunum akışı, görsel seçimleri ve küçük ekibimizin çalışma biçimi hakkında notlar içeren kısa makaleler paylaşıyoruz."
+      "eyebrow": "Mimarlık Projeleri & Notlar",
+      "title": "Stüdyonun yaşayan arşivi",
+      "body": "Sunum kitapçıklarında yer alan mimarlık projelerini, proje tiplerini ve hazırlık notlarını burada toparlıyoruz. Admin panelinden eklenen her kart ana sayfa vitrinine ve bu arşive eşzamanlı düşer."
     },
     "feed": {
       "loading": "İçerikler yükleniyor...",
@@ -157,6 +166,14 @@
         "excerpt": "Haftalık oturumlarımızda kullandığımız sahne tariflerini, ışık önerilerini ve renk paleti kombinlerini örnek dosyalarla birlikte derledik.",
         "link": "Devamını Oku"
       }
+    }
+  },
+  "content": {
+    "projectTypes": {
+      "workplace": "Ofis Projesi",
+      "residential": "Konut Projesi",
+      "hospitality": "Sosyal Alan & Misafirperverlik",
+      "concept": "Konsept Çalışması"
     }
   },
   "insightLobby": {
