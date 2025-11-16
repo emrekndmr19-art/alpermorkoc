@@ -31,15 +31,22 @@ const uploadCvForm = document.getElementById('upload-cv-form');
 const logoutButton = document.getElementById('logout-button');
 const cancelUpdateButton = document.getElementById('cancel-update');
 const createLanguageSelect = document.getElementById('create-language');
+const createImageInput = document.getElementById('create-image');
 const loginStatus = document.getElementById('login-status');
 const adminStatus = document.getElementById('admin-status');
 const contentTableBody = document.getElementById('content-table-body');
+const deletedContentTableBody = document.getElementById('deleted-content-table-body');
 const cvTableBody = document.getElementById('cv-table-body');
 const updateSection = document.getElementById('update-section');
 const updateIdInput = document.getElementById('update-id');
 const updateTitleInput = document.getElementById('update-title');
 const updateBodyInput = document.getElementById('update-body');
 const updateLanguageSelect = document.getElementById('update-language');
+const updateImageInput = document.getElementById('update-image');
+const updateImagePreviewContainer = document.getElementById('update-image-preview-container');
+const updateImagePreview = document.getElementById('update-image-preview');
+const updateImageLink = document.getElementById('update-image-link');
+const updateRemoveImageCheckbox = document.getElementById('update-remove-image');
 
 const LANGUAGE_LABELS = {
   tr: 'Türkçe',
@@ -118,6 +125,41 @@ function setStatus(element, message, isError = false) {
   element.style.color = isError ? '#b91c1c' : '#1e40af';
 }
 
+function toggleUpdateImagePreview(imageData) {
+  if (!updateImagePreviewContainer) {
+    return;
+  }
+
+  if (imageData && imageData.url) {
+    updateImagePreviewContainer.classList.remove('hidden');
+    if (updateImagePreview) {
+      updateImagePreview.src = imageData.url;
+      updateImagePreview.alt = imageData.originalname || 'Yüklenen fotoğraf';
+    }
+    if (updateImageLink) {
+      updateImageLink.href = imageData.url;
+    }
+  } else {
+    updateImagePreviewContainer.classList.add('hidden');
+    if (updateImagePreview) {
+      updateImagePreview.removeAttribute('src');
+      updateImagePreview.alt = '';
+    }
+    if (updateImageLink) {
+      updateImageLink.removeAttribute('href');
+    }
+  }
+}
+
+function resetUpdateImageInputs() {
+  if (updateImageInput) {
+    updateImageInput.value = '';
+  }
+  if (updateRemoveImageCheckbox) {
+    updateRemoveImageCheckbox.checked = false;
+  }
+}
+
 function toggleSections() {
   if (token) {
     loginSection.classList.add('hidden');
@@ -165,7 +207,7 @@ async function login(event) {
 }
 
 async function initializeAdminData() {
-  await Promise.all([fetchContents(), fetchCvs()]);
+  await Promise.all([fetchContents(), fetchDeletedContents(), fetchCvs()]);
 }
 
 function authHeaders() {
@@ -197,7 +239,7 @@ function renderContents(contents) {
   if (contents.length === 0) {
     const row = document.createElement('tr');
     const cell = document.createElement('td');
-    cell.colSpan = 5;
+    cell.colSpan = 6;
     cell.textContent = 'Henüz içerik yok.';
     row.appendChild(cell);
     contentTableBody.appendChild(row);
@@ -216,6 +258,18 @@ function renderContents(contents) {
     const languageCell = document.createElement('td');
     const normalizedLanguage = normalizeLanguageValue(content.language);
     languageCell.textContent = LANGUAGE_LABELS[normalizedLanguage] || normalizedLanguage.toUpperCase();
+
+    const imageCell = document.createElement('td');
+    if (content.image && content.image.url) {
+      const link = document.createElement('a');
+      link.href = content.image.url;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      link.textContent = 'Görüntüle';
+      imageCell.appendChild(link);
+    } else {
+      imageCell.textContent = '—';
+    }
 
     const dateCell = document.createElement('td');
     dateCell.textContent = formatDate(content.date || content.createdAt);
@@ -240,10 +294,67 @@ function renderContents(contents) {
     row.appendChild(titleCell);
     row.appendChild(bodyCell);
     row.appendChild(languageCell);
+    row.appendChild(imageCell);
     row.appendChild(dateCell);
     row.appendChild(actionsCell);
 
     contentTableBody.appendChild(row);
+  });
+}
+
+function renderDeletedContents(contents) {
+  if (!deletedContentTableBody) {
+    return;
+  }
+
+  deletedContentTableBody.innerHTML = '';
+
+  if (!Array.isArray(contents) || contents.length === 0) {
+    const row = document.createElement('tr');
+    const cell = document.createElement('td');
+    cell.colSpan = 4;
+    cell.textContent = 'Şu anda silinen içerik yok.';
+    row.appendChild(cell);
+    deletedContentTableBody.appendChild(row);
+    return;
+  }
+
+  contents.forEach((content) => {
+    const row = document.createElement('tr');
+
+    const titleCell = document.createElement('td');
+    titleCell.textContent = content.title || '-';
+
+    const languageCell = document.createElement('td');
+    const normalizedLanguage = normalizeLanguageValue(content.language);
+    languageCell.textContent = LANGUAGE_LABELS[normalizedLanguage] || normalizedLanguage.toUpperCase();
+
+    const deletedAtCell = document.createElement('td');
+    deletedAtCell.textContent = formatDate(content.deletedAt);
+
+    const actionsCell = document.createElement('td');
+    actionsCell.classList.add('actions');
+
+    const restoreButton = document.createElement('button');
+    restoreButton.type = 'button';
+    restoreButton.textContent = 'Geri Yükle';
+    restoreButton.addEventListener('click', () => restoreContent(content._id));
+
+    const purgeButton = document.createElement('button');
+    purgeButton.type = 'button';
+    purgeButton.textContent = 'Kalıcı Sil';
+    purgeButton.classList.add('danger');
+    purgeButton.addEventListener('click', () => permanentlyDeleteContent(content._id, content.title));
+
+    actionsCell.appendChild(restoreButton);
+    actionsCell.appendChild(purgeButton);
+
+    row.appendChild(titleCell);
+    row.appendChild(languageCell);
+    row.appendChild(deletedAtCell);
+    row.appendChild(actionsCell);
+
+    deletedContentTableBody.appendChild(row);
   });
 }
 
@@ -264,16 +375,14 @@ async function createContent(event) {
   setStatus(adminStatus, 'İçerik ekleniyor...');
 
   const formData = new FormData(createContentForm);
-  const payload = Object.fromEntries(formData.entries());
 
   try {
     const response = await fetch(`${API_BASE}/content`, {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
         ...authHeaders(),
       },
-      body: JSON.stringify(payload),
+      body: formData,
     });
 
     if (response.status === 401) {
@@ -290,8 +399,11 @@ async function createContent(event) {
     if (createLanguageSelect) {
       createLanguageSelect.value = 'tr';
     }
+    if (createImageInput) {
+      createImageInput.value = '';
+    }
     setStatus(adminStatus, 'İçerik başarıyla eklendi.');
-    await fetchContents();
+    await Promise.all([fetchContents(), fetchDeletedContents()]);
   } catch (error) {
     console.error('İçerik eklenemedi:', error);
     setStatus(adminStatus, error.message || 'İçerik eklenemedi.', true);
@@ -306,6 +418,8 @@ function startUpdate(content) {
   if (updateLanguageSelect) {
     updateLanguageSelect.value = normalizeLanguageValue(content.language);
   }
+  resetUpdateImageInputs();
+  toggleUpdateImagePreview(content.image);
   window.scrollTo({ top: updateSection.offsetTop - 20, behavior: 'smooth' });
 }
 
@@ -318,16 +432,14 @@ async function updateContent(event) {
   }
 
   const formData = new FormData(updateContentForm);
-  const payload = Object.fromEntries(formData.entries());
 
   try {
     const response = await fetch(`${API_BASE}/content/${id}`, {
       method: 'PUT',
       headers: {
-        'Content-Type': 'application/json',
         ...authHeaders(),
       },
-      body: JSON.stringify(payload),
+      body: formData,
     });
 
     if (response.status === 401) {
@@ -342,11 +454,13 @@ async function updateContent(event) {
 
     setStatus(adminStatus, 'İçerik güncellendi.');
     updateContentForm.reset();
+    resetUpdateImageInputs();
+    toggleUpdateImagePreview(null);
     updateSection.classList.add('hidden');
     if (updateLanguageSelect) {
       updateLanguageSelect.value = 'tr';
     }
-    await fetchContents();
+    await Promise.all([fetchContents(), fetchDeletedContents()]);
   } catch (error) {
     console.error('İçerik güncellenemedi:', error);
     setStatus(adminStatus, error.message || 'İçerik güncellenemedi.', true);
@@ -376,8 +490,9 @@ async function deleteContent(id) {
       throw new Error(data.message);
     }
 
-    setStatus(adminStatus, 'İçerik silindi.');
-    await fetchContents();
+    const data = await response.json().catch(() => ({ message: 'İçerik silindi.' }));
+    setStatus(adminStatus, data.message || 'İçerik silindi.');
+    await Promise.all([fetchContents(), fetchDeletedContents()]);
   } catch (error) {
     console.error('İçerik silinemedi:', error);
     setStatus(adminStatus, error.message || 'İçerik silinemedi.', true);
@@ -415,6 +530,107 @@ async function uploadCv(event) {
   } catch (error) {
     console.error('CV yüklenemedi:', error);
     setStatus(adminStatus, error.message || 'CV yüklenemedi.', true);
+  }
+}
+
+async function fetchDeletedContents() {
+  if (!deletedContentTableBody) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE}/content/deleted`, {
+      headers: {
+        ...authHeaders(),
+      },
+    });
+
+    if (response.status === 401) {
+      await handleUnauthorized();
+      return;
+    }
+
+    if (!response.ok) {
+      throw new Error('Silinen içerikler alınamadı.');
+    }
+
+    const contents = await response.json();
+    renderDeletedContents(contents);
+  } catch (error) {
+    console.error(error);
+    setStatus(adminStatus, 'Silinen içerikler alınamadı.', true);
+  }
+}
+
+async function restoreContent(id) {
+  if (!id) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE}/content/${id}/restore`, {
+      method: 'POST',
+      headers: {
+        ...authHeaders(),
+      },
+    });
+
+    if (response.status === 401) {
+      await handleUnauthorized();
+      return;
+    }
+
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({ message: 'İçerik geri yüklenemedi.' }));
+      throw new Error(data.message);
+    }
+
+    const data = await response.json().catch(() => ({}));
+    setStatus(adminStatus, data.message || 'İçerik geri yüklendi.');
+    await Promise.all([fetchContents(), fetchDeletedContents()]);
+  } catch (error) {
+    console.error('İçerik geri yüklenemedi:', error);
+    setStatus(adminStatus, error.message || 'İçerik geri yüklenemedi.', true);
+  }
+}
+
+async function permanentlyDeleteContent(id, title = 'bu içerik') {
+  if (!id) {
+    return;
+  }
+
+  const confirmed = window.confirm(
+    `${title} kaydını kalıcı olarak silmek istediğinize emin misiniz? Bu işlem geri alınamaz.`
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE}/content/${id}/permanent`, {
+      method: 'DELETE',
+      headers: {
+        ...authHeaders(),
+      },
+    });
+
+    if (response.status === 401) {
+      await handleUnauthorized();
+      return;
+    }
+
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({ message: 'İçerik kalıcı olarak silinemedi.' }));
+      throw new Error(data.message);
+    }
+
+    const data = await response.json().catch(() => ({}));
+    setStatus(adminStatus, data.message || 'İçerik kalıcı olarak silindi.');
+    await fetchDeletedContents();
+  } catch (error) {
+    console.error('İçerik kalıcı olarak silinemedi:', error);
+    setStatus(adminStatus, error.message || 'İçerik kalıcı olarak silinemedi.', true);
   }
 }
 
@@ -584,9 +800,14 @@ function logout() {
     loginForm.reset();
   }
   updateContentForm.reset();
+  resetUpdateImageInputs();
+  toggleUpdateImagePreview(null);
   updateSection.classList.add('hidden');
   if (createLanguageSelect) {
     createLanguageSelect.value = 'tr';
+  }
+  if (createImageInput) {
+    createImageInput.value = '';
   }
   if (updateLanguageSelect) {
     updateLanguageSelect.value = 'tr';
@@ -644,6 +865,8 @@ uploadCvForm.addEventListener('submit', uploadCv);
 logoutButton.addEventListener('click', logout);
 cancelUpdateButton.addEventListener('click', () => {
   updateContentForm.reset();
+  resetUpdateImageInputs();
+  toggleUpdateImagePreview(null);
   updateSection.classList.add('hidden');
   if (updateLanguageSelect) {
     updateLanguageSelect.value = 'tr';

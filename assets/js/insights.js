@@ -1,5 +1,82 @@
 (function () {
-    const API_ENDPOINT = '/api/content';
+    const ABSOLUTE_URL_REGEX = /^https?:\/\//i;
+    const DEFAULT_API_BASE = '/api';
+    const DEFAULT_CONTENT_ENDPOINT = `${DEFAULT_API_BASE}/content`;
+
+    const readMetaContent = (name) => {
+        const element = document.querySelector(`meta[name="${name}"]`);
+        if (!element) return '';
+        return element.getAttribute('content') || '';
+    };
+
+    const sanitizeEndpoint = (value) => {
+        if (typeof value !== 'string') {
+            return '';
+        }
+        const trimmed = value.trim();
+        if (!trimmed) {
+            return '';
+        }
+        if (ABSOLUTE_URL_REGEX.test(trimmed)) {
+            return trimmed.replace(/\/+$/, '');
+        }
+        return `/${trimmed.replace(/^\/+/, '').replace(/\/+$/, '')}`;
+    };
+
+    const normalizeBase = (value) => {
+        if (typeof value !== 'string') {
+            return '';
+        }
+        const trimmed = value.trim();
+        if (!trimmed || trimmed === '/') {
+            return '';
+        }
+        if (ABSOLUTE_URL_REGEX.test(trimmed)) {
+            return trimmed.replace(/\/+$/, '');
+        }
+        return `/${trimmed.replace(/^\/+/, '').replace(/\/+$/, '')}`;
+    };
+
+    const buildEndpointFromBase = (base) => {
+        const normalized = normalizeBase(base);
+        if (!normalized) {
+            return '';
+        }
+        return `${normalized}/content`;
+    };
+
+    const getSiteConfig = () => {
+        const config = window.__SITE_CONFIG__;
+        if (!config || typeof config !== 'object') {
+            return null;
+        }
+        return config;
+    };
+
+    const resolveContentEndpoint = () => {
+        const config = getSiteConfig();
+        const configEndpoint = sanitizeEndpoint(config && config.contentEndpoint);
+        const configBase = config && config.contentApiBase;
+        const metaEndpoint = sanitizeEndpoint(readMetaContent('insights:content-endpoint'));
+        const metaBase = readMetaContent('insights:content-api-base');
+
+        return (
+            configEndpoint ||
+            buildEndpointFromBase(configBase) ||
+            metaEndpoint ||
+            buildEndpointFromBase(metaBase) ||
+            DEFAULT_CONTENT_ENDPOINT
+        );
+    };
+
+    const API_ENDPOINT = resolveContentEndpoint();
+    let apiOrigin = '';
+    try {
+        const endpointUrl = new URL(API_ENDPOINT, window.location.origin);
+        apiOrigin = endpointUrl.origin;
+    } catch (error) {
+        apiOrigin = window.location.origin;
+    }
     const visualThemes = [
         'radial-gradient(circle at 22% 30%, rgba(255, 206, 165, 0.8) 0%, rgba(255, 206, 165, 0) 55%), radial-gradient(circle at 78% 65%, rgba(255, 126, 126, 0.45) 0%, rgba(255, 126, 126, 0) 50%), linear-gradient(150deg, #1e1f2d, #101019 58%, #2e2439)',
         'radial-gradient(circle at 70% 30%, rgba(160, 214, 255, 0.7) 0%, rgba(160, 214, 255, 0) 55%), radial-gradient(circle at 18% 70%, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(160deg, #1a2334, #0f131d 60%, #2a3245)',
@@ -142,10 +219,35 @@
         return normalized.toUpperCase();
     };
 
-    const applyVisual = (element, index) => {
+    const resolvePhotoUrl = (content) => {
+        if (!content || !content.image || typeof content.image.url !== 'string') {
+            return '';
+        }
+        const trimmed = content.image.url.trim();
+        if (!trimmed) {
+            return '';
+        }
+        if (ABSOLUTE_URL_REGEX.test(trimmed)) {
+            return trimmed;
+        }
+        if (trimmed.startsWith('/')) {
+            return `${apiOrigin}${trimmed}`;
+        }
+        return `${apiOrigin}/${trimmed}`.replace(/([^:]\/)\/+/g, '$1');
+    };
+
+    const applyVisual = (element, index, photoUrl) => {
         if (!element) return;
+
+        if (photoUrl) {
+            element.style.backgroundImage = `linear-gradient(145deg, rgba(2, 6, 23, 0.45), rgba(0, 0, 0, 0.65)), url('${photoUrl}')`;
+            element.setAttribute('data-has-photo', 'true');
+            return;
+        }
+
         const theme = visualThemes[index % visualThemes.length];
         element.style.backgroundImage = theme;
+        element.removeAttribute('data-has-photo');
     };
 
     const render = (lang) => {
@@ -170,7 +272,8 @@
                 article.setAttribute('data-content-id', content._id);
             }
 
-            applyVisual(visual, index);
+            const photoUrl = resolvePhotoUrl(content);
+            applyVisual(visual, index, photoUrl);
 
             if (dateElement) {
                 const formattedDate = formatDate(content && (content.date || content.createdAt), lang);

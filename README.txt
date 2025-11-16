@@ -191,6 +191,7 @@ https://alpimimarlik.com/admin-panel
   nano .env
   ```
 - `ADMIN_API_BASE_URL` değerini backend'in dışarıdan erişilen adresi ile eşleştirin (ör. `https://api.sirketiniz.com/api`).
+- `PUBLIC_CONTENT_API_BASE_URL` alanı, ziyaretçilerin gördüğü Insights akışının `/api/content` isteklerini hangi domain'e göndereceğini belirler. Frontend'i farklı bir sunucuda barındırıyorsanız tam URL yazın (ör. `https://api.sirketiniz.com/api`).
 - `CORS_ALLOWED_ORIGINS` alanına yalnızca frontend'in yayınlandığı alan adlarını yazın. GitHub Pages kullanıyorsanız sayfanın tam URL'sini ekleyin (örn. `https://kullanici.github.io`).
 
 ### Admin panelinin API adresini güncelleme
@@ -198,6 +199,11 @@ https://alpimimarlik.com/admin-panel
 - Admin paneli açılırken `/admin-panel/admin-config.js` dosyasını otomatik yükler ve `.env` içindeki `ADMIN_API_BASE_URL` değerini kullanır.
 - Paneli Node.js sunucusundan servis etmeye devam ediyorsanız bu adres genellikle `/api` olarak kalabilir.
 - Paneli GitHub Pages üzerinde tutmak istiyorsanız `ADMIN_API_BASE_URL` değerini backend'in tam alan adına ayarlayın, GitHub Pages deposunda da aynı içerikle bir `admin-config.js` dosyası barındırın ve sayfada kullanılan Basic Auth korumasını Nginx benzeri bir ters proxy üzerinden sağlamayı unutmayın.
+
+### Insights akışının API adresini güncelleme
+
+- `insights.html` sayfası açılırken kök dizindeki `site-config.js` betiğini yükler ve `.env` içinde tanımladığınız `PUBLIC_CONTENT_API_BASE_URL` değerini okur.
+- Frontend'i CDN, GitHub Pages veya farklı bir domainden dağıtıyorsanız `PUBLIC_CONTENT_API_BASE_URL` değerini backend'in tam URL'sine ayarlayın. Böylece `assets/js/insights.js` dosyası içerik listesini ve fotoğrafları doğru kaynaktan çeker.
 
 ### CORS izinlerini doğrulama
 
