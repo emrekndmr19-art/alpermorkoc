@@ -57,6 +57,7 @@
         const config = getSiteConfig();
         const configEndpoint = sanitizeEndpoint(config && config.contentEndpoint);
         const configBase = config && config.contentApiBase;
+<<<<<<< HEAD:assets/js/portfolio.js
         const metaEndpoint = sanitizeEndpoint(
             readMetaContent('portfolio:content-endpoint') ||
                 readMetaContent('projects:content-endpoint') ||
@@ -68,6 +69,10 @@
             readMetaContent('projects:content-api-base') ||
             readMetaContent('content:api-base') ||
             readMetaContent('insights:content-api-base');
+=======
+        const metaEndpoint = sanitizeEndpoint(readMetaContent('insights:content-endpoint'));
+        const metaBase = readMetaContent('insights:content-api-base');
+>>>>>>> origin/main:assets/js/insights.js
 
         return (
             configEndpoint ||
@@ -262,6 +267,7 @@
         return normalized;
     };
 
+<<<<<<< HEAD:assets/js/portfolio.js
     const normalizeFilterValue = (value) => {
         if (typeof value !== 'string') {
             return 'all';
@@ -281,6 +287,8 @@
         return items.filter((item) => normalizeProjectType(item && item.projectType) === normalizedType);
     };
 
+=======
+>>>>>>> origin/main:assets/js/insights.js
     const getProjectTypeLabel = (code) => {
         const normalized = normalizeProjectType(code);
         if (window.I18N && typeof window.I18N.translate === 'function') {

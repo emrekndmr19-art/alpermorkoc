@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title data-i18n="meta.titles.contact">Contact — Alpimimarlık</title>
+    <title data-i18n="meta.titles.services">Services — Alpimimarlık</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
@@ -78,67 +78,71 @@
     </header>
 
     <main class="px-8 py-20 text-primary md:px-20">
-        <div class="grid gap-16 md:grid-cols-[2fr,1fr]">
-            <div class="space-y-10">
-                <div
-                    aria-label="Stüdyo girişini anlatan konsept görsel"
-                    class="concept-visual h-48 w-full"
-                    role="img"
-                    style="background-image: radial-gradient(circle at 22% 28%, rgba(255, 208, 158, 0.8) 0%, rgba(255, 208, 158, 0) 55%), radial-gradient(circle at 78% 68%, rgba(161, 218, 255, 0.6) 0%, rgba(161, 218, 255, 0) 48%), linear-gradient(150deg, #1a1c28, #0f1119 60%, #2d253a);"
-                ></div>
-                <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="contact.hero.eyebrow">İletişim</p>
-                <h1 class="text-4xl font-display text-white md:text-5xl" data-i18n="contact.hero.title">Bize Ulaşın</h1>
-                <p class="text-base text-white/70" data-i18n="contact.hero.body">
-                    Kampanya odaklı mimarlık sunumlarımız hakkında konuşmak veya sunum arşivimizi incelemek isterseniz, aşağıdaki formu doldurun.
-                    İlk kez sunum hazırlayan ekipler için hızlı başlangıç oturumu planlıyoruz.
-                </p>
-                <form class="space-y-6">
-                    <div class="grid gap-4 md:grid-cols-2">
-                        <div>
-                            <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="contact.form.nameLabel" for="contact-name">Ad Soyad</label>
-                            <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="contact.form.namePlaceholder" id="contact-name" placeholder="Adınız Soyadınız" type="text"/>
-                        </div>
-                        <div>
-                            <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="contact.form.emailLabel" for="contact-email">E-posta</label>
-                            <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="contact.form.emailPlaceholder" id="contact-email" placeholder="ornek@studio.com" type="email"/>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="contact.form.messageLabel" for="contact-message">Mesajınız</label>
-                        <textarea class="mt-2 h-32 w-full border border-white/15 bg-black/40 p-3 text-sm text-white focus:border-white focus:outline-none" id="contact-message"></textarea>
-                    </div>
-                    <button class="w-full bg-white/10 py-3 text-sm font-semibold uppercase tracking-[0.35em] text-white transition hover:bg-white/20" data-i18n="contact.form.submit" type="submit">
-                        Gönder
-                    </button>
-                </form>
-            </div>
-            <aside class="space-y-8 border border-white/10 bg-black/30 p-6">
-                <div
-                    aria-label="İzmir stüdyo atmosferini anlatan konsept görsel"
-                    class="concept-visual h-32 w-full"
-                    role="img"
-                    style="background-image: radial-gradient(circle at 25% 70%, rgba(255, 174, 226, 0.55) 0%, rgba(255, 174, 226, 0) 48%), radial-gradient(circle at 78% 25%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(165deg, #131522, #1d1f31 58%, #302544);"
-                ></div>
-                <div class="space-y-2">
-                    <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent" data-i18n="contact.aside.studio.label">Stüdyo</p>
-                    <p class="text-sm text-white/70" data-i18n="contact.aside.studio.location">İzmir, Alsancak</p>
-                    <p class="text-sm text-white/60" data-i18n="contact.aside.studio.hours">Hafta içi 10:00 - 18:00 arası randevu ile görüşme sağlanır.</p>
-                </div>
-                <div class="space-y-2">
-                    <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent" data-i18n="contact.aside.phone.label">Telefon</p>
-                    <a class="text-sm text-white/70 transition hover:text-white" data-i18n="contact.aside.phone.number" href="tel:+905332330035">+905332330035</a>
-                </div>
-                <div class="space-y-2">
-                    <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent" data-i18n="contact.aside.email.label">E-posta</p>
-                    <a class="text-sm text-white/70 transition hover:text-white" data-i18n="contact.aside.email.address" href="mailto:info@alpimimarlik.com">info@alpimimarlik.com</a>
-                </div>
-                <div class="space-y-2">
-                    <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent" data-i18n="contact.aside.archive.label">Sunum Arşivi</p>
-                    <p class="text-sm text-white/60" data-i18n="contact.aside.archive.body">
-                        Sunum öncesi paylaşılacak örnek görseller için özel bir galeri bağlantısı oluşturuyoruz. Talep formunda belirtin.
+        <div class="max-w-5xl space-y-12">
+            <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="services.hero.eyebrow">Hizmet Paketleri</p>
+            <h1 class="text-4xl font-display text-white md:text-5xl" data-i18n="services.hero.title">Sunum Odaklı Mimarlık Servisleri</h1>
+            <p class="text-base text-white/70" data-i18n="services.hero.body">
+                Küçük ölçekli ofislerin konseptlerini sahneleyen tanıtım paketleri hazırlıyoruz.
+                Ölçekli çizimler, atmosfer görselleri ve kısa metin blokları, ilk görüşmede güven veren bir vitrin sunmanıza yardımcı oluyor.
+            </p>
+            <div class="grid gap-10 md:grid-cols-2">
+                <div class="space-y-4 border border-white/10 bg-black/30 p-6">
+                    <div
+                        aria-label="Vizyon kitabı için hazırlanan konsept görsel"
+                        class="concept-visual h-40 w-full"
+                        role="img"
+                        style="background-image: radial-gradient(circle at 22% 25%, rgba(255, 206, 165, 0.8) 0%, rgba(255, 206, 165, 0) 55%), radial-gradient(circle at 78% 70%, rgba(255, 132, 132, 0.48) 0%, rgba(255, 132, 132, 0) 50%), linear-gradient(150deg, #1f1f2f, #101019 58%, #2f253a);"
+                    ></div>
+                    <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent" data-i18n="services.packages.visionBook.index">01</p>
+                    <h2 class="text-2xl font-display text-white" data-i18n="services.packages.visionBook.title">Vizyon Kitabı</h2>
+                    <p class="text-sm text-white/70" data-i18n="services.packages.visionBook.body">
+                        Üç bölümlü dijital kitap, lobi, çalışma alanı ve cephe sahnelerini aynı dilde anlatır.
+                        Renderlar ve fotoğraf düzenlemeleri, başlıklarla birlikte kullanılmaya hazır halde teslim edilir.
                     </p>
                 </div>
-            </aside>
+                <div class="space-y-4 border border-white/10 bg-black/30 p-6">
+                    <div
+                        aria-label="Sunum sahnesi paketine ait storyboard"
+                        class="concept-visual h-40 w-full"
+                        role="img"
+                        style="background-image: radial-gradient(circle at 65% 35%, rgba(162, 216, 255, 0.7) 0%, rgba(162, 216, 255, 0) 55%), radial-gradient(circle at 20% 75%, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(160deg, #1b2436, #0f141f 60%, #293347);"
+                    ></div>
+                    <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent" data-i18n="services.packages.presentationScene.index">02</p>
+                    <h2 class="text-2xl font-display text-white" data-i18n="services.packages.presentationScene.title">Sunum Sahnesi</h2>
+                    <p class="text-sm text-white/70" data-i18n="services.packages.presentationScene.body">
+                        Pitch toplantıları için hazırlanan bu paket, hareketli slayt akışı ve kısa tanıtım filmiyle desteklenir.
+                        Boş ekranları, ofis kimliğinize uygun kolaj ve plan detaylarıyla tamamlıyoruz.
+                    </p>
+                </div>
+                <div class="space-y-4 border border-white/10 bg-black/30 p-6">
+                    <div
+                        aria-label="Dijital basın dosyasına ait kolaj"
+                        class="concept-visual h-40 w-full"
+                        role="img"
+                        style="background-image: radial-gradient(circle at 25% 70%, rgba(255, 174, 226, 0.55) 0%, rgba(255, 174, 226, 0) 50%), radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(165deg, #131422, #1d1f31 58%, #332645);"
+                    ></div>
+                    <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent" data-i18n="services.packages.pressKit.index">03</p>
+                    <h2 class="text-2xl font-display text-white" data-i18n="services.packages.pressKit.title">Dijital Basın Dosyası</h2>
+                    <p class="text-sm text-white/70" data-i18n="services.packages.pressKit.body">
+                        Basın bültenleri ve sosyal medya lansmanları için hızlıca özelleştirebileceğiniz şablonlar içerir.
+                        Her görsel, stüdyonuzun tonunu anlatan kısa açıklamalarla birlikte gelir.
+                    </p>
+                </div>
+                <div class="space-y-4 border border-white/10 bg-black/30 p-6">
+                    <div
+                        aria-label="Atölye oturumu için hazırlanan görsel"
+                        class="concept-visual h-40 w-full"
+                        role="img"
+                        style="background-image: radial-gradient(circle at 70% 25%, rgba(255, 208, 158, 0.7) 0%, rgba(255, 208, 158, 0) 52%), radial-gradient(circle at 20% 70%, rgba(161, 218, 255, 0.6) 0%, rgba(161, 218, 255, 0) 45%), linear-gradient(155deg, #181a27, #0f1119 58%, #2b253a);"
+                    ></div>
+                    <p class="text-[0.55rem] uppercase tracking-[0.55em] text-accent" data-i18n="services.packages.consulting.index">04</p>
+                    <h2 class="text-2xl font-display text-white" data-i18n="services.packages.consulting.title">Danışmanlık &amp; Koordinasyon</h2>
+                    <p class="text-sm text-white/70" data-i18n="services.packages.consulting.body">
+                        Sunum hazırlıkları sırasında ekiplerinizi yönlendiren toplantılar planlıyoruz.
+                        Malzeme seçimi, metin tonu ve görsel yerleşimleri için paylaşılabilir rehberler sunuyoruz.
+                    </p>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -195,18 +199,8 @@
             <nav class="mt-10 space-y-6 text-sm uppercase tracking-[0.4em] text-white/70">
                 <a class="block transition-opacity hover:opacity-60" href="index.html" data-i18n="common.nav.home">Ana Sayfa</a>
                 <a class="block transition-opacity hover:opacity-60" href="studio.html" data-i18n="common.nav.studio">Studio</a>
-<<<<<<< HEAD
-                <a class="block transition-opacity hover:opacity-60" href="projeler.html" data-i18n="common.nav.projects">Projeler</a>
-                <a class="block transition-opacity hover:opacity-60" href="portfolio.html" data-i18n="common.nav.portfolio">Portfolyo</a>
-=======
-<<<<<<< HEAD
-                <a class="block transition-opacity hover:opacity-60" href="projeler.html" data-i18n="common.nav.projects">Projeler</a>
-                <a class="block transition-opacity hover:opacity-60" href="portfolio.html" data-i18n="common.nav.portfolio">Portfolyo</a>
-=======
                 <a class="block transition-opacity hover:opacity-60" href="services.html" data-i18n="common.nav.services">Hizmetler</a>
                 <a class="block transition-opacity hover:opacity-60" href="insights.html" data-i18n="common.nav.insights">Notlar</a>
->>>>>>> origin/main
->>>>>>> origin/main
                 <a class="block transition-opacity hover:opacity-60" href="kariyer.html" data-i18n="common.nav.careers">Kariyer</a>
                 <a class="block transition-opacity hover:opacity-60" href="contact.html" data-i18n="common.nav.contact">Contact</a>
             </nav>
@@ -233,18 +227,8 @@
                 <ul class="mt-4 space-y-3 text-sm text-gray-400">
                     <li><a class="transition-colors hover:text-white" href="index.html" data-i18n="common.nav.home">Home</a></li>
                     <li><a class="transition-colors hover:text-white" href="studio.html" data-i18n="common.nav.studio">Studio</a></li>
-<<<<<<< HEAD
-                    <li><a class="transition-colors hover:text-white" href="projeler.html" data-i18n="common.nav.projects">Projeler</a></li>
-                    <li><a class="transition-colors hover:text-white" href="portfolio.html" data-i18n="common.nav.portfolio">Portfolyo</a></li>
-=======
-<<<<<<< HEAD
-                    <li><a class="transition-colors hover:text-white" href="projeler.html" data-i18n="common.nav.projects">Projeler</a></li>
-                    <li><a class="transition-colors hover:text-white" href="portfolio.html" data-i18n="common.nav.portfolio">Portfolyo</a></li>
-=======
                     <li><a class="transition-colors hover:text-white" href="services.html" data-i18n="common.nav.services">Hizmetler</a></li>
                     <li><a class="transition-colors hover:text-white" href="insights.html" data-i18n="common.nav.insights">Notlar</a></li>
->>>>>>> origin/main
->>>>>>> origin/main
                     <li><a class="transition-colors hover:text-white" href="kariyer.html" data-i18n="common.nav.careers">Kariyer</a></li>
                     <li><a class="transition-colors hover:text-white" href="contact.html" data-i18n="common.nav.contact">Contact</a></li>
                 </ul>
