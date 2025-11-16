@@ -347,6 +347,11 @@
               <input type="file" id="create-image" name="image" accept="image/*" />
               <small>Desteklenen formatlar: JPG, PNG, WEBP, GIF, SVG, AVIF.</small>
             </div>
+            <div>
+              <label for="create-concept-pdf">Konsept PDF (opsiyonel)</label>
+              <input type="file" id="create-concept-pdf" name="conceptPdf" accept="application/pdf" />
+              <small>Konsept kartlarına sunum kitapçığını PDF olarak ekleyebilirsiniz.</small>
+            </div>
             <button type="submit">Ekle</button>
           </form>
         </section>
@@ -363,6 +368,7 @@
                   <th>Dil</th>
                   <th>Proje Tipi</th>
                   <th>Fotoğraf</th>
+                  <th>Konsept PDF</th>
                   <th>Tarih</th>
                   <th>İşlemler</th>
                 </tr>
@@ -434,6 +440,24 @@
               <label for="update-image">Yeni Fotoğraf</label>
               <input type="file" id="update-image" name="image" accept="image/*" />
               <small>Bu alandan yeni bir fotoğraf seçebilir veya mevcut fotoğrafı kaldırabilirsiniz.</small>
+            </div>
+            <div id="update-pdf-preview" class="image-preview hidden">
+              <div>
+                <strong>Yüklü Konsept PDF'i</strong>
+                <small id="update-pdf-filename"></small>
+              </div>
+              <div class="image-preview-actions">
+                <a id="update-pdf-link" href="#" target="_blank" rel="noopener">PDF'i yeni sekmede aç</a>
+                <label>
+                  <input type="checkbox" id="update-remove-pdf" name="removeConceptPdf" value="true" />
+                  PDF dosyasını kaldır
+                </label>
+              </div>
+            </div>
+            <div>
+              <label for="update-concept-pdf">Yeni Konsept PDF</label>
+              <input type="file" id="update-concept-pdf" name="conceptPdf" accept="application/pdf" />
+              <small>Konsept kartına ait sunum PDF'ini bu alandan güncelleyebilirsiniz.</small>
             </div>
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
               <button type="submit">Güncelle</button>
