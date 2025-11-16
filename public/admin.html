@@ -201,15 +201,16 @@
         </div>
 
         <section class="info-card">
-          <strong>İçerikler nerede görünüyor?</strong>
+          <strong>Mimarlık projeleri nerede görünüyor?</strong>
           <p>
-            Bu panelden eklediğiniz içerikler sitenin <em>Insights</em> sayfasındaki “İlham Veren Perspektifler” akışına ve
-            ana sayfadaki öne çıkan içerik kartlarına otomatik olarak bağlanır. Türkçe/İngilizce seçenekleri sayesinde ziyaretçi hangi dilde geziyorsa yalnızca o dile uygun içerikler gösterilir; “Çok Dilli” işaretlenen içerikler ise her iki dilde de görünür.
+            Bu panelde paylaştığınız kartlar ana sayfadaki <em>“Mimarlık Projeleri”</em> bloğuna ve <em>Notlar</em> sayfasındaki tam
+            arşive otomatik olarak yansır. Dil seçimi, ziyaretçinin seçtiği arayüze göre içerikleri filtreler; “Çok Dilli” işaretli
+            kartlar her iki dilde de görünür.
           </p>
           <ul>
-            <li>Başlık ve içerik alanlarında kısa ama etkileyici metinler kullanın.</li>
-            <li>Fotoğraf eklediğinizde kartların görsel alanları otomatik doldurulur.</li>
-            <li>Güncel tutulması gereken haberleri silebilir ve gerektiğinde geri yükleyebilirsiniz.</li>
+            <li>“Proje Tipi” alanı kartın üstündeki etiketi belirler (ofis, konut, misafirperverlik veya konsept).</li>
+            <li>Fotoğraf eklediğinizde hem ana sayfa hem de Notlar kartları otomatik olarak görsel kullanır.</li>
+            <li>Güncel tutulması gereken projeleri silip daha sonra geri yükleyebilir veya kalıcı olarak kaldırabilirsiniz.</li>
           </ul>
         </section>
 
@@ -233,6 +234,16 @@
               </select>
             </div>
             <div>
+              <label for="create-project-type">Proje Tipi</label>
+              <select id="create-project-type" name="projectType">
+                <option value="workplace" selected>Ofis / Çalışma Alanı</option>
+                <option value="residential">Konut</option>
+                <option value="hospitality">Misafirperverlik & Sosyal Alan</option>
+                <option value="concept">Konsept Çalışması</option>
+              </select>
+              <small>Bu etiket ana sayfa ve Notlar kartlarında görünür.</small>
+            </div>
+            <div>
               <label for="create-image">Fotoğraf (opsiyonel)</label>
               <input type="file" id="create-image" name="image" accept="image/*" />
               <small>Desteklenen formatlar: JPG, PNG, WEBP, GIF, SVG, AVIF.</small>
@@ -251,6 +262,7 @@
                   <th>Başlık</th>
                   <th>İçerik</th>
                   <th>Dil</th>
+                  <th>Proje Tipi</th>
                   <th>Fotoğraf</th>
                   <th>Tarih</th>
                   <th>İşlemler</th>
@@ -270,6 +282,7 @@
                 <tr>
                   <th>Başlık</th>
                   <th>Dil</th>
+                  <th>Proje Tipi</th>
                   <th>Silinme Tarihi</th>
                   <th>İşlemler</th>
                 </tr>
@@ -297,6 +310,15 @@
                 <option value="tr" selected>Türkçe</option>
                 <option value="en">İngilizce</option>
                 <option value="multi">Çok Dilli</option>
+              </select>
+            </div>
+            <div>
+              <label for="update-project-type">Proje Tipi</label>
+              <select id="update-project-type" name="projectType">
+                <option value="workplace">Ofis / Çalışma Alanı</option>
+                <option value="residential">Konut</option>
+                <option value="hospitality">Misafirperverlik & Sosyal Alan</option>
+                <option value="concept">Konsept Çalışması</option>
               </select>
             </div>
             <div id="update-image-preview-container" class="image-preview hidden">

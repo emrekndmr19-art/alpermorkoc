@@ -35,6 +35,68 @@ const DEFAULT_CONTENT_API_BASE = '/api';
 
 const DEFAULT_CONTENT_LANGUAGE = 'tr';
 const ALLOWED_CONTENT_LANGUAGES = new Set(['tr', 'en', 'multi']);
+const DEFAULT_PROJECT_TYPE = 'workplace';
+const ALLOWED_PROJECT_TYPES = new Set([
+  'workplace',
+  'residential',
+  'hospitality',
+  'concept',
+]);
+
+const makeRelativeUploadPath = (subdir, filename) =>
+  path.posix.join(String(subdir || '').replace(/\\+/g, '/'), filename);
+
+const toPublicUploadUrl = (relativePath) => {
+  if (!relativePath) {
+    return '';
+  }
+
+  return `/uploads/${String(relativePath).replace(/\\+/g, '/')}`;
+};
+
+const buildStoredFileMetadata = (file, subdir) => {
+  if (!file || !file.filename) {
+    return null;
+  }
+
+  const relativePath = makeRelativeUploadPath(subdir, file.filename);
+
+  return {
+    filename: relativePath,
+    originalname: file.originalname,
+    mimetype: file.mimetype,
+    size: file.size,
+    url: toPublicUploadUrl(relativePath),
+    uploadedAt: new Date(),
+  };
+};
+
+const resolveUploadsPath = (relativePath = '') => path.join(uploadsDir, relativePath);
+
+const deleteUploadedFile = async (relativePath, { ignoreNotFound = true } = {}) => {
+  if (!relativePath) {
+    return true;
+  }
+
+  try {
+    await fsPromises.unlink(resolveUploadsPath(relativePath));
+    return true;
+  } catch (error) {
+    if (ignoreNotFound && error && error.code === 'ENOENT') {
+      return true;
+    }
+
+    throw error;
+  }
+};
+
+const parseBoolean = (value) => {
+  if (typeof value === 'string') {
+    return ['true', '1', 'yes', 'on'].includes(value.trim().toLowerCase());
+  }
+
+  return Boolean(value);
+};
 
 const makeRelativeUploadPath = (subdir, filename) =>
   path.posix.join(String(subdir || '').replace(/\\+/g, '/'), filename);
@@ -172,6 +234,24 @@ const normalizeContentLanguage = (value) => {
   }
 
   return DEFAULT_CONTENT_LANGUAGE;
+};
+
+const normalizeProjectType = (value) => {
+  if (typeof value !== 'string') {
+    return DEFAULT_PROJECT_TYPE;
+  }
+
+  const normalized = value.trim().toLowerCase();
+
+  if (!normalized) {
+    return DEFAULT_PROJECT_TYPE;
+  }
+
+  if (ALLOWED_PROJECT_TYPES.has(normalized)) {
+    return normalized;
+  }
+
+  return DEFAULT_PROJECT_TYPE;
 };
 
 const corsOptions = {
@@ -561,7 +641,7 @@ app.get('/api/content', async (req, res) => {
 
 app.post('/api/content', auth, handleContentImageUpload, async (req, res) => {
   try {
-    const { title, body, language } = req.body;
+    const { title, body, language, projectType } = req.body;
 
     if (!title || !body) {
       return res.status(400).json({ message: 'Başlık ve içerik gereklidir.' });
@@ -571,6 +651,7 @@ app.post('/api/content', auth, handleContentImageUpload, async (req, res) => {
       title,
       body,
       language: normalizeContentLanguage(language),
+      projectType: normalizeProjectType(projectType),
     };
 
     const imageMetadata = buildStoredFileMetadata(req.file, IMAGE_UPLOAD_SUBDIR);
@@ -590,7 +671,7 @@ app.post('/api/content', auth, handleContentImageUpload, async (req, res) => {
 app.put('/api/content/:id', auth, handleContentImageUpload, async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, body, language, removeImage } = req.body;
+    const { title, body, language, removeImage, projectType } = req.body;
 
     if (!title || !body) {
       return res.status(400).json({ message: 'Başlık ve içerik gereklidir.' });
@@ -610,6 +691,7 @@ app.put('/api/content/:id', auth, handleContentImageUpload, async (req, res) => 
     content.title = title;
     content.body = body;
     content.language = nextLanguage;
+    content.projectType = normalizeProjectType(projectType);
 
     let deletePreviousImageAfterSave = false;
 

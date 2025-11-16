@@ -29,6 +29,12 @@ const contentSchema = new mongoose.Schema(
       url: String,
       uploadedAt: Date,
     },
+    projectType: {
+      type: String,
+      trim: true,
+      lowercase: true,
+      default: 'workplace',
+    },
     deletedAt: {
       type: Date,
       default: null,

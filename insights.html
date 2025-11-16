@@ -5,6 +5,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title data-i18n="meta.titles.insights">Insights — Alpimimarlık</title>
     <meta content="/api" name="insights:content-api-base" />
+    <meta content="/api/content" name="insights:content-endpoint" />
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
@@ -132,9 +133,12 @@
     <template id="insight-card-template">
         <article class="space-y-4 border border-white/10 bg-black/30 p-6">
             <div aria-hidden="true" class="ai-visual h-32 w-full" data-role="visual"></div>
-            <div class="flex items-center justify-between text-[0.55rem] uppercase tracking-[0.55em] text-accent">
-                <time data-role="date"></time>
-                <span class="text-white/40" data-role="language"></span>
+            <div class="flex items-center justify-between text-[0.6rem] uppercase tracking-[0.45em] text-accent">
+                <div class="flex items-center gap-3">
+                    <span class="rounded-sm border border-white/20 px-2 py-0.5 text-[0.5rem]" data-role="project-type"></span>
+                    <span class="text-white/50" data-role="language"></span>
+                </div>
+                <time class="text-white/70" data-role="date"></time>
             </div>
             <h2 class="text-2xl font-display text-white" data-role="title"></h2>
             <p class="text-sm text-white/70" data-role="excerpt"></p>
@@ -194,6 +198,8 @@
             <nav class="mt-10 space-y-6 text-sm uppercase tracking-[0.4em] text-white/70">
                 <a class="block transition-opacity hover:opacity-60" href="index.html" data-i18n="common.nav.home">Ana Sayfa</a>
                 <a class="block transition-opacity hover:opacity-60" href="studio.html" data-i18n="common.nav.studio">Studio</a>
+                <a class="block transition-opacity hover:opacity-60" href="services.html" data-i18n="common.nav.services">Hizmetler</a>
+                <a class="block transition-opacity hover:opacity-60" href="insights.html" data-i18n="common.nav.insights">Notlar</a>
                 <a class="block transition-opacity hover:opacity-60" href="kariyer.html" data-i18n="common.nav.careers">Kariyer</a>
                 <a class="block transition-opacity hover:opacity-60" href="contact.html" data-i18n="common.nav.contact">Contact</a>
             </nav>
@@ -220,6 +226,8 @@
                 <ul class="mt-4 space-y-3 text-sm text-gray-400">
                     <li><a class="transition-colors hover:text-white" href="index.html" data-i18n="common.nav.home">Home</a></li>
                     <li><a class="transition-colors hover:text-white" href="studio.html" data-i18n="common.nav.studio">Studio</a></li>
+                    <li><a class="transition-colors hover:text-white" href="services.html" data-i18n="common.nav.services">Hizmetler</a></li>
+                    <li><a class="transition-colors hover:text-white" href="insights.html" data-i18n="common.nav.insights">Notlar</a></li>
                     <li><a class="transition-colors hover:text-white" href="kariyer.html" data-i18n="common.nav.careers">Kariyer</a></li>
                     <li><a class="transition-colors hover:text-white" href="contact.html" data-i18n="common.nav.contact">Contact</a></li>
                 </ul>
@@ -238,7 +246,7 @@
 
     <script src="assets/js/i18n.js"></script>
     <script src="assets/js/cookie-consent.js"></script>
-    <script src="site-config.js"></script>
+    <script src="site-config.js" defer></script>
     <script src="assets/js/insights.js" defer></script>
     <script>
         const menuToggle = document.getElementById('menu-toggle');

@@ -205,6 +205,12 @@ https://alpimimarlik.com/admin-panel
 - `insights.html` sayfası açılırken kök dizindeki `site-config.js` betiğini yükler ve `.env` içinde tanımladığınız `PUBLIC_CONTENT_API_BASE_URL` değerini okur.
 - Frontend'i CDN, GitHub Pages veya farklı bir domainden dağıtıyorsanız `PUBLIC_CONTENT_API_BASE_URL` değerini backend'in tam URL'sine ayarlayın. Böylece `assets/js/insights.js` dosyası içerik listesini ve fotoğrafları doğru kaynaktan çeker.
 
+### Mimarlık projeleri bloğu
+
+- Admin panelinde oluşturduğunuz her içerik için "Proje Tipi" alanı bulunur. Bu değer (`workplace`, `residential`, `hospitality`, `concept`) kartların ana sayfadaki Mimarlık Projeleri bölümünde ve Notlar arşivinde hangi etiketle gösterileceğini belirler.
+- `index.html` dosyasındaki `assets/js/projects-feed.js` betiği, aynı `site-config.js` çıktısını kullanarak `/api/content` uç noktasını çağırır ve ilgili dile göre filtrelenmiş en güncel üç projeyi gösterir.
+- `projectType` alanı MongoDB tarafında tutulur; içeriği güncellerken değiştirebilir veya bırakırsanız varsayılan olarak "Ofis / Çalışma Alanı" etiketi kullanılır.
+
 ### CORS izinlerini doğrulama
 
 - GitHub Pages ile backend arasında bağlantı kurarken tarayıcı konsolunda `CORS` hatası görürseniz backend'deki `CORS_ALLOWED_ORIGINS` ayarını güncelleyin.

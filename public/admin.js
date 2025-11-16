@@ -31,6 +31,7 @@ const uploadCvForm = document.getElementById('upload-cv-form');
 const logoutButton = document.getElementById('logout-button');
 const cancelUpdateButton = document.getElementById('cancel-update');
 const createLanguageSelect = document.getElementById('create-language');
+const createProjectTypeSelect = document.getElementById('create-project-type');
 const createImageInput = document.getElementById('create-image');
 const loginStatus = document.getElementById('login-status');
 const adminStatus = document.getElementById('admin-status');
@@ -42,6 +43,7 @@ const updateIdInput = document.getElementById('update-id');
 const updateTitleInput = document.getElementById('update-title');
 const updateBodyInput = document.getElementById('update-body');
 const updateLanguageSelect = document.getElementById('update-language');
+const updateProjectTypeSelect = document.getElementById('update-project-type');
 const updateImageInput = document.getElementById('update-image');
 const updateImagePreviewContainer = document.getElementById('update-image-preview-container');
 const updateImagePreview = document.getElementById('update-image-preview');
@@ -53,6 +55,15 @@ const LANGUAGE_LABELS = {
   en: 'İngilizce',
   multi: 'Çok Dilli',
 };
+
+const PROJECT_TYPE_LABELS = {
+  workplace: 'Ofis / Çalışma',
+  residential: 'Konut',
+  hospitality: 'Misafirperverlik & Sosyal Alan',
+  concept: 'Konsept Çalışması',
+};
+
+const DEFAULT_PROJECT_TYPE = 'workplace';
 
 const normalizeLanguageValue = (value) => {
   if (typeof value !== 'string') {
@@ -66,6 +77,20 @@ const normalizeLanguageValue = (value) => {
     return normalized;
   }
   return 'tr';
+};
+
+const normalizeProjectTypeValue = (value) => {
+  if (typeof value !== 'string') {
+    return DEFAULT_PROJECT_TYPE;
+  }
+  const normalized = value.trim().toLowerCase();
+  if (!normalized) {
+    return DEFAULT_PROJECT_TYPE;
+  }
+  if (PROJECT_TYPE_LABELS[normalized]) {
+    return normalized;
+  }
+  return DEFAULT_PROJECT_TYPE;
 };
 
 let token = '';
@@ -239,7 +264,7 @@ function renderContents(contents) {
   if (contents.length === 0) {
     const row = document.createElement('tr');
     const cell = document.createElement('td');
-    cell.colSpan = 6;
+    cell.colSpan = 7;
     cell.textContent = 'Henüz içerik yok.';
     row.appendChild(cell);
     contentTableBody.appendChild(row);
@@ -258,6 +283,10 @@ function renderContents(contents) {
     const languageCell = document.createElement('td');
     const normalizedLanguage = normalizeLanguageValue(content.language);
     languageCell.textContent = LANGUAGE_LABELS[normalizedLanguage] || normalizedLanguage.toUpperCase();
+
+    const projectTypeCell = document.createElement('td');
+    const normalizedProjectType = normalizeProjectTypeValue(content.projectType);
+    projectTypeCell.textContent = PROJECT_TYPE_LABELS[normalizedProjectType] || normalizedProjectType;
 
     const imageCell = document.createElement('td');
     if (content.image && content.image.url) {
@@ -294,6 +323,7 @@ function renderContents(contents) {
     row.appendChild(titleCell);
     row.appendChild(bodyCell);
     row.appendChild(languageCell);
+    row.appendChild(projectTypeCell);
     row.appendChild(imageCell);
     row.appendChild(dateCell);
     row.appendChild(actionsCell);
@@ -312,7 +342,7 @@ function renderDeletedContents(contents) {
   if (!Array.isArray(contents) || contents.length === 0) {
     const row = document.createElement('tr');
     const cell = document.createElement('td');
-    cell.colSpan = 4;
+    cell.colSpan = 5;
     cell.textContent = 'Şu anda silinen içerik yok.';
     row.appendChild(cell);
     deletedContentTableBody.appendChild(row);
@@ -328,6 +358,10 @@ function renderDeletedContents(contents) {
     const languageCell = document.createElement('td');
     const normalizedLanguage = normalizeLanguageValue(content.language);
     languageCell.textContent = LANGUAGE_LABELS[normalizedLanguage] || normalizedLanguage.toUpperCase();
+
+    const projectTypeCell = document.createElement('td');
+    const normalizedProjectType = normalizeProjectTypeValue(content.projectType);
+    projectTypeCell.textContent = PROJECT_TYPE_LABELS[normalizedProjectType] || normalizedProjectType;
 
     const deletedAtCell = document.createElement('td');
     deletedAtCell.textContent = formatDate(content.deletedAt);
@@ -351,6 +385,7 @@ function renderDeletedContents(contents) {
 
     row.appendChild(titleCell);
     row.appendChild(languageCell);
+    row.appendChild(projectTypeCell);
     row.appendChild(deletedAtCell);
     row.appendChild(actionsCell);
 
@@ -399,6 +434,9 @@ async function createContent(event) {
     if (createLanguageSelect) {
       createLanguageSelect.value = 'tr';
     }
+    if (createProjectTypeSelect) {
+      createProjectTypeSelect.value = DEFAULT_PROJECT_TYPE;
+    }
     if (createImageInput) {
       createImageInput.value = '';
     }
@@ -417,6 +455,9 @@ function startUpdate(content) {
   updateBodyInput.value = content.body || '';
   if (updateLanguageSelect) {
     updateLanguageSelect.value = normalizeLanguageValue(content.language);
+  }
+  if (updateProjectTypeSelect) {
+    updateProjectTypeSelect.value = normalizeProjectTypeValue(content.projectType);
   }
   resetUpdateImageInputs();
   toggleUpdateImagePreview(content.image);
@@ -459,6 +500,9 @@ async function updateContent(event) {
     updateSection.classList.add('hidden');
     if (updateLanguageSelect) {
       updateLanguageSelect.value = 'tr';
+    }
+    if (updateProjectTypeSelect) {
+      updateProjectTypeSelect.value = DEFAULT_PROJECT_TYPE;
     }
     await Promise.all([fetchContents(), fetchDeletedContents()]);
   } catch (error) {
@@ -806,11 +850,17 @@ function logout() {
   if (createLanguageSelect) {
     createLanguageSelect.value = 'tr';
   }
+  if (createProjectTypeSelect) {
+    createProjectTypeSelect.value = DEFAULT_PROJECT_TYPE;
+  }
   if (createImageInput) {
     createImageInput.value = '';
   }
   if (updateLanguageSelect) {
     updateLanguageSelect.value = 'tr';
+  }
+  if (updateProjectTypeSelect) {
+    updateProjectTypeSelect.value = DEFAULT_PROJECT_TYPE;
   }
   toggleSections();
 }
@@ -870,6 +920,9 @@ cancelUpdateButton.addEventListener('click', () => {
   updateSection.classList.add('hidden');
   if (updateLanguageSelect) {
     updateLanguageSelect.value = 'tr';
+  }
+  if (updateProjectTypeSelect) {
+    updateProjectTypeSelect.value = DEFAULT_PROJECT_TYPE;
   }
 });
 
