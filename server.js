@@ -33,9 +33,7 @@ const PUBLIC_SITE_DIR = __dirname;
 const ADMIN_ASSETS_DIR = path.join(__dirname, 'public');
 const I18N_DIR = path.join(__dirname, 'i18n');
 
-const DEFAULT_CONTENT_API_BASE = '/api';
-
-const DEFAULT_CONTENT_API_BASE = '/api';
+const DEFAULT_CONTENT_API_BASE_PATH = '/api';
 
 const DEFAULT_CONTENT_LANGUAGE = 'tr';
 const ALLOWED_CONTENT_LANGUAGES = new Set(['tr', 'en', 'multi']);
@@ -298,7 +296,7 @@ function normalizeAdminApiBase(value) {
 }
 
 function buildContentApiEndpoint(base) {
-  const fallback = DEFAULT_CONTENT_API_BASE;
+  const fallback = DEFAULT_CONTENT_API_BASE_PATH;
 
   if (typeof base !== 'string') {
     return `${fallback}/content`;
@@ -324,7 +322,7 @@ function buildContentApiEndpoint(base) {
 }
 
 const PUBLIC_CONTENT_API_ENDPOINT = buildContentApiEndpoint(
-  PUBLIC_CONTENT_API_BASE_URL || DEFAULT_CONTENT_API_BASE
+  PUBLIC_CONTENT_API_BASE_URL || DEFAULT_CONTENT_API_BASE_PATH
 );
 
 function parseAllowedOrigins(rawValue) {
