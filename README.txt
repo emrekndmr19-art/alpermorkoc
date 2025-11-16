@@ -16,7 +16,7 @@ Bu dosya bilgisayardan çok anlamayan biri için hazırlandı. Aşağıdaki adı
 | `uploads/` | Yüklediğiniz CV dosyalarının saklanacağı klasör. |
 | `README.md` | Elinizde tuttuğunuz bu rehber. |
 
-> **Not:** `index.html`, `services.html` gibi var olan tüm sayfalarınız aynı klasörde durmaya devam eder. Backend bunların üzerine eklenen ayrı bir katmandır.
+> **Not:** `index.html`, `projeler.html` gibi var olan tüm sayfalarınız aynı klasörde durmaya devam eder. Backend bunların üzerine eklenen ayrı bir katmandır.
 
 ---
 
@@ -129,6 +129,18 @@ https://alpimimarlik.com/admin-panel
 
 ## 7. Site metinlerini ve menüyü güncelleme
 
+<<<<<<< HEAD
+Sitede gördüğünüz tüm başlıklar, açıklamalar, buton yazıları ve menü bağlantıları admin panelindeki "Site Metinleri ve Menü" bölümünden yönetilir. Kod bilmeye gerek yoktur; aşağıdaki liste her metni anlaşılır şekilde adlandırır.
+
+1. Bölümü açınca üstteki form, altta ise mevcut metinlerin listesi yer alır. Listede örneğin "Menü • Portfolyo bağlantısı" veya "Projeler Sayfası • Kahraman başlığı" gibi açıklamalar görürsünüz.
+2. Düzenlemek istediğiniz metne tıklayın. Formdaki "Metin nerede görünecek?" alanı ve metin içeriği otomatik dolar.
+3. "Dil" açılır menüsünden Türkçe veya İngilizce seçin. Her dil ayrı ayrı kaydedilir.
+4. "Metin / Değer" kutusuna görmek istediğiniz yeni cümleyi, buton yazısını veya bağlantıyı yazın. Kaydettiğinizde değişiklik siteye anında yansır.
+5. Listede olmayan özel bir alanı güncellemeniz istenirse size verilen teknik adı bu kutuya yazabilirsiniz. Emin değilseniz destek ekibine sorabilirsiniz.
+6. "Metni Kaydet" butonuna bastıktan sonra değişiklik listede görünür. "Sil" düğmesiyle gereksiz metinleri kaldırabilirsiniz; bu durumda site orijinal varsayılan çeviriye döner.
+
+> **İpucu:** Bir metnin teknik adı hâlâ listede küçük gri yazıyla görünür. Destek gerektiğinde bu adı paylaşmanız yeterlidir; günlük kullanımda açıklayıcı başlıklar üzerinden ilerleyebilirsiniz.
+=======
 Artık sitenin tamamındaki başlıklar, paragraflar, menü öğeleri, CTA yazıları ve meta açıklamalar admin panelindeki "Site Metinleri ve Menü" bölümünden yönetiliyor. HTML dosyalarına dokunmadan tüm dili güncellemek için aşağıdaki adımları izleyin:
 
 1. Paneldeki ilgili bölümü açın. Üstteki form yeni veya mevcut bir anahtarı düzenlemek içindir.
@@ -139,6 +151,7 @@ Artık sitenin tamamındaki başlıklar, paragraflar, menü öğeleri, CTA yazı
 6. Aşağıdaki arama kutusuyla belirli anahtarları filtreleyebilir, listeden "Düzenle"ye basarak formu otomatik doldurabilir veya "Sil" ile gereksiz metinleri kaldırabilirsiniz. Silinen anahtarlar frontend'de varsayılan (depo içindeki `i18n/*.json`) değerlerine düşer.
 
 > **İpucu:** Menü bağlantıları `common.nav.*` altında, üst kısımdaki hero başlıkları `index.hero.*`, `services.hero.*` gibi alanlarda yer alır. Yeni sayfalar veya CTA'lar için aynı isimlendirme ile kendi anahtarınızı ekleyebilirsiniz.
+>>>>>>> origin/main
 
 ## 8. Sitenizi müşterinin alan adına (domain) bağlama
 
@@ -204,7 +217,11 @@ Artık sitenin tamamındaki başlıklar, paragraflar, menü öğeleri, CTA yazı
   nano .env
   ```
 - `ADMIN_API_BASE_URL` değerini backend'in dışarıdan erişilen adresi ile eşleştirin (ör. `https://api.sirketiniz.com/api`).
+<<<<<<< HEAD
+- `PUBLIC_CONTENT_API_BASE_URL` alanı, ziyaretçilerin gördüğü Projeler/Portfolyo akışlarının `/api/content` isteklerini hangi domain'e göndereceğini belirler. Frontend'i farklı bir sunucuda barındırıyorsanız tam URL yazın (ör. `https://api.sirketiniz.com/api`).
+=======
 - `PUBLIC_CONTENT_API_BASE_URL` alanı, ziyaretçilerin gördüğü Insights akışının `/api/content` isteklerini hangi domain'e göndereceğini belirler. Frontend'i farklı bir sunucuda barındırıyorsanız tam URL yazın (ör. `https://api.sirketiniz.com/api`).
+>>>>>>> origin/main
 - `CORS_ALLOWED_ORIGINS` alanına yalnızca frontend'in yayınlandığı alan adlarını yazın. GitHub Pages kullanıyorsanız sayfanın tam URL'sini ekleyin (örn. `https://kullanici.github.io`).
 
 ### Admin panelinin API adresini güncelleme
@@ -213,6 +230,16 @@ Artık sitenin tamamındaki başlıklar, paragraflar, menü öğeleri, CTA yazı
 - Paneli Node.js sunucusundan servis etmeye devam ediyorsanız bu adres genellikle `/api` olarak kalabilir.
 - Paneli GitHub Pages üzerinde tutmak istiyorsanız `ADMIN_API_BASE_URL` değerini backend'in tam alan adına ayarlayın, GitHub Pages deposunda da aynı içerikle bir `admin-config.js` dosyası barındırın ve sayfada kullanılan Basic Auth korumasını Nginx benzeri bir ters proxy üzerinden sağlamayı unutmayın.
 
+<<<<<<< HEAD
+### Portfolyo akışının API adresini güncelleme
+
+- `portfolio.html` sayfası açılırken kök dizindeki `site-config.js` betiğini yükler ve `.env` içinde tanımladığınız `PUBLIC_CONTENT_API_BASE_URL` değerini okur.
+- Frontend'i CDN, GitHub Pages veya farklı bir domainden dağıtıyorsanız `PUBLIC_CONTENT_API_BASE_URL` değerini backend'in tam URL'sine ayarlayın. Böylece `assets/js/portfolio.js` dosyası içerik listesini ve fotoğrafları doğru kaynaktan çeker.
+
+### Mimarlık projeleri bloğu
+
+- Admin panelinde oluşturduğunuz her içerik için "Proje Tipi" alanı bulunur. Bu değer (`workplace`, `residential`, `hospitality`, `concept`) kartların ana sayfa, Projeler ve Portfolyo sayfalarında hangi etiketle gösterileceğini belirler.
+=======
 ### Insights akışının API adresini güncelleme
 
 - `insights.html` sayfası açılırken kök dizindeki `site-config.js` betiğini yükler ve `.env` içinde tanımladığınız `PUBLIC_CONTENT_API_BASE_URL` değerini okur.
@@ -221,6 +248,7 @@ Artık sitenin tamamındaki başlıklar, paragraflar, menü öğeleri, CTA yazı
 ### Mimarlık projeleri bloğu
 
 - Admin panelinde oluşturduğunuz her içerik için "Proje Tipi" alanı bulunur. Bu değer (`workplace`, `residential`, `hospitality`, `concept`) kartların ana sayfadaki Mimarlık Projeleri bölümünde ve Notlar arşivinde hangi etiketle gösterileceğini belirler.
+>>>>>>> origin/main
 - `index.html` dosyasındaki `assets/js/projects-feed.js` betiği, aynı `site-config.js` çıktısını kullanarak `/api/content` uç noktasını çağırır ve ilgili dile göre filtrelenmiş en güncel üç projeyi gösterir.
 - `projectType` alanı MongoDB tarafında tutulur; içeriği güncellerken değiştirebilir veya bırakırsanız varsayılan olarak "Ofis / Çalışma Alanı" etiketi kullanılır.
 

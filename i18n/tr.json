@@ -4,13 +4,10 @@
     "titles": {
       "home": "Alpimimarlık — Ana Sayfa",
       "studio": "Studio — Alpimimarlık",
-      "services": "Services — Alpimimarlık",
-      "insights": "Insights — Alpimimarlık",
+      "projects": "Projeler — Alpimimarlık",
+      "portfolio": "Portfolyo — Alpimimarlık",
       "contact": "Contact — Alpimimarlık",
-      "careers": "Kariyer — Alpimimarlık",
-      "insightLobby": "Lobi Sunumunda İlk İzlenim — Alpimimarlık Notları",
-      "insightScene": "Metinsiz Sahne Nasıl Anlatılır? — Alpimimarlık Notları",
-      "insightSessions": "Takım İçi Konsept Oturumları — Alpimimarlık Notları"
+      "careers": "Kariyer — Alpimimarlık"
     }
   },
   "common": {
@@ -25,8 +22,8 @@
     "nav": {
       "home": "Ana Sayfa",
       "studio": "Stüdyo",
-      "services": "Hizmetler",
-      "insights": "Notlar",
+      "projects": "Projeler",
+      "portfolio": "Portfolyo",
       "careers": "Kariyer",
       "contact": "İletişim"
     },
@@ -81,9 +78,15 @@
     },
     "projects": {
       "eyebrow": "Mimarlık Projeleri",
+<<<<<<< HEAD
+      "title": "Güncel proje akışı",
+      "body": "Admin panelinden eklediğiniz mimarlık projeleri bu blokta öne çıkar, Projeler sayfasında detaylı olarak listelenir ve Portfolyo sayfasında hikâyeleriyle birlikte yer alır.",
+      "cta": "Projeler sayfasına git",
+=======
       "title": "Güncel sahne notlarımız",
       "body": "Admin panelinden yüklenen mimarlık projeleri bu blokta öne çıkar, Notlar sayfasındaki tam arşive bağlanır ve her kart proje tipine göre etiketlenir.",
       "cta": "Tüm projeleri gör",
+>>>>>>> origin/main
       "loading": "Projeler yükleniyor...",
       "empty": "Henüz proje eklenmedi.",
       "error": "Projeler yüklenirken bir sorun oluştu."
@@ -106,35 +109,19 @@
       "body2": "Bu sayede uygulama dosyası tamamlanmadan önce bile yatırımcılara ofisin karakterini net şekilde gösteren tanıtım klasörleri hazırlıyoruz."
     }
   },
-  "services": {
-    "hero": {
-      "eyebrow": "Hizmet Paketleri",
-      "title": "Sunum Odaklı Mimarlık Servisleri",
-      "body": "Küçük ölçekli ofislerin konseptlerini sahneleyen tanıtım paketleri hazırlıyoruz. Ölçekli çizimler, atmosfer görselleri ve kısa metin blokları, ilk görüşmede güven veren bir vitrin sunmanıza yardımcı oluyor."
+  "content": {
+    "projectTypes": {
+      "workplace": "Ofis Projesi",
+      "residential": "Konut Projesi",
+      "hospitality": "Sosyal Alan & Misafirperverlik",
+      "concept": "Konsept Çalışması"
     },
-    "packages": {
-      "visionBook": {
-        "index": "01",
-        "title": "Vizyon Kitabı",
-        "body": "Üç bölümlü dijital kitap, lobi, çalışma alanı ve cephe sahnelerini aynı dilde anlatır. Renderlar ve fotoğraf düzenlemeleri, başlıklarla birlikte kullanılmaya hazır halde teslim edilir."
-      },
-      "presentationScene": {
-        "index": "02",
-        "title": "Sunum Sahnesi",
-        "body": "Pitch toplantıları için hazırlanan bu paket, hareketli slayt akışı ve kısa tanıtım filmiyle desteklenir. Boş ekranları, ofis kimliğinize uygun kolaj ve plan detaylarıyla tamamlıyoruz."
-      },
-      "pressKit": {
-        "index": "03",
-        "title": "Dijital Basın Dosyası",
-        "body": "Basın bültenleri ve sosyal medya lansmanları için hızlıca özelleştirebileceğiniz şablonlar içerir. Her görsel, stüdyonuzun tonunu anlatan kısa açıklamalarla birlikte gelir."
-      },
-      "consulting": {
-        "index": "04",
-        "title": "Danışmanlık & Koordinasyon",
-        "body": "Sunum hazırlıkları sırasında ekiplerinizi yönlendiren toplantılar planlıyoruz. Malzeme seçimi, metin tonu ve görsel yerleşimleri için paylaşılabilir rehberler sunuyoruz."
-      }
+    "language": {
+      "multi": "TR · EN"
     }
   },
+<<<<<<< HEAD
+=======
   "insights": {
     "hero": {
       "eyebrow": "Mimarlık Projeleri & Notlar",
@@ -254,6 +241,7 @@
     },
     "backLink": "Tüm yazılara dön"
   },
+>>>>>>> origin/main
   "careers": {
     "intro": {
       "eyebrow": "Kariyer",
@@ -369,6 +357,50 @@
         "label": "Sunum Arşivi",
         "body": "Sunum öncesi paylaşılacak örnek görseller için özel bir galeri bağlantısı oluşturuyoruz. Talep formunda belirtin."
       }
+    }
+  },
+  "projectsPage": {
+    "hero": {
+      "eyebrow": "Projeler",
+      "title": "Stüdyodan güncel dosyalar",
+      "body": "Admin panelinde yeni bir proje oluşturduğunuzda başlık, açıklama ve fotoğraf bilgileri bu sayfada otomatik olarak yayınlanır. Dil seçimi ziyaretçinin tercihiyle eşleşir; “Çok Dilli” projeler her iki dilde de görünür.",
+      "cta": "Portfolyoyu incele"
+    },
+    "guide": {
+      "title": "Bu liste nasıl çalışır?",
+      "body": "Projelerin ziyaretçilere nasıl gösterildiğini bilmeniz için kısa notlar:",
+      "items": {
+        "one": "Fotoğraf yüklediğiniz kartlar hem ana sayfada hem de burada büyük görsel ile yer alır.",
+        "two": "Proje tipini seçtiğinizde kartın üstündeki etiket güncellenir ve Portfolyo sayfasındaki filtreler doğru çalışır.",
+        "three": "Bir projeyi silip daha sonra geri yüklediğinizde konumu ve fotoğrafı korunur."
+      }
+    },
+    "feed": {
+      "title": "Paylaşılan projeler",
+      "loading": "Projeler yükleniyor...",
+      "empty": "Henüz proje eklenmedi.",
+      "error": "Projeleri yüklerken bir sorun oluştu."
+    }
+  },
+  "portfolioPage": {
+    "hero": {
+      "eyebrow": "Portfolyo",
+      "title": "Sunum diliyle anlatılan projeler",
+      "body": "Bu sayfa admin paneline yüklenen tüm projeleri özet, etiket ve fotoğrafıyla listeler. Ziyaretçiler filtreleri kullanarak kendi ihtiyaçlarına uygun örnekleri seçebilir.",
+      "note": "Dil filtresi ziyaretçinin seçimine göre otomatik çalışır; “Çok Dilli” kartlar her iki dilde de görünür."
+    },
+    "filters": {
+      "label": "Proje tipi",
+      "all": "Tümü",
+      "workplace": "Ofis / Çalışma Alanı",
+      "residential": "Konut",
+      "hospitality": "Sosyal Alan & Misafirperverlik",
+      "concept": "Konsept Çalışması"
+    },
+    "feed": {
+      "loading": "Portfolyo yükleniyor...",
+      "empty": "Henüz portfolyoda proje yok.",
+      "error": "Portfolyoyu yüklerken bir hata oluştu."
     }
   }
 }

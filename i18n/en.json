@@ -4,13 +4,10 @@
     "titles": {
       "home": "Alpimimarlık — Home",
       "studio": "Studio — Alpimimarlık",
-      "services": "Services — Alpimimarlık",
-      "insights": "Insights — Alpimimarlık",
+      "projects": "Projects — Alpimimarlık",
+      "portfolio": "Portfolio — Alpimimarlık",
       "contact": "Contact — Alpimimarlık",
-      "careers": "Careers — Alpimimarlık",
-      "insightLobby": "Lobby First Impressions — Alpimimarlık Notes",
-      "insightScene": "How to Tell a Scene Without Text — Alpimimarlık Notes",
-      "insightSessions": "In-Studio Concept Sessions — Alpimimarlık Notes"
+      "careers": "Careers — Alpimimarlık"
     }
   },
   "common": {
@@ -25,8 +22,8 @@
     "nav": {
       "home": "Home",
       "studio": "Studio",
-      "services": "Services",
-      "insights": "Insights",
+      "projects": "Projects",
+      "portfolio": "Portfolio",
       "careers": "Careers",
       "contact": "Contact"
     },
@@ -81,9 +78,15 @@
     },
     "projects": {
       "eyebrow": "Architecture Projects",
+<<<<<<< HEAD
+      "title": "Fresh project stream",
+      "body": "Projects you publish in the admin panel surface here, receive a full listing on the Projects page, and carry their stories across the Portfolio view.",
+      "cta": "Go to Projects",
+=======
       "title": "Latest scene notes",
       "body": "Projects published through the admin panel surface here, connect to the full Insights archive, and carry project-type labels for quick context.",
       "cta": "View all projects",
+>>>>>>> origin/main
       "loading": "Loading projects...",
       "empty": "No projects have been published yet.",
       "error": "We couldn't load the projects. Please try again."
@@ -106,35 +109,19 @@
       "body2": "This lets us present folders that clearly convey the office character even before the construction set is complete."
     }
   },
-  "services": {
-    "hero": {
-      "eyebrow": "Service Packages",
-      "title": "Presentation-Focused Architecture Services",
-      "body": "We craft launch-ready packages that stage the concepts of small-scale studios. Drawings, atmosphere visuals, and concise copy help you offer a trusted showcase in first meetings."
+  "content": {
+    "projectTypes": {
+      "workplace": "Workplace Project",
+      "residential": "Residential Project",
+      "hospitality": "Hospitality & Social",
+      "concept": "Concept Study"
     },
-    "packages": {
-      "visionBook": {
-        "index": "01",
-        "title": "Vision Book",
-        "body": "A three-part digital book narrates the lobby, work zone, and façade in a unified tone. Renders and edited photos arrive ready to use with headlines."
-      },
-      "presentationScene": {
-        "index": "02",
-        "title": "Presentation Scene",
-        "body": "Designed for pitch meetings, this set couples a motion-ready slide flow with a short teaser film. We complete empty screens with collages and plans that match your studio identity."
-      },
-      "pressKit": {
-        "index": "03",
-        "title": "Digital Press Kit",
-        "body": "Includes templates you can quickly tailor for press briefings and social launches. Each visual is paired with captions that convey your studio's tone."
-      },
-      "consulting": {
-        "index": "04",
-        "title": "Consulting & Coordination",
-        "body": "We schedule sessions that guide your team during preparation. Shareable guides cover material choices, voice, and visual placement."
-      }
+    "language": {
+      "multi": "TR · EN"
     }
   },
+<<<<<<< HEAD
+=======
   "insights": {
     "hero": {
       "eyebrow": "Architecture Projects & Notes",
@@ -254,6 +241,7 @@
     },
     "backLink": "Back to all articles"
   },
+>>>>>>> origin/main
   "careers": {
     "intro": {
       "eyebrow": "Careers",
@@ -369,6 +357,50 @@
         "label": "Presentation Archive",
         "body": "We create a private gallery link for sample visuals shared ahead of meetings. Please mention it in the form."
       }
+    }
+  },
+  "projectsPage": {
+    "hero": {
+      "eyebrow": "Projects",
+      "title": "Fresh files from the studio",
+      "body": "Whenever you add a project in the admin panel, its title, summary, and photo are published here automatically. The selected language matches the visitor preference, and “Multi-language” cards appear in both languages.",
+      "cta": "Open the portfolio"
+    },
+    "guide": {
+      "title": "How this list works",
+      "body": "Quick reminders so every editor knows what happens on the site:",
+      "items": {
+        "one": "Cards with a photo show a large hero both on the home page and in this view.",
+        "two": "Picking the project type updates the badge and powers the filters on the Portfolio page.",
+        "three": "If you delete and restore a project later, we keep its placement and media."
+      }
+    },
+    "feed": {
+      "title": "Published projects",
+      "loading": "Loading projects...",
+      "empty": "No projects have been published yet.",
+      "error": "We couldn’t load the projects. Please try again."
+    }
+  },
+  "portfolioPage": {
+    "hero": {
+      "eyebrow": "Portfolio",
+      "title": "Projects told through presentation language",
+      "body": "This page lists every project you add from the admin panel along with its summary, badge, and photo. Visitors can narrow the feed using the filters.",
+      "note": "Language follows the visitor preference automatically; cards marked “Multi-language” appear in both languages."
+    },
+    "filters": {
+      "label": "Project type",
+      "all": "All",
+      "workplace": "Workplace",
+      "residential": "Residential",
+      "hospitality": "Hospitality & Social",
+      "concept": "Concept Study"
+    },
+    "feed": {
+      "loading": "Loading the portfolio...",
+      "empty": "No projects have been shared in the portfolio yet.",
+      "error": "We couldn’t load the portfolio. Please try again."
     }
   }
 }

@@ -73,6 +73,84 @@ const PROJECT_TYPE_LABELS = {
 const DEFAULT_PROJECT_TYPE = 'workplace';
 const SUPPORTED_SITE_COPY_LANGUAGES = ['tr', 'en'];
 
+const SITE_COPY_LABEL_MAP = {
+  'common.brand': 'Genel • Logo üzerindeki marka adı',
+  'common.nav.home': 'Menü • Ana Sayfa bağlantısı',
+  'common.nav.projects': 'Menü • Projeler bağlantısı',
+  'common.nav.portfolio': 'Menü • Portfolyo bağlantısı',
+  'common.nav.studio': 'Menü • Stüdyo bağlantısı',
+  'common.nav.careers': 'Menü • Kariyer bağlantısı',
+  'common.nav.contact': 'Menü • İletişim bağlantısı',
+  'index.projects.title': 'Ana Sayfa • Projeler bloğu başlığı',
+  'index.projects.body': 'Ana Sayfa • Projeler bloğu açıklaması',
+  'index.projects.cta': 'Ana Sayfa • Projeler bloğu butonu',
+  'projectsPage.hero.title': 'Projeler Sayfası • Kahraman başlığı',
+  'projectsPage.hero.body': 'Projeler Sayfası • Kahraman açıklaması',
+  'portfolioPage.hero.title': 'Portfolyo Sayfası • Kahraman başlığı',
+  'portfolioPage.hero.body': 'Portfolyo Sayfası • Kahraman açıklaması',
+  'portfolioPage.filters.label': 'Portfolyo Sayfası • Filtre başlığı',
+  'contact.hero.title': 'İletişim Sayfası • Kahraman başlığı',
+  'contact.hero.body': 'İletişim Sayfası • Kahraman açıklaması',
+  'studio.hero.title': 'Stüdyo Sayfası • Kahraman başlığı',
+  'studio.hero.body': 'Stüdyo Sayfası • Kahraman açıklaması',
+};
+
+const SITE_COPY_SEGMENT_LABELS = {
+  common: 'Genel Metinler',
+  index: 'Ana Sayfa',
+  projects: 'Projeler Bloğu',
+  projectsPage: 'Projeler Sayfası',
+  portfolioPage: 'Portfolyo Sayfası',
+  studio: 'Stüdyo Sayfası',
+  contact: 'İletişim Sayfası',
+  careers: 'Kariyer Sayfası',
+  hero: 'Hero Alanı',
+  title: 'Başlık',
+  body: 'Açıklama',
+  cta: 'Buton Yazısı',
+  nav: 'Menü',
+  footer: 'Alt Bilgi',
+  menuPanel: 'Menü Paneli',
+  cookie: 'Çerez Bilgisi',
+  filters: 'Filtreler',
+  guide: 'Kısa Bilgi',
+  feed: 'Liste Mesajları',
+  language: 'Dil Etiketleri',
+  brand: 'Marka Adı',
+  meta: 'Tarayıcı Başlıkları',
+};
+
+function humanizeSiteCopySegment(segment) {
+  if (!segment) {
+    return '';
+  }
+
+  return segment
+    .replace(/([a-z])([A-Z])/g, '$1 $2')
+    .replace(/[-_]/g, ' ')
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+}
+
+function getSiteCopyLabel(key) {
+  if (!key) {
+    return '';
+  }
+
+  if (SITE_COPY_LABEL_MAP[key]) {
+    return SITE_COPY_LABEL_MAP[key];
+  }
+
+  const segments = key.split('.');
+  const friendlySegments = segments.map((segment) => {
+    if (SITE_COPY_SEGMENT_LABELS[segment]) {
+      return SITE_COPY_SEGMENT_LABELS[segment];
+    }
+    return humanizeSiteCopySegment(segment);
+  });
+
+  return friendlySegments.join(' • ');
+}
+
 const normalizeLanguageValue = (value) => {
   if (typeof value !== 'string') {
     return 'tr';
@@ -231,14 +309,19 @@ function renderSiteCopyList() {
     const entry = document.createElement('div');
     entry.className = 'site-copy-entry';
 
+    const friendlyLabel = getSiteCopyLabel(key) || key;
+
     const keyHeading = document.createElement('strong');
-    keyHeading.textContent = key;
+    keyHeading.textContent = friendlyLabel;
+
+    const keyMeta = document.createElement('small');
+    keyMeta.textContent = `Teknik adı: ${key}`;
 
     const valuePreview = document.createElement('pre');
     valuePreview.textContent = value || '—';
 
     const hint = document.createElement('small');
-    hint.textContent = 'Düzenlemek için “Düzenle”ye tıklayın.';
+    hint.textContent = 'Düzenlemek için "Düzenle"ye tıklayın.';
 
     const actions = document.createElement('div');
     actions.className = 'actions';
@@ -275,6 +358,7 @@ function renderSiteCopyList() {
     actions.appendChild(deleteButton);
 
     entry.appendChild(keyHeading);
+    entry.appendChild(keyMeta);
     entry.appendChild(valuePreview);
     entry.appendChild(hint);
     entry.appendChild(actions);
@@ -305,7 +389,11 @@ async function handleSiteCopySubmit(event) {
   const value = siteCopyValueInput?.value ?? '';
 
   if (!key) {
+<<<<<<< HEAD
+    setStatus(adminStatus, 'Lütfen düzenlenecek metnin adını yazın.', true);
+=======
     setStatus(adminStatus, 'Lütfen güncellenecek anahtarı yazın.', true);
+>>>>>>> origin/main
     return;
   }
 
@@ -355,7 +443,12 @@ async function saveSiteCopyEntry(language, key, value) {
 }
 
 async function deleteSiteCopyEntry(language, key) {
+<<<<<<< HEAD
+  const friendlyLabel = getSiteCopyLabel(key) || key;
+  if (!window.confirm(`"${friendlyLabel}" metnini silmek istediğinize emin misiniz?`)) {
+=======
   if (!window.confirm(`${key} anahtarını silmek istediğinize emin misiniz?`)) {
+>>>>>>> origin/main
     return;
   }
 

@@ -57,8 +57,22 @@
         const config = getSiteConfig();
         const configEndpoint = sanitizeEndpoint(config && config.contentEndpoint);
         const configBase = config && config.contentApiBase;
+<<<<<<< HEAD:assets/js/portfolio.js
+        const metaEndpoint = sanitizeEndpoint(
+            readMetaContent('portfolio:content-endpoint') ||
+                readMetaContent('projects:content-endpoint') ||
+                readMetaContent('content:endpoint') ||
+                readMetaContent('insights:content-endpoint')
+        );
+        const metaBase =
+            readMetaContent('portfolio:content-api-base') ||
+            readMetaContent('projects:content-api-base') ||
+            readMetaContent('content:api-base') ||
+            readMetaContent('insights:content-api-base');
+=======
         const metaEndpoint = sanitizeEndpoint(readMetaContent('insights:content-endpoint'));
         const metaBase = readMetaContent('insights:content-api-base');
+>>>>>>> origin/main:assets/js/insights.js
 
         return (
             configEndpoint ||
@@ -91,11 +105,12 @@
         'radial-gradient(circle at 80% 20%, rgba(140, 255, 210, 0.55) 0%, rgba(140, 255, 210, 0) 55%), radial-gradient(circle at 18% 75%, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 60%), linear-gradient(170deg, #101d1c, #142932 60%, #273b4a)',
     ];
 
-    const listElement = document.getElementById('insights-list');
-    const template = document.getElementById('insight-card-template');
-    const loadingElement = document.getElementById('insights-loading');
-    const emptyElement = document.getElementById('insights-empty');
-    const errorElement = document.getElementById('insights-error');
+    const listElement = document.getElementById('portfolio-list');
+    const template = document.getElementById('portfolio-card-template');
+    const loadingElement = document.getElementById('portfolio-loading');
+    const emptyElement = document.getElementById('portfolio-empty');
+    const errorElement = document.getElementById('portfolio-error');
+    const filtersContainer = document.getElementById('portfolio-type-filters');
 
     if (!listElement || !template) {
         return;
@@ -105,6 +120,7 @@
     let hasLoadedOnce = false;
     let isFetching = false;
     let hasError = false;
+    let activeTypeFilter = 'all';
 
     const setHidden = (element, hidden) => {
         if (!element) return;
@@ -129,6 +145,43 @@
         });
 
         hasError = state === 'error';
+    };
+
+    const updateFilterButtons = () => {
+        if (!filtersContainer) {
+            return;
+        }
+        const buttons = filtersContainer.querySelectorAll('[data-filter]');
+        buttons.forEach((button) => {
+            const value = normalizeFilterValue(button.getAttribute('data-filter'));
+            const isActive = value === activeTypeFilter;
+            button.setAttribute('data-active', isActive ? 'true' : 'false');
+            button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+            button.classList.toggle('border-white/70', isActive);
+            button.classList.toggle('text-white', isActive);
+            button.classList.toggle('border-white/25', !isActive);
+            button.classList.toggle('text-white/80', !isActive);
+        });
+    };
+
+    const setTypeFilter = (value) => {
+        const normalized = normalizeFilterValue(value);
+        if (normalized === activeTypeFilter) {
+            return;
+        }
+        activeTypeFilter = normalized;
+        updateFilterButtons();
+        if (!hasLoadedOnce) {
+            return;
+        }
+        const count = render(getActiveLanguage());
+        if (!hasError) {
+            if (count === 0) {
+                setState('empty');
+            } else {
+                setState(null);
+            }
+        }
     };
 
     const normalizeLanguage = (value) => {
@@ -214,6 +267,28 @@
         return normalized;
     };
 
+<<<<<<< HEAD:assets/js/portfolio.js
+    const normalizeFilterValue = (value) => {
+        if (typeof value !== 'string') {
+            return 'all';
+        }
+        const normalized = value.trim().toLowerCase();
+        if (!normalized) {
+            return 'all';
+        }
+        return normalized;
+    };
+
+    const filterByType = (items, type) => {
+        const normalizedType = normalizeFilterValue(type);
+        if (normalizedType === 'all') {
+            return items;
+        }
+        return items.filter((item) => normalizeProjectType(item && item.projectType) === normalizedType);
+    };
+
+=======
+>>>>>>> origin/main:assets/js/insights.js
     const getProjectTypeLabel = (code) => {
         const normalized = normalizeProjectType(code);
         if (window.I18N && typeof window.I18N.translate === 'function') {
@@ -232,7 +307,7 @@
         }
         if (normalized === 'multi') {
             if (window.I18N && typeof window.I18N.translate === 'function') {
-                const multiLabel = window.I18N.translate('insights.feed.multiBadge');
+                const multiLabel = window.I18N.translate('content.language.multi');
                 if (multiLabel) {
                     return multiLabel;
                 }
@@ -281,7 +356,7 @@
 
     const render = (lang) => {
         const items = Array.isArray(cache) ? cache : [];
-        const filtered = filterByLanguage(items, lang);
+        const filtered = filterByType(filterByLanguage(items, lang), activeTypeFilter);
         listElement.innerHTML = '';
 
         if (filtered.length === 0) {
@@ -411,7 +486,19 @@
         }
     };
 
+    if (filtersContainer) {
+        filtersContainer.addEventListener('click', (event) => {
+            const target = event.target.closest('[data-filter]');
+            if (!target) {
+                return;
+            }
+            event.preventDefault();
+            setTypeFilter(target.getAttribute('data-filter'));
+        });
+    }
+
     const init = () => {
+        updateFilterButtons();
         fetchContents();
     };
 
