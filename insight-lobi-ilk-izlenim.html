@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title data-i18n="meta.titles.careers">Kariyer — Alpimimarlık</title>
+    <title data-i18n="meta.titles.insightLobby">Lobi Sunumunda İlk İzlenim — Alpimimarlık Notları</title>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
@@ -30,7 +30,7 @@
         };
     </script>
     <style>
-        .concept-visual {
+        .ai-visual {
             position: relative;
             overflow: hidden;
             border-radius: 0.25rem;
@@ -39,7 +39,7 @@
             box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
         }
 
-        .concept-visual::after {
+        .ai-visual::after {
             content: "";
             position: absolute;
             inset: 0;
@@ -78,53 +78,64 @@
     </header>
 
     <main class="px-8 py-20 text-primary md:px-20">
-        <div class="mx-auto max-w-3xl space-y-8">
-            <div class="space-y-4 text-center md:text-left">
-                <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="careers.application.eyebrow">Başvuru</p>
-                <h1 class="text-4xl font-display text-white md:text-5xl" data-i18n="careers.application.title">Başvuru Formu</h1>
-                <p class="text-sm text-white/70" data-i18n="careers.application.intro">
-                    Portfolyonuzu, özgeçmişinizi ve iletişim bilgilerinizi aşağıdaki formdan paylaşın. Tüm başvurular haftalık olarak değerlendirilir.
+        <div class="mx-auto max-w-4xl space-y-12">
+            <div class="space-y-6">
+                <p class="text-xs uppercase tracking-[0.55em] text-accent" data-i18n="insightLobby.hero.label">Saha Notu</p>
+                <h1 class="text-4xl font-display text-white md:text-5xl" data-i18n="insightLobby.hero.title">Lobi Sunumunda İlk İzlenim</h1>
+                <p class="text-sm uppercase tracking-[0.35em] text-white/50" data-i18n="insightLobby.hero.meta">Yayın Tarihi — 18 Ocak 2024</p>
+                <div
+                    aria-label="Lobi sunumu için hazırlanan ışık ve renk kurgusu"
+                    class="ai-visual h-60 w-full"
+                    role="img"
+                    style="background-image: radial-gradient(circle at 22% 30%, rgba(255, 206, 165, 0.8) 0%, rgba(255, 206, 165, 0) 55%), radial-gradient(circle at 78% 65%, rgba(255, 126, 126, 0.45) 0%, rgba(255, 126, 126, 0) 50%), linear-gradient(150deg, #1e1f2d, #101019 58%, #2e2439);"
+                ></div>
+                <p class="text-lg text-white/80" data-i18n="insightLobby.hero.intro">
+                    Lobi sahnesi, küçük bir ofisin kimliğini ilk dakikada aktarması için kullandığımız en güçlü araç. Bu yazı,
+                    hazırladığımız sunum dosyalarında nasıl bir hikâye kurduğumuzu, mekânı tanımlarken hangi öncelikleri göz önünde bulundurduğumuzu anlatıyor.
                 </p>
             </div>
-            <form class="space-y-6 border border-white/10 bg-black/25 p-8" enctype="multipart/form-data" method="post">
-                <div class="grid gap-4 md:grid-cols-2">
-                    <div>
-                        <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.nameLabel" for="application-name">Ad Soyad</label>
-                        <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.namePlaceholder" id="application-name" placeholder="Adınız Soyadınız" required type="text"/>
-                    </div>
-                    <div>
-                        <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.emailLabel" for="application-email">E-posta</label>
-                        <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.emailPlaceholder" id="application-email" placeholder="ornek@studio.com" required type="email"/>
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.phoneLabel" for="application-phone">Telefon</label>
-                    <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.phonePlaceholder" id="application-phone" placeholder="+90 000 000 00 00" required type="tel"/>
-                </div>
-                <div>
-                    <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.roleLabel" for="application-role">Rol Tercihi</label>
-                    <select class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.rolePlaceholder" id="application-role" required>
-                        <option value="" disabled selected data-i18n="careers.application.fields.rolePlaceholder">Rol Seçin</option>
-                        <option data-i18n="careers.application.fields.roles.presentationArchitect" value="presentationArchitect">Sunum Mimarı</option>
-                        <option data-i18n="careers.application.fields.roles.visualDesigner" value="visualDesigner">Görsel İletişim Tasarımcısı</option>
-                        <option data-i18n="careers.application.fields.roles.studioIntern" value="studioIntern">Stüdyo Stajyeri</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.portfolioLabel" for="application-portfolio">Portfolyo Bağlantısı</label>
-                    <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.portfolioPlaceholder" id="application-portfolio" placeholder="https://" required type="url"/>
-                </div>
-                <div>
-                    <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.motivationLabel" for="application-message">Kısa Not</label>
-                    <textarea class="mt-2 h-32 w-full border border-white/15 bg-black/40 p-3 text-sm text-white placeholder:text-white/40 focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.motivationPlaceholder" id="application-message" placeholder="Neden Alpimimarlık?" required></textarea>
-                </div>
-                <div>
-                    <label class="block text-xs uppercase tracking-[0.4em] text-white/60" data-i18n="careers.application.fields.cvLabel" for="application-cv">Özgeçmiş</label>
-                    <input class="mt-2 w-full border border-white/15 bg-black/40 p-3 text-sm text-white focus:border-white focus:outline-none" data-i18n-placeholder="careers.application.fields.cvPlaceholder" id="application-cv" required type="file"/>
-                </div>
-                <button class="w-full border border-white/20 bg-white/10 px-6 py-3 text-xs uppercase tracking-[0.45em] text-white transition hover:bg-white/20" data-i18n="careers.application.submit" type="submit">Başvuruyu Gönder</button>
-                <p class="text-xs text-white/50" data-i18n="careers.application.privacy">Gönderdiğiniz bilgiler yalnızca değerlendirme sürecinde kullanılır.</p>
-            </form>
+
+            <article class="prose prose-invert max-w-none">
+                <h2 data-i18n="insightLobby.sections.route.heading">Ziyaretçi rotasını netleştirmek</h2>
+                <p data-i18n="insightLobby.sections.route.paragraph1">
+                    İlk sunumda kullandığımız plan şemasında, ziyaretçinin girişten toplantı alanına kadar izleyeceği adımları kısaca tarif ediyoruz.
+                    Kapı, danışma ve bekleme alanları arasında net bir rota oluşturmak, müşterinin zihninde mekânın akışını canlandırıyor.
+                    Planın yanında, zemin kaplaması ve yönlendirme elemanları için seçtiğimiz malzemeleri belirtiyoruz.
+                </p>
+                <p data-i18n="insightLobby.sections.route.paragraph2">
+                    Bu bölümde gereksiz detaylardan kaçınarak üç ana mesaj iletiyoruz: girişten itibaren hissedilen atmosfer, bekleme alanındaki oturma düzeni ve toplantı odasına geçişte ışığın nasıl değiştiği.
+                    Bu üç başlık, lobiye ilişkin ilk soruları yanıtlıyor ve toplantının ilerleyen dakikalarına sağlam bir zemin hazırlıyor.
+                </p>
+
+                <h2 data-i18n="insightLobby.sections.light.heading">Işık ve malzeme dengesi</h2>
+                <p data-i18n="insightLobby.sections.light.paragraph1">
+                    Lobi anlatımında ışık, mekânı tanıtan ilk görsel ipucu. Gündüz ve akşam senaryoları için iki ayrı aydınlatma şeması hazırlıyoruz.
+                    Gündüz senaryosunda doğal ışığın yoğunluğunu gösteren kısa bir kesit, akşam senaryosunda ise sıcaklığı ayarlanabilir armatürlerin mekâna yayılışını vurgulayan bir kolaj kullanıyoruz.
+                </p>
+                <p data-i18n="insightLobby.sections.light.paragraph2">
+                    Malzeme paleti seçimimiz, ışığın anlatmak istediği duyguyu destekliyor. Mat yüzeyler ışığı yumuşatırken, bakır veya pirinç detaylar odağı güçlendiriyor.
+                    Paleti üç ana renkle sınırlamak, anlatımın sade ve anlaşılır kalmasını sağlıyor.
+                </p>
+
+                <h2 data-i18n="insightLobby.sections.structure.heading">Sunum planını yapılandırmak</h2>
+                <p data-i18n="insightLobby.sections.structure.paragraph1">
+                    Sunum dosyasını hazırlarken lobiyi tek seferde anlatmak yerine kısa adımlara bölüyoruz.
+                    İlk sayfa mekânın duygusunu veren geniş açı, ikinci sayfa kullanıcı deneyimi hikâyesi ve üçüncü sayfa malzeme ile aydınlatma tablosu.
+                    Bu yapı sayesinde toplantı sırasında her bölüm için kısa, net bir açıklama yapabiliyoruz.
+                </p>
+                <p data-i18n="insightLobby.sections.structure.paragraph2">
+                    Sunumun sonunda, lobinin bitmiş halini temsil eden bir görseli, kontrol listesi ile birlikte paylaşarak görüşmeyi tamamlıyoruz.
+                    Liste; aydınlatma kurulumu, yönlendirme grafikleri ve mobilya yerleşiminden oluşuyor.
+                    Böylece görüşmeden çıkan herkes, yapılacak işlerin sırasını ve beklenen atmosferi aynı şekilde hayal ediyor.
+                </p>
+            </article>
+
+            <div class="border-t border-white/10 pt-10">
+                <a class="inline-flex items-center text-xs uppercase tracking-[0.35em] text-white/60 transition hover:text-white" data-i18n="insightLobby.backLink" href="insights.html">
+                    <span class="material-icons mr-2 text-sm">west</span>
+                    Tüm yazılara dön
+                </a>
+            </div>
         </div>
     </main>
 
@@ -181,13 +192,8 @@
             <nav class="mt-10 space-y-6 text-sm uppercase tracking-[0.4em] text-white/70">
                 <a class="block transition-opacity hover:opacity-60" href="index.html" data-i18n="common.nav.home">Ana Sayfa</a>
                 <a class="block transition-opacity hover:opacity-60" href="studio.html" data-i18n="common.nav.studio">Studio</a>
-<<<<<<< HEAD
-                <a class="block transition-opacity hover:opacity-60" href="projeler.html" data-i18n="common.nav.projects">Projeler</a>
-                <a class="block transition-opacity hover:opacity-60" href="portfolio.html" data-i18n="common.nav.portfolio">Portfolyo</a>
-=======
                 <a class="block transition-opacity hover:opacity-60" href="services.html" data-i18n="common.nav.services">Hizmetler</a>
                 <a class="block transition-opacity hover:opacity-60" href="insights.html" data-i18n="common.nav.insights">Notlar</a>
->>>>>>> origin/main
                 <a class="block transition-opacity hover:opacity-60" href="kariyer.html" data-i18n="common.nav.careers">Kariyer</a>
                 <a class="block transition-opacity hover:opacity-60" href="contact.html" data-i18n="common.nav.contact">Contact</a>
             </nav>
@@ -214,13 +220,8 @@
                 <ul class="mt-4 space-y-3 text-sm text-gray-400">
                     <li><a class="transition-colors hover:text-white" href="index.html" data-i18n="common.nav.home">Home</a></li>
                     <li><a class="transition-colors hover:text-white" href="studio.html" data-i18n="common.nav.studio">Studio</a></li>
-<<<<<<< HEAD
-                    <li><a class="transition-colors hover:text-white" href="projeler.html" data-i18n="common.nav.projects">Projeler</a></li>
-                    <li><a class="transition-colors hover:text-white" href="portfolio.html" data-i18n="common.nav.portfolio">Portfolyo</a></li>
-=======
                     <li><a class="transition-colors hover:text-white" href="services.html" data-i18n="common.nav.services">Hizmetler</a></li>
                     <li><a class="transition-colors hover:text-white" href="insights.html" data-i18n="common.nav.insights">Notlar</a></li>
->>>>>>> origin/main
                     <li><a class="transition-colors hover:text-white" href="kariyer.html" data-i18n="common.nav.careers">Kariyer</a></li>
                     <li><a class="transition-colors hover:text-white" href="contact.html" data-i18n="common.nav.contact">Contact</a></li>
                 </ul>

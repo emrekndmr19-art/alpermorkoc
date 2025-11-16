@@ -78,9 +78,15 @@
     },
     "projects": {
       "eyebrow": "Architecture Projects",
+<<<<<<< HEAD
       "title": "Fresh project stream",
       "body": "Projects you publish in the admin panel surface here, receive a full listing on the Projects page, and carry their stories across the Portfolio view.",
       "cta": "Go to Projects",
+=======
+      "title": "Latest scene notes",
+      "body": "Projects published through the admin panel surface here, connect to the full Insights archive, and carry project-type labels for quick context.",
+      "cta": "View all projects",
+>>>>>>> origin/main
       "loading": "Loading projects...",
       "empty": "No projects have been published yet.",
       "error": "We couldn't load the projects. Please try again."
@@ -114,6 +120,128 @@
       "multi": "TR · EN"
     }
   },
+<<<<<<< HEAD
+=======
+  "insights": {
+    "hero": {
+      "eyebrow": "Architecture Projects & Notes",
+      "title": "The living studio archive",
+      "body": "We catalogue the architecture decks, project tags, and preparation notes we share with clients. Every card you publish in the admin panel lands on the home feed and this archive simultaneously."
+    },
+    "feed": {
+      "loading": "Loading notes...",
+      "empty": "No content has been published yet.",
+      "error": "We couldn’t load the articles. Please try again later.",
+      "multiBadge": "TR · EN"
+    },
+    "articles": {
+      "lobby": {
+        "label": "Field Note",
+        "title": "First Impressions in the Lobby",
+        "excerpt": "The lobby scene helps visitors grasp the atmosphere within minutes. We outlined three key touches that work for us and the sample presentation plan.",
+        "link": "Read More"
+      },
+      "scene": {
+        "label": "Guide",
+        "title": "How to Convey a Wordless Scene",
+        "excerpt": "Our three-step strategy for pages without text: set the mood, write a user vignette, and finish with a supporting collage.",
+        "link": "Read More"
+      },
+      "sessions": {
+        "label": "Workshop Recap",
+        "title": "In-Studio Concept Sessions",
+        "excerpt": "We compiled the scene descriptions, lighting tips, and palette pairings we use in weekly sessions with sample files.",
+        "link": "Read More"
+      }
+    }
+  },
+  "content": {
+    "projectTypes": {
+      "workplace": "Workplace Project",
+      "residential": "Residential Project",
+      "hospitality": "Hospitality & Social",
+      "concept": "Concept Study"
+    }
+  },
+  "insightLobby": {
+    "hero": {
+      "label": "Field Note",
+      "title": "First Impressions in the Lobby",
+      "meta": "Published — 18 January 2024",
+      "intro": "The lobby scene is our strongest tool for communicating a small office's character in the first minute. This article explains the narrative we build and the priorities we focus on when defining the space."
+    },
+    "sections": {
+      "route": {
+        "heading": "Clarifying the visitor route",
+        "paragraph1": "In our initial plan diagram we briefly describe the steps from entry to meeting area. A clear path between the door, reception, and lounge helps clients imagine the flow.",
+        "paragraph2": "We keep to three core points: the atmosphere at the entrance, the seating layout in the lounge, and how light shifts on the way to the meeting room. Together they answer the first questions about the lobby and set the stage for the rest of the session."
+      },
+      "light": {
+        "heading": "Balancing light and material",
+        "paragraph1": "Light is the first visual cue in our lobby narrative. We prepare separate schemes for day and evening scenarios—one section highlighting daylight levels and another collage showing how adjustable fixtures spread through the space.",
+        "paragraph2": "The material palette reinforces the emotion we want the light to convey. Matte surfaces soften it, while brass or copper details sharpen the focal points. Limiting the palette to three main tones keeps the story clear."
+      },
+      "structure": {
+        "heading": "Structuring the presentation",
+        "paragraph1": "We break the lobby story into short steps instead of covering everything at once. The first page sets the mood with a wide angle, the second narrates the user experience, and the third summarises materials and lighting.",
+        "paragraph2": "We close with a finished view and checklist covering lighting setup, wayfinding graphics, and furniture placement. Everyone leaves the meeting with the same understanding of order and expected atmosphere."
+      }
+    },
+    "backLink": "Back to all articles"
+  },
+  "insightScene": {
+    "hero": {
+      "label": "Guide",
+      "title": "How to Tell a Scene Without Text",
+      "meta": "Published — 4 February 2024",
+      "intro": "It is possible to design the empty pages in a presentation without adding copy. This guide summarises how we strengthen the story using visual cues instead of words."
+    },
+    "sections": {
+      "atmosphere": {
+        "heading": "Building atmosphere without words",
+        "paragraph1": "Before we start, we decide which feeling the space should deliver. Light direction, palette, and materials form the base. Rather than a wide angle, we use three frames to steer the viewer's eye.",
+        "paragraph2": "Each frame focuses on one element—the floor texture, seating, or the light slipping along the façade—so the audience grasps the whole scene without reading text."
+      },
+      "story": {
+        "heading": "Shaping the user story",
+        "paragraph1": "We switch to a timeline approach to build a story without copy. Morning, midday, and evening scenarios show how the space is used throughout the day.",
+        "paragraph2": "Small icons or notes tied to the user's needs support the visuals. Keeping the design minimal—one highlight per frame—prevents overload."
+      },
+      "collage": {
+        "heading": "Finishing with a collage",
+        "paragraph1": "We conclude the scene with a collage placed over a plan or section. Thin lines and short labels indicate light directions, furniture placement, and colour intensity.",
+        "paragraph2": "The visual approach invites quick feedback during meetings and reveals which parts need refinement without adding text."
+      }
+    },
+    "backLink": "Back to all articles"
+  },
+  "insightSessions": {
+    "hero": {
+      "label": "Workshop Recap",
+      "title": "In-Studio Concept Sessions",
+      "meta": "Published — 26 February 2024",
+      "intro": "Our weekly concept sessions keep presentation files consistent and moving quickly. This article explains how we plan them, the outputs we expect, and how we share responsibilities."
+    },
+    "sections": {
+      "schedule": {
+        "heading": "Session flow",
+        "paragraph1": "Each meeting is structured in 45-minute blocks. One person presents the latest deck while the others listen and note questions.",
+        "paragraph2": "Notes are documented within 24 hours in a short summary so everyone sees the tasks and deadlines clearly."
+      },
+      "checklist": {
+        "heading": "Visual checklist",
+        "paragraph1": "The second block reviews visual consistency—palette, light direction, and material storytelling under three headings. We assign owners for missing items with quick turnarounds.",
+        "paragraph2": "This keeps every deck speaking the same language even when multiple team members contribute."
+      },
+      "archive": {
+        "heading": "Archiving and sharing",
+        "paragraph1": "We store every visual and file on a shared server at the end of the session. Each folder includes a cover sheet with the date, owner, and revision notes.",
+        "paragraph2": "Maintaining a clear archive gives us ready references for future meetings and avoids duplicate work."
+      }
+    },
+    "backLink": "Back to all articles"
+  },
+>>>>>>> origin/main
   "careers": {
     "intro": {
       "eyebrow": "Careers",

@@ -389,7 +389,11 @@ async function handleSiteCopySubmit(event) {
   const value = siteCopyValueInput?.value ?? '';
 
   if (!key) {
+<<<<<<< HEAD
     setStatus(adminStatus, 'Lütfen düzenlenecek metnin adını yazın.', true);
+=======
+    setStatus(adminStatus, 'Lütfen güncellenecek anahtarı yazın.', true);
+>>>>>>> origin/main
     return;
   }
 
@@ -439,8 +443,12 @@ async function saveSiteCopyEntry(language, key, value) {
 }
 
 async function deleteSiteCopyEntry(language, key) {
+<<<<<<< HEAD
   const friendlyLabel = getSiteCopyLabel(key) || key;
   if (!window.confirm(`"${friendlyLabel}" metnini silmek istediğinize emin misiniz?`)) {
+=======
+  if (!window.confirm(`${key} anahtarını silmek istediğinize emin misiniz?`)) {
+>>>>>>> origin/main
     return;
   }
 
