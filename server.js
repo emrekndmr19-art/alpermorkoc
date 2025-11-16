@@ -916,9 +916,11 @@ app.get('/api/site-copy/:language', async (req, res) => {
   try {
     const document = await ensureSiteCopyDocument(language);
     const response = await buildSiteCopyResponse(document);
+    setNoCacheHeaders(res);
     return res.json(response);
   } catch (error) {
     console.error('Site metinleri alınamadı:', error);
+    setNoCacheHeaders(res);
     return res
       .status(500)
       .json({ message: 'Site metinleri alınırken beklenmedik bir hata oluştu.' });
@@ -934,9 +936,11 @@ app.get('/api/site-copy', auth, async (req, res) => {
       })
     );
 
+    setNoCacheHeaders(res);
     return res.json({ copies });
   } catch (error) {
     console.error('Site metinleri yönetici listesi alınamadı:', error);
+    setNoCacheHeaders(res);
     return res
       .status(500)
       .json({ message: 'Site metinleri listesi alınamadı.' });
@@ -998,9 +1002,11 @@ const ACTIVE_CONTENT_FILTER = { deletedAt: null };
 app.get('/api/content', async (req, res) => {
   try {
     const contents = await Content.find(ACTIVE_CONTENT_FILTER).sort({ date: -1 });
+    setNoCacheHeaders(res);
     res.json(contents);
   } catch (error) {
     console.error('İçerikler alınamadı:', error.message);
+    setNoCacheHeaders(res);
     res.status(500).json({ message: 'Sunucu hatası.' });
   }
 });
