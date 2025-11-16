@@ -24,6 +24,8 @@
       "studio": "Stüdyo",
       "projects": "Projeler",
       "portfolio": "Portfolyo",
+      "services": "Hizmetler",
+      "insights": "Notlar",
       "careers": "Kariyer",
       "contact": "İletişim"
     },
@@ -78,21 +80,9 @@
     },
     "projects": {
       "eyebrow": "Mimarlık Projeleri",
-<<<<<<< HEAD
       "title": "Güncel proje akışı",
       "body": "Admin panelinden eklediğiniz mimarlık projeleri bu blokta öne çıkar, Projeler sayfasında detaylı olarak listelenir ve Portfolyo sayfasında hikâyeleriyle birlikte yer alır.",
       "cta": "Projeler sayfasına git",
-=======
-<<<<<<< HEAD
-      "title": "Güncel proje akışı",
-      "body": "Admin panelinden eklediğiniz mimarlık projeleri bu blokta öne çıkar, Projeler sayfasında detaylı olarak listelenir ve Portfolyo sayfasında hikâyeleriyle birlikte yer alır.",
-      "cta": "Projeler sayfasına git",
-=======
-      "title": "Güncel sahne notlarımız",
-      "body": "Admin panelinden yüklenen mimarlık projeleri bu blokta öne çıkar, Notlar sayfasındaki tam arşive bağlanır ve her kart proje tipine göre etiketlenir.",
-      "cta": "Tüm projeleri gör",
->>>>>>> origin/main
->>>>>>> origin/main
       "loading": "Projeler yükleniyor...",
       "empty": "Henüz proje eklenmedi.",
       "error": "Projeler yüklenirken bir sorun oluştu."
@@ -126,10 +116,6 @@
       "multi": "TR · EN"
     }
   },
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
   "insights": {
     "hero": {
       "eyebrow": "Mimarlık Projeleri & Notlar",
@@ -161,14 +147,6 @@
         "excerpt": "Haftalık oturumlarımızda kullandığımız sahne tariflerini, ışık önerilerini ve renk paleti kombinlerini örnek dosyalarla birlikte derledik.",
         "link": "Devamını Oku"
       }
-    }
-  },
-  "content": {
-    "projectTypes": {
-      "workplace": "Ofis Projesi",
-      "residential": "Konut Projesi",
-      "hospitality": "Sosyal Alan & Misafirperverlik",
-      "concept": "Konsept Çalışması"
     }
   },
   "insightLobby": {
@@ -249,8 +227,6 @@
     },
     "backLink": "Tüm yazılara dön"
   },
->>>>>>> origin/main
->>>>>>> origin/main
   "careers": {
     "intro": {
       "eyebrow": "Kariyer",
@@ -400,6 +376,7 @@
     },
     "filters": {
       "label": "Proje tipi",
+      "help": "Ziyaretçiler, projeleri etiketlere göre filtreleyebilir. Çok dilli kartlar otomatik olarak seçilen dile uyum sağlar.",
       "all": "Tümü",
       "workplace": "Ofis / Çalışma Alanı",
       "residential": "Konut",

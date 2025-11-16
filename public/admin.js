@@ -212,16 +212,12 @@ const flattenSiteCopyEntries = (entries, prefix = '') => {
   });
 };
 
-<<<<<<< HEAD
 const ADMIN_TOKEN_STORAGE_KEY = 'adminToken';
-=======
->>>>>>> origin/main
 let token = '';
 const siteCopyCache = SUPPORTED_SITE_COPY_LANGUAGES.reduce((acc, lang) => {
   acc[lang] = {};
   return acc;
 }, {});
-<<<<<<< HEAD
 
 let storageAvailable = true;
 
@@ -278,8 +274,6 @@ function writeTokenToStorage(value) {
     console.warn('Admin token yerel depoya kaydedilemedi.', error);
   }
 }
-=======
->>>>>>> origin/main
 
 function sanitizeToken(value) {
   if (typeof value !== 'string') {
@@ -447,15 +441,7 @@ async function handleSiteCopySubmit(event) {
   const value = siteCopyValueInput?.value ?? '';
 
   if (!key) {
-<<<<<<< HEAD
     setStatus(adminStatus, 'Lütfen düzenlenecek metnin adını yazın.', true);
-=======
-<<<<<<< HEAD
-    setStatus(adminStatus, 'Lütfen düzenlenecek metnin adını yazın.', true);
-=======
-    setStatus(adminStatus, 'Lütfen güncellenecek anahtarı yazın.', true);
->>>>>>> origin/main
->>>>>>> origin/main
     return;
   }
 
@@ -505,17 +491,8 @@ async function saveSiteCopyEntry(language, key, value) {
 }
 
 async function deleteSiteCopyEntry(language, key) {
-<<<<<<< HEAD
   const friendlyLabel = getSiteCopyLabel(key) || key;
   if (!window.confirm(`"${friendlyLabel}" metnini silmek istediğinize emin misiniz?`)) {
-=======
-<<<<<<< HEAD
-  const friendlyLabel = getSiteCopyLabel(key) || key;
-  if (!window.confirm(`"${friendlyLabel}" metnini silmek istediğinize emin misiniz?`)) {
-=======
-  if (!window.confirm(`${key} anahtarını silmek istediğinize emin misiniz?`)) {
->>>>>>> origin/main
->>>>>>> origin/main
     return;
   }
 

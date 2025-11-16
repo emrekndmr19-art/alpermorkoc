@@ -24,6 +24,8 @@
       "studio": "Studio",
       "projects": "Projects",
       "portfolio": "Portfolio",
+      "services": "Services",
+      "insights": "Insights",
       "careers": "Careers",
       "contact": "Contact"
     },
@@ -78,21 +80,9 @@
     },
     "projects": {
       "eyebrow": "Architecture Projects",
-<<<<<<< HEAD
       "title": "Fresh project stream",
       "body": "Projects you publish in the admin panel surface here, receive a full listing on the Projects page, and carry their stories across the Portfolio view.",
       "cta": "Go to Projects",
-=======
-<<<<<<< HEAD
-      "title": "Fresh project stream",
-      "body": "Projects you publish in the admin panel surface here, receive a full listing on the Projects page, and carry their stories across the Portfolio view.",
-      "cta": "Go to Projects",
-=======
-      "title": "Latest scene notes",
-      "body": "Projects published through the admin panel surface here, connect to the full Insights archive, and carry project-type labels for quick context.",
-      "cta": "View all projects",
->>>>>>> origin/main
->>>>>>> origin/main
       "loading": "Loading projects...",
       "empty": "No projects have been published yet.",
       "error": "We couldn't load the projects. Please try again."
@@ -126,10 +116,6 @@
       "multi": "TR · EN"
     }
   },
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
   "insights": {
     "hero": {
       "eyebrow": "Architecture Projects & Notes",
@@ -161,14 +147,6 @@
         "excerpt": "We compiled the scene descriptions, lighting tips, and palette pairings we use in weekly sessions with sample files.",
         "link": "Read More"
       }
-    }
-  },
-  "content": {
-    "projectTypes": {
-      "workplace": "Workplace Project",
-      "residential": "Residential Project",
-      "hospitality": "Hospitality & Social",
-      "concept": "Concept Study"
     }
   },
   "insightLobby": {
@@ -249,8 +227,6 @@
     },
     "backLink": "Back to all articles"
   },
->>>>>>> origin/main
->>>>>>> origin/main
   "careers": {
     "intro": {
       "eyebrow": "Careers",
@@ -400,6 +376,7 @@
     },
     "filters": {
       "label": "Project type",
+      "help": "Visitors can filter projects by tags. Multi-language cards adapt to the selected locale automatically.",
       "all": "All",
       "workplace": "Workplace",
       "residential": "Residential",

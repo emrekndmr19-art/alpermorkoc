@@ -47,6 +47,7 @@ const ALLOWED_PROJECT_TYPES = new Set([
 const SUPPORTED_SITE_COPY_LANGUAGES = ['tr', 'en'];
 const SITE_COPY_LANGUAGE_SET = new Set(SUPPORTED_SITE_COPY_LANGUAGES);
 const siteCopyDefaultsCache = new Map();
+const GIT_CONFLICT_MARKER_REGEX = /<<<<<<<|=======|>>>>>>>/;
 
 const buildRelativeUploadPath = (subdir, filename) =>
   path.posix.join(String(subdir || '').replace(/\\+/g, '/'), filename);
@@ -231,6 +232,90 @@ const deleteNestedValue = (target, pathKey) => {
       break;
     }
   }
+};
+
+const isPlainObject = (value) =>
+  Boolean(value) && typeof value === 'object' && !Array.isArray(value);
+
+const cloneSiteCopyEntries = (value) => {
+  if (Array.isArray(value)) {
+    return value.map((item) => cloneSiteCopyEntries(item));
+  }
+
+  if (isPlainObject(value)) {
+    return Object.entries(value).reduce((acc, [key, entryValue]) => {
+      acc[key] = cloneSiteCopyEntries(entryValue);
+      return acc;
+    }, {});
+  }
+
+  return value;
+};
+
+const containsGitConflictMarker = (value) =>
+  typeof value === 'string' && GIT_CONFLICT_MARKER_REGEX.test(value);
+
+const sanitizeSiteCopyEntries = (entries) => {
+  if (!isPlainObject(entries)) {
+    return {};
+  }
+
+  return Object.entries(entries).reduce((acc, [key, value]) => {
+    if (isPlainObject(value)) {
+      const nested = sanitizeSiteCopyEntries(value);
+      if (Object.keys(nested).length) {
+        acc[key] = nested;
+      }
+      return acc;
+    }
+
+    if (Array.isArray(value)) {
+      acc[key] = value
+        .map((item) =>
+          typeof item === 'string' && containsGitConflictMarker(item)
+            ? undefined
+            : cloneSiteCopyEntries(item)
+        )
+        .filter((item) => item !== undefined);
+      return acc;
+    }
+
+    if (typeof value === 'string') {
+      if (!containsGitConflictMarker(value)) {
+        acc[key] = value;
+      }
+      return acc;
+    }
+
+    acc[key] = value;
+    return acc;
+  }, {});
+};
+
+const mergeSiteCopyEntries = (baseEntries, overrideEntries) => {
+  const result = isPlainObject(baseEntries)
+    ? cloneSiteCopyEntries(baseEntries)
+    : {};
+
+  if (!isPlainObject(overrideEntries)) {
+    return result;
+  }
+
+  Object.entries(overrideEntries).forEach(([key, value]) => {
+    if (isPlainObject(value)) {
+      result[key] = mergeSiteCopyEntries(result[key], value);
+      return;
+    }
+
+    if (Array.isArray(value)) {
+      result[key] = value.map((item) => cloneSiteCopyEntries(item));
+      return;
+    }
+
+    result[key] = value;
+  });
+
+  return result;
 };
 
 const buildStoredFileMetadata = (file, subdir) => {
@@ -612,6 +697,7 @@ mongoose
 async function ensureDefaultAdmin() {
   try {
     let existingAdmin = await User.findOne({ username: ADMIN_USERNAME });
+
     if (!existingAdmin) {
       const hashedPassword = await bcrypt.hash(ADMIN_PASSWORD, 10);
       existingAdmin = await User.create({
@@ -619,7 +705,20 @@ async function ensureDefaultAdmin() {
         password: hashedPassword,
       });
       console.log(`Varsayılan admin oluşturuldu → kullanıcı adı: ${ADMIN_USERNAME}`);
+      return existingAdmin;
     }
+
+    const passwordMatches = await bcrypt.compare(
+      ADMIN_PASSWORD,
+      existingAdmin.password
+    );
+
+    if (!passwordMatches) {
+      existingAdmin.password = await bcrypt.hash(ADMIN_PASSWORD, 10);
+      await existingAdmin.save();
+      console.log('Admin parolası .env dosyasıyla senkronize edildi.');
+    }
+
     return existingAdmin;
   } catch (error) {
     console.error('Varsayılan admin oluşturulurken hata oluştu:', error.message);
@@ -751,11 +850,19 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
-const buildSiteCopyResponse = (document) => ({
-  language: document.language,
-  entries: document.entries || {},
-  updatedAt: document.updatedAt,
-});
+const buildSiteCopyResponse = async (document) => {
+  const defaults = cloneSiteCopyEntries(
+    await loadDefaultSiteCopy(document.language)
+  );
+  const sanitizedEntries = sanitizeSiteCopyEntries(document.entries || {});
+  const mergedEntries = mergeSiteCopyEntries(defaults, sanitizedEntries);
+
+  return {
+    language: document.language,
+    entries: mergedEntries,
+    updatedAt: document.updatedAt,
+  };
+};
 
 app.get('/api/site-copy/:language', async (req, res) => {
   const language = sanitizeSiteCopyLanguage(req.params.language);
@@ -766,7 +873,8 @@ app.get('/api/site-copy/:language', async (req, res) => {
 
   try {
     const document = await ensureSiteCopyDocument(language);
-    return res.json(buildSiteCopyResponse(document));
+    const response = await buildSiteCopyResponse(document);
+    return res.json(response);
   } catch (error) {
     console.error('Site metinleri alınamadı:', error);
     return res
@@ -833,7 +941,8 @@ app.put('/api/site-copy/:language', auth, async (req, res) => {
     document.markModified('entries');
     await document.save();
 
-    return res.json(buildSiteCopyResponse(document));
+    const response = await buildSiteCopyResponse(document);
+    return res.json(response);
   } catch (error) {
     console.error('Site metinleri güncellenemedi:', error);
     return res
