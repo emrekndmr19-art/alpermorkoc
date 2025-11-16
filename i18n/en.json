@@ -78,6 +78,15 @@
     "vision": {
       "eyebrow": "Studio Vision",
       "body2": "Each folder covers atmosphere narratives from the opening scene to the night façade. Sketches and model photographs shared during preparation preserve the tone and accelerate the team's promotional steps."
+    },
+    "projects": {
+      "eyebrow": "Architecture Projects",
+      "title": "Latest scene notes",
+      "body": "Projects published through the admin panel surface here, connect to the full Insights archive, and carry project-type labels for quick context.",
+      "cta": "View all projects",
+      "loading": "Loading projects...",
+      "empty": "No projects have been published yet.",
+      "error": "We couldn't load the projects. Please try again."
     }
   },
   "studio": {
@@ -128,9 +137,9 @@
   },
   "insights": {
     "hero": {
-      "eyebrow": "Insights & Notes",
-      "title": "Alpimimarlık Notebook",
-      "body": "We collect the methods we rely on while preparing client-ready files. Short articles share notes on presentation flow, visual selection, and how our small team works."
+      "eyebrow": "Architecture Projects & Notes",
+      "title": "The living studio archive",
+      "body": "We catalogue the architecture decks, project tags, and preparation notes we share with clients. Every card you publish in the admin panel lands on the home feed and this archive simultaneously."
     },
     "feed": {
       "loading": "Loading notes...",
@@ -157,6 +166,14 @@
         "excerpt": "We compiled the scene descriptions, lighting tips, and palette pairings we use in weekly sessions with sample files.",
         "link": "Read More"
       }
+    }
+  },
+  "content": {
+    "projectTypes": {
+      "workplace": "Workplace Project",
+      "residential": "Residential Project",
+      "hospitality": "Hospitality & Social",
+      "concept": "Concept Study"
     }
   },
   "insightLobby": {

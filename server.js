@@ -22,14 +22,81 @@ const JWT_SECRET = process.env.JWT_SECRET || 'supersecretjwt';
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
 const ADMIN_API_BASE_URL = normalizeAdminApiBase(process.env.ADMIN_API_BASE_URL);
+const PUBLIC_CONTENT_API_BASE_URL = normalizeAdminApiBase(
+  process.env.PUBLIC_CONTENT_API_BASE_URL || process.env.ADMIN_API_BASE_URL
+);
 const { allowAllOrigins, allowedOrigins } = parseAllowedOrigins(
   process.env.CORS_ALLOWED_ORIGINS
 );
 const PUBLIC_SITE_DIR = __dirname;
 const ADMIN_ASSETS_DIR = path.join(__dirname, 'public');
 
+const DEFAULT_CONTENT_API_BASE = '/api';
+
 const DEFAULT_CONTENT_LANGUAGE = 'tr';
 const ALLOWED_CONTENT_LANGUAGES = new Set(['tr', 'en', 'multi']);
+const DEFAULT_PROJECT_TYPE = 'workplace';
+const ALLOWED_PROJECT_TYPES = new Set([
+  'workplace',
+  'residential',
+  'hospitality',
+  'concept',
+]);
+
+const makeRelativeUploadPath = (subdir, filename) =>
+  path.posix.join(String(subdir || '').replace(/\\+/g, '/'), filename);
+
+const toPublicUploadUrl = (relativePath) => {
+  if (!relativePath) {
+    return '';
+  }
+
+  return `/uploads/${String(relativePath).replace(/\\+/g, '/')}`;
+};
+
+const buildStoredFileMetadata = (file, subdir) => {
+  if (!file || !file.filename) {
+    return null;
+  }
+
+  const relativePath = makeRelativeUploadPath(subdir, file.filename);
+
+  return {
+    filename: relativePath,
+    originalname: file.originalname,
+    mimetype: file.mimetype,
+    size: file.size,
+    url: toPublicUploadUrl(relativePath),
+    uploadedAt: new Date(),
+  };
+};
+
+const resolveUploadsPath = (relativePath = '') => path.join(uploadsDir, relativePath);
+
+const deleteUploadedFile = async (relativePath, { ignoreNotFound = true } = {}) => {
+  if (!relativePath) {
+    return true;
+  }
+
+  try {
+    await fsPromises.unlink(resolveUploadsPath(relativePath));
+    return true;
+  } catch (error) {
+    if (ignoreNotFound && error && error.code === 'ENOENT') {
+      return true;
+    }
+
+    throw error;
+  }
+};
+
+const parseBoolean = (value) => {
+  if (typeof value === 'string') {
+    return ['true', '1', 'yes', 'on'].includes(value.trim().toLowerCase());
+  }
+
+  return Boolean(value);
+};
 
 function normalizeAdminApiBase(value) {
   if (typeof value !== 'string') {
@@ -48,6 +115,36 @@ function normalizeAdminApiBase(value) {
 
   return trimmed.replace(/\/$/, '');
 }
+
+function buildContentApiEndpoint(base) {
+  const fallback = DEFAULT_CONTENT_API_BASE;
+
+  if (typeof base !== 'string') {
+    return `${fallback}/content`;
+  }
+
+  const trimmed = base.trim();
+
+  if (!trimmed) {
+    return `${fallback}/content`;
+  }
+
+  const sanitized = trimmed === '/' ? fallback : trimmed.replace(/\/$/, '');
+
+  if (/^https?:\/\//i.test(sanitized)) {
+    return `${sanitized}/content`;
+  }
+
+  const withLeadingSlash = sanitized.startsWith('/')
+    ? sanitized
+    : `/${sanitized}`;
+
+  return `${withLeadingSlash}/content`;
+}
+
+const PUBLIC_CONTENT_API_ENDPOINT = buildContentApiEndpoint(
+  PUBLIC_CONTENT_API_BASE_URL || DEFAULT_CONTENT_API_BASE
+);
 
 function parseAllowedOrigins(rawValue) {
   if (typeof rawValue !== 'string' || !rawValue.trim()) {
@@ -82,6 +179,24 @@ const normalizeContentLanguage = (value) => {
   }
 
   return DEFAULT_CONTENT_LANGUAGE;
+};
+
+const normalizeProjectType = (value) => {
+  if (typeof value !== 'string') {
+    return DEFAULT_PROJECT_TYPE;
+  }
+
+  const normalized = value.trim().toLowerCase();
+
+  if (!normalized) {
+    return DEFAULT_PROJECT_TYPE;
+  }
+
+  if (ALLOWED_PROJECT_TYPES.has(normalized)) {
+    return normalized;
+  }
+
+  return DEFAULT_PROJECT_TYPE;
 };
 
 const corsOptions = {
@@ -129,10 +244,24 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const fsPromises = fs.promises;
+
+const ensureDirExists = (dirPath) => {
+  if (!fs.existsSync(dirPath)) {
+    fs.mkdirSync(dirPath, { recursive: true });
+  }
+};
+
 const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
+ensureDirExists(uploadsDir);
+
+const CV_UPLOAD_SUBDIR = 'cv';
+const IMAGE_UPLOAD_SUBDIR = 'images';
+const cvUploadsDir = path.join(uploadsDir, CV_UPLOAD_SUBDIR);
+const imageUploadsDir = path.join(uploadsDir, IMAGE_UPLOAD_SUBDIR);
+
+ensureDirExists(cvUploadsDir);
+ensureDirExists(imageUploadsDir);
 
 const PUBLIC_SITE_STATIC_FOLDERS = ['assets', 'i18n'];
 
@@ -188,6 +317,18 @@ const setNoCacheHeaders = (res) => {
   res.set('Pragma', 'no-cache');
   res.set('Expires', '0');
 };
+
+app.get('/site-config.js', (req, res) => {
+  const config = {
+    contentApiBase: PUBLIC_CONTENT_API_BASE_URL,
+    contentEndpoint: PUBLIC_CONTENT_API_ENDPOINT,
+  };
+
+  setNoCacheHeaders(res);
+  res
+    .type('application/javascript')
+    .send(`window.__SITE_CONFIG__ = Object.freeze(${JSON.stringify(config)});\n`);
+});
 
 const adminBasicAuth = (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -333,18 +474,19 @@ async function issueAdminToken(username = ADMIN_USERNAME) {
   }
 }
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, uploadsDir);
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-    const extension = path.extname(file.originalname);
-    cb(null, `${uniqueSuffix}${extension}`);
-  },
-});
+const createDiskStorage = (targetDir) =>
+  multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, targetDir);
+    },
+    filename: function (req, file, cb) {
+      const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+      const extension = path.extname(file.originalname || '').toLowerCase();
+      cb(null, `${uniqueSuffix}${extension}`);
+    },
+  });
 
-const fileFilter = (req, file, cb) => {
+const cvFileFilter = (req, file, cb) => {
   if (file.mimetype === 'application/pdf') {
     cb(null, true);
   } else {
@@ -352,7 +494,47 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const upload = multer({ storage, fileFilter });
+const allowedImageMimeTypes = new Set([
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/gif',
+  'image/svg+xml',
+  'image/avif',
+  'image/heic',
+  'image/heif',
+]);
+
+const imageFileFilter = (req, file, cb) => {
+  if (!file) {
+    cb(null, true);
+    return;
+  }
+
+  if (allowedImageMimeTypes.has(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(
+      new Error(
+        'Sadece JPG, PNG, WEBP, GIF, SVG, AVIF veya HEIC formatındaki fotoğrafları yükleyebilirsiniz.'
+      )
+    );
+  }
+};
+
+const cvUpload = multer({ storage: createDiskStorage(cvUploadsDir), fileFilter: cvFileFilter });
+const imageUpload = multer({ storage: createDiskStorage(imageUploadsDir), fileFilter: imageFileFilter });
+
+const handleContentImageUpload = (req, res, next) => {
+  imageUpload.single('image')(req, res, (err) => {
+    if (err) {
+      console.error('Fotoğraf yükleme hatası:', err.message);
+      return res.status(400).json({ message: err.message || 'Fotoğraf yüklenemedi.' });
+    }
+
+    return next();
+  });
+};
 
 app.post('/api/login', async (req, res) => {
   try {
@@ -390,9 +572,11 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+const ACTIVE_CONTENT_FILTER = { deletedAt: null };
+
 app.get('/api/content', async (req, res) => {
   try {
-    const contents = await Content.find().sort({ date: -1 });
+    const contents = await Content.find(ACTIVE_CONTENT_FILTER).sort({ date: -1 });
     res.json(contents);
   } catch (error) {
     console.error('İçerikler alınamadı:', error.message);
@@ -400,19 +584,28 @@ app.get('/api/content', async (req, res) => {
   }
 });
 
-app.post('/api/content', auth, async (req, res) => {
+app.post('/api/content', auth, handleContentImageUpload, async (req, res) => {
   try {
-    const { title, body, language } = req.body;
+    const { title, body, language, projectType } = req.body;
 
     if (!title || !body) {
       return res.status(400).json({ message: 'Başlık ve içerik gereklidir.' });
     }
 
-    const content = await Content.create({
+    const contentPayload = {
       title,
       body,
       language: normalizeContentLanguage(language),
-    });
+      projectType: normalizeProjectType(projectType),
+    };
+
+    const imageMetadata = buildStoredFileMetadata(req.file, IMAGE_UPLOAD_SUBDIR);
+
+    if (imageMetadata) {
+      contentPayload.image = imageMetadata;
+    }
+
+    const content = await Content.create({ ...contentPayload, deletedAt: null });
     res.status(201).json(content);
   } catch (error) {
     console.error('İçerik oluşturulamadı:', error.message);
@@ -420,30 +613,52 @@ app.post('/api/content', auth, async (req, res) => {
   }
 });
 
-app.put('/api/content/:id', auth, async (req, res) => {
+app.put('/api/content/:id', auth, handleContentImageUpload, async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, body, language } = req.body;
+    const { title, body, language, removeImage, projectType } = req.body;
 
     if (!title || !body) {
       return res.status(400).json({ message: 'Başlık ve içerik gereklidir.' });
     }
 
-    const updated = await Content.findByIdAndUpdate(
-      id,
-      {
-        title,
-        body,
-        language: normalizeContentLanguage(language),
-      },
-      { new: true, runValidators: true }
-    );
+    const content = await Content.findById(id);
 
-    if (!updated) {
+    if (!content || content.deletedAt) {
       return res.status(404).json({ message: 'İçerik bulunamadı.' });
     }
 
-    res.json(updated);
+    const previousImage = content.image ? { ...content.image } : null;
+    const shouldRemoveImage = parseBoolean(removeImage);
+    const nextLanguage = normalizeContentLanguage(language);
+    const newImageMetadata = buildStoredFileMetadata(req.file, IMAGE_UPLOAD_SUBDIR);
+
+    content.title = title;
+    content.body = body;
+    content.language = nextLanguage;
+    content.projectType = normalizeProjectType(projectType);
+
+    let deletePreviousImageAfterSave = false;
+
+    if (newImageMetadata) {
+      content.set('image', newImageMetadata);
+      deletePreviousImageAfterSave = Boolean(previousImage?.filename);
+    } else if (shouldRemoveImage && content.image) {
+      content.set('image', undefined);
+      deletePreviousImageAfterSave = Boolean(previousImage?.filename);
+    }
+
+    const updatedContent = await content.save();
+
+    if (deletePreviousImageAfterSave && previousImage?.filename) {
+      try {
+        await deleteUploadedFile(previousImage.filename);
+      } catch (fileError) {
+        console.warn('Önceki fotoğraf silinemedi:', fileError.message);
+      }
+    }
+
+    res.json(updatedContent);
   } catch (error) {
     console.error('İçerik güncellenemedi:', error.message);
     res.status(500).json({ message: 'Sunucu hatası.' });
@@ -454,21 +669,97 @@ app.delete('/api/content/:id', auth, async (req, res) => {
   try {
     const { id } = req.params;
 
-    const deleted = await Content.findByIdAndDelete(id);
+    const content = await Content.findById(id);
 
-    if (!deleted) {
+    if (!content) {
       return res.status(404).json({ message: 'İçerik bulunamadı.' });
     }
 
-    res.json({ message: 'İçerik silindi.' });
+    if (content.deletedAt) {
+      return res.status(409).json({ message: 'İçerik zaten silinmiş.' });
+    }
+
+    content.deletedAt = new Date();
+    await content.save();
+
+    res.json({
+      message: 'İçerik silindi. Silinen İçerikler bölümünden tekrar yayına alabilirsiniz.',
+      content,
+    });
   } catch (error) {
     console.error('İçerik silinemedi:', error.message);
     res.status(500).json({ message: 'Sunucu hatası.' });
   }
 });
 
+app.get('/api/content/deleted', auth, async (req, res) => {
+  try {
+    const deletedContents = await Content.find({ deletedAt: { $ne: null } }).sort({ deletedAt: -1 });
+    res.json(deletedContents);
+  } catch (error) {
+    console.error('Silinen içerikler alınamadı:', error.message);
+    res.status(500).json({ message: 'Sunucu hatası.' });
+  }
+});
+
+app.post('/api/content/:id/restore', auth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const content = await Content.findById(id);
+
+    if (!content) {
+      return res.status(404).json({ message: 'İçerik bulunamadı.' });
+    }
+
+    if (!content.deletedAt) {
+      return res
+        .status(409)
+        .json({ message: 'İçerik zaten yayında. Silinenler listesinden kaldırılmış olabilir.' });
+    }
+
+    content.deletedAt = null;
+    await content.save();
+
+    res.json({ message: 'İçerik yeniden yayına alındı.', content });
+  } catch (error) {
+    console.error('İçerik geri yüklenemedi:', error.message);
+    res.status(500).json({ message: 'Sunucu hatası.' });
+  }
+});
+
+app.delete('/api/content/:id/permanent', auth, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const content = await Content.findById(id);
+
+    if (!content) {
+      return res.status(404).json({ message: 'İçerik bulunamadı.' });
+    }
+
+    if (!content.deletedAt) {
+      return res.status(409).json({ message: 'İçerik yayında olduğu için kalıcı silinemez.' });
+    }
+
+    const imageFilename = content.image?.filename;
+    await content.deleteOne();
+
+    if (imageFilename) {
+      try {
+        await deleteUploadedFile(imageFilename);
+      } catch (error) {
+        console.warn('Fotoğraf silinirken hata oluştu:', error.message);
+      }
+    }
+
+    res.json({ message: 'İçerik kalıcı olarak silindi.' });
+  } catch (error) {
+    console.error('İçerik kalıcı olarak silinemedi:', error.message);
+    res.status(500).json({ message: 'Sunucu hatası.' });
+  }
+});
+
 app.post('/api/upload-cv', auth, (req, res) => {
-  upload.single('cv')(req, res, async (err) => {
+  cvUpload.single('cv')(req, res, async (err) => {
     if (err) {
       console.error('CV yükleme hatası:', err.message);
       return res.status(400).json({ message: err.message });
@@ -480,7 +771,8 @@ app.post('/api/upload-cv', auth, (req, res) => {
 
     try {
       const { filename, originalname, mimetype, size } = req.file;
-      const cv = await CV.create({ filename, originalname, mimetype, size });
+      const storedFilename = makeRelativeUploadPath(CV_UPLOAD_SUBDIR, filename);
+      const cv = await CV.create({ filename: storedFilename, originalname, mimetype, size });
       res.status(201).json(cv);
     } catch (error) {
       console.error('CV kaydedilemedi:', error.message);
@@ -507,8 +799,8 @@ app.get('/api/cv/download/:id', auth, async (req, res) => {
       return res.status(404).json({ message: 'CV bulunamadı.' });
     }
 
-    const filePath = path.join(uploadsDir, cv.filename);
-    if (!fs.existsSync(filePath)) {
+    const filePath = cv.filename ? resolveUploadsPath(cv.filename) : '';
+    if (!cv.filename || !fs.existsSync(filePath)) {
       return res.status(404).json({ message: 'Dosya mevcut değil.' });
     }
 
@@ -527,18 +819,8 @@ app.delete('/api/cv/:id', auth, async (req, res) => {
       return res.status(404).json({ message: 'CV bulunamadı.' });
     }
 
-    const filePath = path.join(uploadsDir, cv.filename);
-
     try {
-      await new Promise((resolve, reject) => {
-        fs.unlink(filePath, (err) => {
-          if (!err || (err && err.code === 'ENOENT')) {
-            resolve();
-            return;
-          }
-          reject(err);
-        });
-      });
+      await deleteUploadedFile(cv.filename);
     } catch (error) {
       console.error('CV dosyası silinemedi:', error.message);
       return res.status(500).json({ message: 'CV dosyası silinemedi.' });
