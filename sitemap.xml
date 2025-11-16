@@ -6,8 +6,8 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://www.alpimimarlik.com/services.html</loc>
-    <changefreq>monthly</changefreq>
+    <loc>https://www.alpimimarlik.com/projeler.html</loc>
+    <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
@@ -16,24 +16,9 @@
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://www.alpimimarlik.com/insights.html</loc>
+    <loc>https://www.alpimimarlik.com/portfolio.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://www.alpimimarlik.com/insight-konsept-oturumlari.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.alpimimarlik.com/insight-lobi-ilk-izlenim.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.alpimimarlik.com/insight-metinsiz-sahne.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
   </url>
   <url>
     <loc>https://www.alpimimarlik.com/contact.html</loc>

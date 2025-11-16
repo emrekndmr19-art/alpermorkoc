@@ -82,6 +82,11 @@
       button.danger {
         background: #dc2626;
       }
+      small {
+        color: #4b5563;
+        display: block;
+        margin-top: 0.35rem;
+      }
       table {
         width: 100%;
         border-collapse: collapse;
@@ -102,6 +107,56 @@
       .hidden {
         display: none !important;
       }
+      .image-preview {
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 0.75rem;
+        background: #f9fafb;
+        display: grid;
+        gap: 0.65rem;
+      }
+      .image-preview img {
+        max-width: 220px;
+        width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 8px 16px rgba(15, 23, 42, 0.15);
+      }
+      .image-preview-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .image-preview-actions a {
+        color: #2563eb;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .image-preview-actions label {
+        display: flex;
+        gap: 0.4rem;
+        align-items: center;
+        font-weight: 500;
+      }
+      .info-card {
+        background: linear-gradient(135deg, #eef2ff, #e0f2fe);
+        border: 1px solid #c7d2fe;
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        margin-bottom: 2rem;
+        color: #0f172a;
+      }
+      .info-card strong {
+        display: block;
+        margin-bottom: 0.35rem;
+      }
+      .info-card ul {
+        margin: 0.5rem 0 0;
+        padding-left: 1.25rem;
+      }
+      .info-card li {
+        margin-bottom: 0.35rem;
+      }
       .status {
         margin-top: 1rem;
         padding: 0.75rem 1rem;
@@ -109,6 +164,51 @@
         background: #eff6ff;
         color: #1e40af;
         display: none;
+      }
+      .site-copy-controls {
+        display: grid;
+        gap: 0.75rem;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        margin: 1rem 0;
+        align-items: end;
+      }
+      .site-copy-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .site-copy-entry {
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        background: #f8fafc;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .site-copy-entry strong {
+        font-size: 0.9rem;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      .site-copy-entry small {
+        margin: 0;
+        color: #94a3b8;
+        font-size: 0.75rem;
+      }
+      .site-copy-entry pre {
+        margin: 0;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.9rem;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .site-copy-entry .actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+      .site-copy-entry .actions button {
+        flex: 0 0 auto;
       }
       @media (max-width: 768px) {
         table {
@@ -145,9 +245,78 @@
           <button id="logout-button" class="secondary">Çıkış Yap</button>
         </div>
 
+        <section class="info-card">
+          <strong>Yüklediğiniz projeler sitede nerede görünür?</strong>
+          <p>
+            Bu panelde paylaştığınız kartlar ana sayfadaki <em>Mimarlık Projeleri</em> alanına, <em>Projeler</em> sayfasındaki tam listeye ve
+            <em>Portfolyo</em> sayfasındaki filtrelenebilir arşive otomatik olarak yansır. Dil seçimi ziyaretçinin tercihine göre çalışır; "Çok Dilli" kartlar her iki dilde de görünür.
+          </p>
+          <ul>
+            <li>"Proje Tipi" alanı kartın üstündeki etiketi belirler ve Portfolyo sayfasındaki filtrelerin doğru çalışmasını sağlar.</li>
+            <li>Fotoğraf eklediğinizde hem ana sayfa hem de Projeler/Portfolyo kartları otomatik olarak görsel kullanır.</li>
+            <li>Bir projeyi silip geri yüklediğinizde hem metin hem de fotoğraf aynı konumda korunur.</li>
+          </ul>
+        </section>
+
+        <section>
+          <h3>Site Metinleri ve Menü</h3>
+          <p>
+            Sitedeki menü bağlantıları, kahraman başlıkları, açıklama paragrafları ve buton yazıları kod bilgisi gerektirmeden buradan
+            güncellenir. Aşağıdaki liste her metni "Ana sayfa kahraman başlığı" gibi anlaşılır isimlerle gösterir; düzenlemek
+            istediğinizi seçtiğinizde form otomatik dolar. Her metnin Türkçe ve İngilizce versiyonu ayrı ayrı saklanır.
+          </p>
+          <form id="site-copy-form">
+            <div>
+              <label for="site-copy-language">Dil</label>
+              <select id="site-copy-language" name="language">
+                <option value="tr" selected>Türkçe</option>
+                <option value="en">İngilizce</option>
+              </select>
+            </div>
+            <div>
+              <label for="site-copy-key">Metin nerede görünecek?</label>
+              <input
+                type="text"
+                id="site-copy-key"
+                name="key"
+                placeholder="Örnek: Ana sayfa kahraman başlığı veya Portfolyo menü bağlantısı"
+                required
+              />
+              <small>Aşağıdaki listeden bir metne tıkladığınızda bu alan otomatik dolar. Listede olmayan bir alanı güncellemeniz
+                istenirse size iletilen metin adını buraya yazabilirsiniz.</small>
+            </div>
+            <div>
+              <label for="site-copy-value">Metin / Değer</label>
+              <textarea
+                id="site-copy-value"
+                name="value"
+                placeholder="CTA metnini, açıklamaları veya görsel URL'lerini buradan güncelleyebilirsiniz."
+                required
+              ></textarea>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button type="submit">Metni Kaydet</button>
+              <button type="button" id="site-copy-reset" class="secondary">Formu Temizle</button>
+            </div>
+          </form>
+          <div class="site-copy-controls">
+            <div>
+              <label for="site-copy-search">Metin arayın</label>
+              <input type="text" id="site-copy-search" placeholder="Örnek: ana sayfa, portfolyo, iletişim" />
+            </div>
+            <div>
+              <small>
+                Listede düzenlemek istediğiniz metne tıklayın; değer otomatik olarak forma aktarılır. Kaydettiğinizde değişiklik
+                ziyaretçilere hemen yansır.
+              </small>
+            </div>
+          </div>
+          <div id="site-copy-list" class="site-copy-list"></div>
+        </section>
+
         <section>
           <h3>Yeni İçerik Ekle</h3>
-          <form id="create-content-form">
+          <form id="create-content-form" enctype="multipart/form-data">
             <div>
               <label for="create-title">Başlık</label>
               <input type="text" id="create-title" name="title" required />
@@ -164,12 +333,28 @@
                 <option value="multi">Çok Dilli</option>
               </select>
             </div>
+            <div>
+              <label for="create-project-type">Proje Tipi</label>
+              <select id="create-project-type" name="projectType">
+                <option value="workplace" selected>Ofis / Çalışma Alanı</option>
+                <option value="residential">Konut</option>
+                <option value="hospitality">Misafirperverlik & Sosyal Alan</option>
+                <option value="concept">Konsept Çalışması</option>
+              </select>
+              <small>Bu etiket ana sayfa, Projeler ve Portfolyo kartlarında görünür.</small>
+            </div>
+            <div>
+              <label for="create-image">Fotoğraf (opsiyonel)</label>
+              <input type="file" id="create-image" name="image" accept="image/*" />
+              <small>Desteklenen formatlar: JPG, PNG, WEBP, GIF, SVG, AVIF.</small>
+            </div>
             <button type="submit">Ekle</button>
           </form>
         </section>
 
         <section>
           <h3>İçerikler</h3>
+          <p>Bu liste, sitede hâlen yayında olan tüm içerikleri gösterir.</p>
           <div style="overflow-x: auto;">
             <table>
               <thead>
@@ -177,6 +362,8 @@
                   <th>Başlık</th>
                   <th>İçerik</th>
                   <th>Dil</th>
+                  <th>Proje Tipi</th>
+                  <th>Fotoğraf</th>
                   <th>Tarih</th>
                   <th>İşlemler</th>
                 </tr>
@@ -186,9 +373,28 @@
           </div>
         </section>
 
+        <section id="deleted-content-section">
+          <h3>Silinen İçerikler</h3>
+          <p>Buradaki içerikler ziyaretçilere gösterilmez; dilerseniz geri yükleyebilir veya kalıcı olarak silebilirsiniz.</p>
+          <div style="overflow-x: auto;">
+            <table>
+              <thead>
+                <tr>
+                  <th>Başlık</th>
+                  <th>Dil</th>
+                  <th>Proje Tipi</th>
+                  <th>Silinme Tarihi</th>
+                  <th>İşlemler</th>
+                </tr>
+              </thead>
+              <tbody id="deleted-content-table-body"></tbody>
+            </table>
+          </div>
+        </section>
+
         <section id="update-section" class="hidden">
           <h3>İçerik Güncelle</h3>
-          <form id="update-content-form">
+          <form id="update-content-form" enctype="multipart/form-data">
             <input type="hidden" id="update-id" />
             <div>
               <label for="update-title">Başlık</label>
@@ -205,6 +411,30 @@
                 <option value="en">İngilizce</option>
                 <option value="multi">Çok Dilli</option>
               </select>
+            </div>
+            <div>
+              <label for="update-project-type">Proje Tipi</label>
+              <select id="update-project-type" name="projectType">
+                <option value="workplace">Ofis / Çalışma Alanı</option>
+                <option value="residential">Konut</option>
+                <option value="hospitality">Misafirperverlik & Sosyal Alan</option>
+                <option value="concept">Konsept Çalışması</option>
+              </select>
+            </div>
+            <div id="update-image-preview-container" class="image-preview hidden">
+              <img id="update-image-preview" alt="Mevcut fotoğraf önizlemesi" />
+              <div class="image-preview-actions">
+                <a id="update-image-link" href="#" target="_blank" rel="noopener">Fotoğrafı yeni sekmede aç</a>
+                <label>
+                  <input type="checkbox" id="update-remove-image" name="removeImage" value="true" />
+                  Mevcut fotoğrafı kaldır
+                </label>
+              </div>
+            </div>
+            <div>
+              <label for="update-image">Yeni Fotoğraf</label>
+              <input type="file" id="update-image" name="image" accept="image/*" />
+              <small>Bu alandan yeni bir fotoğraf seçebilir veya mevcut fotoğrafı kaldırabilirsiniz.</small>
             </div>
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
               <button type="submit">Güncelle</button>
