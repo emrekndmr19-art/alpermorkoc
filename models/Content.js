@@ -21,6 +21,14 @@ const contentSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    image: {
+      filename: String,
+      originalname: String,
+      mimetype: String,
+      size: Number,
+      url: String,
+      uploadedAt: Date,
+    },
   },
   {
     timestamps: true,
