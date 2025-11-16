@@ -82,6 +82,11 @@
       button.danger {
         background: #dc2626;
       }
+      small {
+        color: #4b5563;
+        display: block;
+        margin-top: 0.35rem;
+      }
       table {
         width: 100%;
         border-collapse: collapse;
@@ -101,6 +106,37 @@
       }
       .hidden {
         display: none !important;
+      }
+      .image-preview {
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 0.75rem;
+        background: #f9fafb;
+        display: grid;
+        gap: 0.65rem;
+      }
+      .image-preview img {
+        max-width: 220px;
+        width: 100%;
+        border-radius: 8px;
+        box-shadow: 0 8px 16px rgba(15, 23, 42, 0.15);
+      }
+      .image-preview-actions {
+        display: flex;
+        gap: 0.75rem;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      .image-preview-actions a {
+        color: #2563eb;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      .image-preview-actions label {
+        display: flex;
+        gap: 0.4rem;
+        align-items: center;
+        font-weight: 500;
       }
       .status {
         margin-top: 1rem;
@@ -147,7 +183,7 @@
 
         <section>
           <h3>Yeni İçerik Ekle</h3>
-          <form id="create-content-form">
+          <form id="create-content-form" enctype="multipart/form-data">
             <div>
               <label for="create-title">Başlık</label>
               <input type="text" id="create-title" name="title" required />
@@ -164,6 +200,11 @@
                 <option value="multi">Çok Dilli</option>
               </select>
             </div>
+            <div>
+              <label for="create-image">Fotoğraf (opsiyonel)</label>
+              <input type="file" id="create-image" name="image" accept="image/*" />
+              <small>Desteklenen formatlar: JPG, PNG, WEBP, GIF, SVG, AVIF.</small>
+            </div>
             <button type="submit">Ekle</button>
           </form>
         </section>
@@ -177,6 +218,7 @@
                   <th>Başlık</th>
                   <th>İçerik</th>
                   <th>Dil</th>
+                  <th>Fotoğraf</th>
                   <th>Tarih</th>
                   <th>İşlemler</th>
                 </tr>
@@ -188,7 +230,7 @@
 
         <section id="update-section" class="hidden">
           <h3>İçerik Güncelle</h3>
-          <form id="update-content-form">
+          <form id="update-content-form" enctype="multipart/form-data">
             <input type="hidden" id="update-id" />
             <div>
               <label for="update-title">Başlık</label>
@@ -205,6 +247,21 @@
                 <option value="en">İngilizce</option>
                 <option value="multi">Çok Dilli</option>
               </select>
+            </div>
+            <div id="update-image-preview-container" class="image-preview hidden">
+              <img id="update-image-preview" alt="Mevcut fotoğraf önizlemesi" />
+              <div class="image-preview-actions">
+                <a id="update-image-link" href="#" target="_blank" rel="noopener">Fotoğrafı yeni sekmede aç</a>
+                <label>
+                  <input type="checkbox" id="update-remove-image" name="removeImage" value="true" />
+                  Mevcut fotoğrafı kaldır
+                </label>
+              </div>
+            </div>
+            <div>
+              <label for="update-image">Yeni Fotoğraf</label>
+              <input type="file" id="update-image" name="image" accept="image/*" />
+              <small>Bu alandan yeni bir fotoğraf seçebilir veya mevcut fotoğrafı kaldırabilirsiniz.</small>
             </div>
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
               <button type="submit">Güncelle</button>
