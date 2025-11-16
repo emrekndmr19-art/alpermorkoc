@@ -13,6 +13,7 @@ require('dotenv').config();
 const User = require('./models/User');
 const Content = require('./models/Content');
 const CV = require('./models/CV');
+const SiteCopy = require('./models/SiteCopy');
 const auth = require('./middleware/auth');
 
 const app = express();
@@ -30,6 +31,9 @@ const { allowAllOrigins, allowedOrigins } = parseAllowedOrigins(
 );
 const PUBLIC_SITE_DIR = __dirname;
 const ADMIN_ASSETS_DIR = path.join(__dirname, 'public');
+const I18N_DIR = path.join(__dirname, 'i18n');
+
+const DEFAULT_CONTENT_API_BASE = '/api';
 
 const DEFAULT_CONTENT_API_BASE = '/api';
 
@@ -42,6 +46,9 @@ const ALLOWED_PROJECT_TYPES = new Set([
   'hospitality',
   'concept',
 ]);
+const SUPPORTED_SITE_COPY_LANGUAGES = ['tr', 'en'];
+const SITE_COPY_LANGUAGE_SET = new Set(SUPPORTED_SITE_COPY_LANGUAGES);
+const siteCopyDefaultsCache = new Map();
 
 const buildRelativeUploadPath = (subdir, filename) =>
   path.posix.join(String(subdir || '').replace(/\\+/g, '/'), filename);
@@ -52,6 +59,180 @@ const toPublicUploadUrl = (relativePath) => {
   }
 
   return `/uploads/${String(relativePath).replace(/\\+/g, '/')}`;
+};
+
+const sanitizeSiteCopyLanguage = (value) => {
+  if (typeof value !== 'string') {
+    return '';
+  }
+
+  const normalized = value.trim().toLowerCase();
+  if (!SITE_COPY_LANGUAGE_SET.has(normalized)) {
+    return '';
+  }
+
+  return normalized;
+};
+
+const loadDefaultSiteCopy = async (language) => {
+  if (!language) {
+    return {};
+  }
+
+  if (siteCopyDefaultsCache.has(language)) {
+    return siteCopyDefaultsCache.get(language);
+  }
+
+  const filePath = path.join(I18N_DIR, `${language}.json`);
+
+  try {
+    const raw = await fsPromises.readFile(filePath, 'utf8');
+    const parsed = JSON.parse(raw);
+    siteCopyDefaultsCache.set(language, parsed);
+    return parsed;
+  } catch (error) {
+    console.warn(
+      'Varsayılan çeviri dosyası okunamadı:',
+      filePath,
+      error.message
+    );
+    const fallback = {};
+    siteCopyDefaultsCache.set(language, fallback);
+    return fallback;
+  }
+};
+
+const ensureSiteCopyDocument = async (language) => {
+  const normalized = sanitizeSiteCopyLanguage(language);
+  if (!normalized) {
+    throw new Error('INVALID_SITE_COPY_LANGUAGE');
+  }
+
+  let document = await SiteCopy.findOne({ language: normalized });
+  if (!document) {
+    const defaults = await loadDefaultSiteCopy(normalized);
+    document = new SiteCopy({ language: normalized, entries: defaults });
+    await document.save();
+  }
+
+  return document;
+};
+
+const normalizeSiteCopyValue = (value) => {
+  if (value === null || value === undefined) {
+    return '';
+  }
+
+  if (typeof value === 'string') {
+    return value;
+  }
+
+  if (typeof value === 'number' || typeof value === 'boolean') {
+    return String(value);
+  }
+
+  try {
+    return JSON.stringify(value);
+  } catch (error) {
+    return String(value);
+  }
+};
+
+const setNestedValue = (target, pathKey, rawValue) => {
+  if (!target || typeof target !== 'object') {
+    return;
+  }
+
+  if (typeof pathKey !== 'string') {
+    return;
+  }
+
+  const segments = pathKey
+    .split('.')
+    .map((segment) => segment.trim())
+    .filter(Boolean);
+
+  if (!segments.length) {
+    return;
+  }
+
+  const value = normalizeSiteCopyValue(rawValue);
+  let cursor = target;
+
+  for (let index = 0; index < segments.length - 1; index += 1) {
+    const segment = segments[index];
+    if (
+      typeof cursor[segment] !== 'object' ||
+      cursor[segment] === null ||
+      Array.isArray(cursor[segment])
+    ) {
+      cursor[segment] = {};
+    }
+
+    cursor = cursor[segment];
+  }
+
+  cursor[segments[segments.length - 1]] = value;
+};
+
+const deleteNestedValue = (target, pathKey) => {
+  if (!target || typeof target !== 'object') {
+    return;
+  }
+
+  if (typeof pathKey !== 'string') {
+    return;
+  }
+
+  const segments = pathKey
+    .split('.')
+    .map((segment) => segment.trim())
+    .filter(Boolean);
+
+  if (!segments.length) {
+    return;
+  }
+
+  const parents = [];
+  let cursor = target;
+
+  for (let index = 0; index < segments.length - 1; index += 1) {
+    const segment = segments[index];
+    if (
+      typeof cursor[segment] !== 'object' ||
+      cursor[segment] === null ||
+      Array.isArray(cursor[segment])
+    ) {
+      return;
+    }
+
+    parents.push({ parent: cursor, key: segment });
+    cursor = cursor[segment];
+  }
+
+  const finalKey = segments[segments.length - 1];
+
+  if (
+    typeof cursor === 'object' &&
+    cursor !== null &&
+    Object.prototype.hasOwnProperty.call(cursor, finalKey)
+  ) {
+    delete cursor[finalKey];
+  }
+
+  for (let index = parents.length - 1; index >= 0; index -= 1) {
+    const { parent, key } = parents[index];
+    if (
+      parent[key] &&
+      typeof parent[key] === 'object' &&
+      !Array.isArray(parent[key]) &&
+      !Object.keys(parent[key]).length
+    ) {
+      delete parent[key];
+    } else {
+      break;
+    }
+  }
 };
 
 const buildStoredFileMetadata = (file, subdir) => {
@@ -569,6 +750,97 @@ app.post('/api/login', async (req, res) => {
   } catch (error) {
     console.error('Login hatası:', error.message);
     res.status(500).json({ message: 'Sunucu hatası.' });
+  }
+});
+
+const buildSiteCopyResponse = (document) => ({
+  language: document.language,
+  entries: document.entries || {},
+  updatedAt: document.updatedAt,
+});
+
+app.get('/api/site-copy/:language', async (req, res) => {
+  const language = sanitizeSiteCopyLanguage(req.params.language);
+
+  if (!language) {
+    return res.status(404).json({ message: 'Bu dil desteklenmiyor.' });
+  }
+
+  try {
+    const document = await ensureSiteCopyDocument(language);
+    return res.json(buildSiteCopyResponse(document));
+  } catch (error) {
+    console.error('Site metinleri alınamadı:', error);
+    return res
+      .status(500)
+      .json({ message: 'Site metinleri alınırken beklenmedik bir hata oluştu.' });
+  }
+});
+
+app.get('/api/site-copy', auth, async (req, res) => {
+  try {
+    const copies = await Promise.all(
+      SUPPORTED_SITE_COPY_LANGUAGES.map(async (language) => {
+        const document = await ensureSiteCopyDocument(language);
+        return buildSiteCopyResponse(document);
+      })
+    );
+
+    return res.json({ copies });
+  } catch (error) {
+    console.error('Site metinleri yönetici listesi alınamadı:', error);
+    return res
+      .status(500)
+      .json({ message: 'Site metinleri listesi alınamadı.' });
+  }
+});
+
+app.put('/api/site-copy/:language', auth, async (req, res) => {
+  const language = sanitizeSiteCopyLanguage(req.params.language);
+
+  if (!language) {
+    return res.status(400).json({ message: 'Desteklenmeyen dil.' });
+  }
+
+  const updates = req.body?.updates;
+  const removals = req.body?.removals;
+
+  if (!updates && !removals) {
+    return res
+      .status(400)
+      .json({ message: 'Güncellenecek herhangi bir alan belirtilmedi.' });
+  }
+
+  try {
+    const document = await ensureSiteCopyDocument(language);
+    const entries = document.entries || {};
+
+    if (updates && typeof updates === 'object') {
+      Object.entries(updates).forEach(([key, value]) => {
+        if (typeof key === 'string' && key.trim()) {
+          setNestedValue(entries, key, value);
+        }
+      });
+    }
+
+    if (Array.isArray(removals)) {
+      removals.forEach((key) => {
+        if (typeof key === 'string' && key.trim()) {
+          deleteNestedValue(entries, key);
+        }
+      });
+    }
+
+    document.entries = entries;
+    document.markModified('entries');
+    await document.save();
+
+    return res.json(buildSiteCopyResponse(document));
+  } catch (error) {
+    console.error('Site metinleri güncellenemedi:', error);
+    return res
+      .status(500)
+      .json({ message: 'Site metinleri güncellenirken bir sorun oluştu.' });
   }
 });
 

@@ -127,7 +127,20 @@ https://alpimimarlik.com/admin-panel
 
 ---
 
-## 7. Sitenizi müşterinin alan adına (domain) bağlama
+## 7. Site metinlerini ve menüyü güncelleme
+
+Artık sitenin tamamındaki başlıklar, paragraflar, menü öğeleri, CTA yazıları ve meta açıklamalar admin panelindeki "Site Metinleri ve Menü" bölümünden yönetiliyor. HTML dosyalarına dokunmadan tüm dili güncellemek için aşağıdaki adımları izleyin:
+
+1. Paneldeki ilgili bölümü açın. Üstteki form yeni veya mevcut bir anahtarı düzenlemek içindir.
+2. "Dil" açılır menüsünden Türkçe veya İngilizce'yi seçin. Her dil kendi kopyasını saklar.
+3. "Anahtar" alanına `index.hero.title` gibi nokta ile ayrılmış yolu yazın. Mevcut anahtarları alt listeden seçebilir, yeni anahtarlar oluşturarak siteye yeni metinler ekleyebilirsiniz.
+4. "Metin / Değer" alanına görmek istediğiniz içeriği yazın. Buton metinleri, uzun açıklamalar, hatta görsel URL'leri burada tutulabilir. Tüm değerler düz metindir; gerekirse tam URL veya cümle olarak yazın.
+5. "Metni Kaydet" butonuna bastığınızda ilgili dil için değer güncellenir ve frontend otomatik olarak yeni içeriği kullanır. Aynı anahtarın İngilizce karşılığını düzenlemek için dili değiştirip tekrar kaydedin.
+6. Aşağıdaki arama kutusuyla belirli anahtarları filtreleyebilir, listeden "Düzenle"ye basarak formu otomatik doldurabilir veya "Sil" ile gereksiz metinleri kaldırabilirsiniz. Silinen anahtarlar frontend'de varsayılan (depo içindeki `i18n/*.json`) değerlerine düşer.
+
+> **İpucu:** Menü bağlantıları `common.nav.*` altında, üst kısımdaki hero başlıkları `index.hero.*`, `services.hero.*` gibi alanlarda yer alır. Yeni sayfalar veya CTA'lar için aynı isimlendirme ile kendi anahtarınızı ekleyebilirsiniz.
+
+## 8. Sitenizi müşterinin alan adına (domain) bağlama
 
 1. **Bir sunucu kiralayın.** DigitalOcean, Hetzner, AWS Lightsail gibi sağlayıcılardan aylık birkaç dolara Linux sunucu alabilirsiniz. Windows seviyorsanız Windows sunucusu da olur, ancak talimatlar Linux içindir.
 2. **Sunucuya Node.js ve MongoDB kurun.**
@@ -230,7 +243,7 @@ https://alpimimarlik.com/admin-panel
 
 ---
 
-## 8. Sık karşılaşılan sorunlar ve çözümleri
+## 9. Sık karşılaşılan sorunlar ve çözümleri
 
 | Problem | Sebep | Çözüm |
 | --- | --- | --- |
@@ -241,7 +254,7 @@ https://alpimimarlik.com/admin-panel
 
 ---
 
-## 9. Teknik ekler (meraklısına)
+## 10. Teknik ekler (meraklısına)
 
 - **API uç noktaları:**
   - `POST /api/login` → JWT üretir.
@@ -253,6 +266,9 @@ https://alpimimarlik.com/admin-panel
   - `GET /api/cvs` → Tüm CV kayıtları (JWT gerektirir).
   - `GET /api/cv/download/:id` → CV indirme (JWT gerektirir).
   - `DELETE /api/cv/:id` → CV kaydını ve dosyasını siler (JWT gerektirir).
+  - `GET /api/site-copy/:language` → Sitenin herkese açık metinlerini döner.
+  - `GET /api/site-copy` → Admin panelinde tüm dilleri listeler (JWT gerektirir).
+  - `PUT /api/site-copy/:language` → Belirli bir dildeki metin anahtarlarını günceller veya siler (JWT gerektirir).
 - **Güvenlik:** Parolalar `bcrypt` ile şifrelenir, admin paneline erişim için ek olarak HTTP Basic Auth (ENV değişkenlerindeki `ADMIN_USERNAME` ve `ADMIN_PASSWORD`) zorunludur ve panel içindeki tüm işlemler `Authorization: Bearer <token>` başlığı ile doğrulanır.
 - **CORS:** Varsayılan olarak `.env` dosyasındaki `CORS_ALLOWED_ORIGINS` ile sınırlandırılır; ihtiyaç halinde bu listeyi güncelleyebilirsiniz.
 

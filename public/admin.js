@@ -49,6 +49,13 @@ const updateImagePreviewContainer = document.getElementById('update-image-previe
 const updateImagePreview = document.getElementById('update-image-preview');
 const updateImageLink = document.getElementById('update-image-link');
 const updateRemoveImageCheckbox = document.getElementById('update-remove-image');
+const siteCopyForm = document.getElementById('site-copy-form');
+const siteCopyLanguageSelect = document.getElementById('site-copy-language');
+const siteCopyKeyInput = document.getElementById('site-copy-key');
+const siteCopyValueInput = document.getElementById('site-copy-value');
+const siteCopySearchInput = document.getElementById('site-copy-search');
+const siteCopyListContainer = document.getElementById('site-copy-list');
+const siteCopyResetButton = document.getElementById('site-copy-reset');
 
 const LANGUAGE_LABELS = {
   tr: 'Türkçe',
@@ -64,6 +71,7 @@ const PROJECT_TYPE_LABELS = {
 };
 
 const DEFAULT_PROJECT_TYPE = 'workplace';
+const SUPPORTED_SITE_COPY_LANGUAGES = ['tr', 'en'];
 
 const normalizeLanguageValue = (value) => {
   if (typeof value !== 'string') {
@@ -93,7 +101,44 @@ const normalizeProjectTypeValue = (value) => {
   return DEFAULT_PROJECT_TYPE;
 };
 
+const getActiveSiteCopyLanguage = () => {
+  if (!siteCopyLanguageSelect) {
+    return SUPPORTED_SITE_COPY_LANGUAGES[0];
+  }
+
+  const value = siteCopyLanguageSelect.value;
+  if (SUPPORTED_SITE_COPY_LANGUAGES.includes(value)) {
+    return value;
+  }
+
+  return SUPPORTED_SITE_COPY_LANGUAGES[0];
+};
+
+const flattenSiteCopyEntries = (entries, prefix = '') => {
+  if (!entries || typeof entries !== 'object') {
+    return [];
+  }
+
+  return Object.entries(entries).flatMap(([key, value]) => {
+    const path = prefix ? `${prefix}.${key}` : key;
+    if (value && typeof value === 'object' && !Array.isArray(value)) {
+      return flattenSiteCopyEntries(value, path);
+    }
+
+    return [
+      {
+        key: path,
+        value: value === undefined || value === null ? '' : String(value),
+      },
+    ];
+  });
+};
+
 let token = '';
+const siteCopyCache = SUPPORTED_SITE_COPY_LANGUAGES.reduce((acc, lang) => {
+  acc[lang] = {};
+  return acc;
+}, {});
 
 function sanitizeToken(value) {
   if (typeof value !== 'string') {
@@ -148,6 +193,206 @@ function setStatus(element, message, isError = false) {
   element.style.display = 'block';
   element.style.backgroundColor = isError ? '#fee2e2' : '#eff6ff';
   element.style.color = isError ? '#b91c1c' : '#1e40af';
+}
+
+function renderSiteCopyList() {
+  if (!siteCopyListContainer) {
+    return;
+  }
+
+  const language = getActiveSiteCopyLanguage();
+  const searchTerm = (siteCopySearchInput?.value || '').trim().toLowerCase();
+  const entries = flattenSiteCopyEntries(siteCopyCache[language]);
+  const filteredEntries = entries
+    .filter(({ key, value }) => {
+      if (!searchTerm) {
+        return true;
+      }
+
+      return (
+        key.toLowerCase().includes(searchTerm) ||
+        value.toLowerCase().includes(searchTerm)
+      );
+    })
+    .sort((a, b) => a.key.localeCompare(b.key, 'tr'));
+
+  siteCopyListContainer.innerHTML = '';
+
+  if (!filteredEntries.length) {
+    const emptyMessage = document.createElement('p');
+    emptyMessage.textContent =
+      'Henüz metin bulunamadı. Dil seçimini veya arama filtresini kontrol edin.';
+    emptyMessage.style.margin = '0';
+    siteCopyListContainer.appendChild(emptyMessage);
+    return;
+  }
+
+  filteredEntries.forEach(({ key, value }) => {
+    const entry = document.createElement('div');
+    entry.className = 'site-copy-entry';
+
+    const keyHeading = document.createElement('strong');
+    keyHeading.textContent = key;
+
+    const valuePreview = document.createElement('pre');
+    valuePreview.textContent = value || '—';
+
+    const hint = document.createElement('small');
+    hint.textContent = 'Düzenlemek için “Düzenle”ye tıklayın.';
+
+    const actions = document.createElement('div');
+    actions.className = 'actions';
+
+    const editButton = document.createElement('button');
+    editButton.type = 'button';
+    editButton.textContent = 'Düzenle';
+    editButton.addEventListener('click', () => {
+      if (siteCopyLanguageSelect) {
+        siteCopyLanguageSelect.value = language;
+      }
+      if (siteCopyKeyInput) {
+        siteCopyKeyInput.value = key;
+      }
+      if (siteCopyValueInput) {
+        siteCopyValueInput.value = value;
+      }
+      siteCopyKeyInput?.focus();
+      window.scrollTo({
+        top: siteCopyForm?.offsetTop || 0,
+        behavior: 'smooth',
+      });
+    });
+
+    const deleteButton = document.createElement('button');
+    deleteButton.type = 'button';
+    deleteButton.textContent = 'Sil';
+    deleteButton.classList.add('danger');
+    deleteButton.addEventListener('click', () => {
+      deleteSiteCopyEntry(language, key);
+    });
+
+    actions.appendChild(editButton);
+    actions.appendChild(deleteButton);
+
+    entry.appendChild(keyHeading);
+    entry.appendChild(valuePreview);
+    entry.appendChild(hint);
+    entry.appendChild(actions);
+
+    siteCopyListContainer.appendChild(entry);
+  });
+}
+
+function resetSiteCopyForm() {
+  if (!siteCopyForm) {
+    return;
+  }
+
+  siteCopyForm.reset();
+  if (siteCopyLanguageSelect) {
+    siteCopyLanguageSelect.value = SUPPORTED_SITE_COPY_LANGUAGES[0];
+  }
+}
+
+async function handleSiteCopySubmit(event) {
+  event.preventDefault();
+  if (!siteCopyForm) {
+    return;
+  }
+
+  const language = getActiveSiteCopyLanguage();
+  const key = siteCopyKeyInput?.value?.trim();
+  const value = siteCopyValueInput?.value ?? '';
+
+  if (!key) {
+    setStatus(adminStatus, 'Lütfen güncellenecek anahtarı yazın.', true);
+    return;
+  }
+
+  setStatus(adminStatus, 'Site metni kaydediliyor...');
+
+  try {
+    await saveSiteCopyEntry(language, key, value);
+    setStatus(adminStatus, 'Metin güncellendi.');
+    siteCopyForm.reset();
+  } catch (error) {
+    console.error('Site metni kaydedilemedi:', error);
+    setStatus(adminStatus, error.message || 'Site metni kaydedilemedi.', true);
+  }
+}
+
+async function saveSiteCopyEntry(language, key, value) {
+  const payload = {
+    updates: {
+      [key]: value,
+    },
+  };
+
+  const response = await fetch(`${API_BASE}/site-copy/${language}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      ...authHeaders(),
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (response.status === 401) {
+    await handleUnauthorized();
+    throw new Error('Oturum yenilendi, lütfen tekrar deneyin.');
+  }
+
+  if (!response.ok) {
+    const data = await response.json().catch(() => ({ message: 'Metin kaydedilemedi.' }));
+    throw new Error(data.message || 'Metin kaydedilemedi.');
+  }
+
+  const data = await response.json();
+  if (data && SUPPORTED_SITE_COPY_LANGUAGES.includes(data.language)) {
+    siteCopyCache[data.language] = data.entries || {};
+    renderSiteCopyList();
+  }
+}
+
+async function deleteSiteCopyEntry(language, key) {
+  if (!window.confirm(`${key} anahtarını silmek istediğinize emin misiniz?`)) {
+    return;
+  }
+
+  setStatus(adminStatus, 'Site metni siliniyor...');
+
+  try {
+    const response = await fetch(`${API_BASE}/site-copy/${language}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        ...authHeaders(),
+      },
+      body: JSON.stringify({ removals: [key] }),
+    });
+
+    if (response.status === 401) {
+      await handleUnauthorized();
+      return;
+    }
+
+    if (!response.ok) {
+      const data = await response
+        .json()
+        .catch(() => ({ message: 'Metin silinemedi.' }));
+      throw new Error(data.message);
+    }
+
+    const data = await response.json();
+    if (data && SUPPORTED_SITE_COPY_LANGUAGES.includes(data.language)) {
+      siteCopyCache[data.language] = data.entries || {};
+    }
+    renderSiteCopyList();
+    setStatus(adminStatus, 'Metin silindi.');
+  } catch (error) {
+    console.error('Site metni silinemedi:', error);
+    setStatus(adminStatus, error.message || 'Site metni silinemedi.', true);
+  }
 }
 
 function toggleUpdateImagePreview(imageData) {
@@ -232,7 +477,49 @@ async function login(event) {
 }
 
 async function initializeAdminData() {
-  await Promise.all([fetchContents(), fetchDeletedContents(), fetchCvs()]);
+  await Promise.all([
+    fetchContents(),
+    fetchDeletedContents(),
+    fetchCvs(),
+    fetchSiteCopyForAdmin(),
+  ]);
+}
+
+async function fetchSiteCopyForAdmin() {
+  if (!siteCopyListContainer) {
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE}/site-copy`, {
+      headers: {
+        ...authHeaders(),
+      },
+    });
+
+    if (response.status === 401) {
+      await handleUnauthorized();
+      return;
+    }
+
+    if (!response.ok) {
+      throw new Error('Site metinleri alınamadı.');
+    }
+
+    const data = await response.json();
+    if (Array.isArray(data?.copies)) {
+      data.copies.forEach((copy) => {
+        if (copy && SUPPORTED_SITE_COPY_LANGUAGES.includes(copy.language)) {
+          siteCopyCache[copy.language] = copy.entries || {};
+        }
+      });
+    }
+
+    renderSiteCopyList();
+  } catch (error) {
+    console.error('Site metinleri alınamadı:', error);
+    setStatus(adminStatus, error.message || 'Site metinleri alınamadı.', true);
+  }
 }
 
 function authHeaders() {
@@ -862,6 +1149,10 @@ function logout() {
   if (updateProjectTypeSelect) {
     updateProjectTypeSelect.value = DEFAULT_PROJECT_TYPE;
   }
+  Object.keys(siteCopyCache).forEach((language) => {
+    siteCopyCache[language] = {};
+  });
+  renderSiteCopyList();
   toggleSections();
 }
 
@@ -925,6 +1216,29 @@ cancelUpdateButton.addEventListener('click', () => {
     updateProjectTypeSelect.value = DEFAULT_PROJECT_TYPE;
   }
 });
+
+if (siteCopyForm) {
+  siteCopyForm.addEventListener('submit', handleSiteCopySubmit);
+}
+
+if (siteCopyResetButton) {
+  siteCopyResetButton.addEventListener('click', () => {
+    resetSiteCopyForm();
+    renderSiteCopyList();
+  });
+}
+
+if (siteCopyLanguageSelect) {
+  siteCopyLanguageSelect.addEventListener('change', () => {
+    renderSiteCopyList();
+  });
+}
+
+if (siteCopySearchInput) {
+  siteCopySearchInput.addEventListener('input', () => {
+    renderSiteCopyList();
+  });
+}
 
 document.addEventListener('DOMContentLoaded', () => {
   toggleSections();

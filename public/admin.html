@@ -165,6 +165,51 @@
         color: #1e40af;
         display: none;
       }
+      .site-copy-controls {
+        display: grid;
+        gap: 0.75rem;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        margin: 1rem 0;
+        align-items: end;
+      }
+      .site-copy-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+      }
+      .site-copy-entry {
+        border: 1px solid #e5e7eb;
+        border-radius: 10px;
+        padding: 0.75rem 1rem;
+        background: #f8fafc;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .site-copy-entry strong {
+        font-size: 0.9rem;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+      .site-copy-entry small {
+        margin: 0;
+        color: #94a3b8;
+        font-size: 0.75rem;
+      }
+      .site-copy-entry pre {
+        margin: 0;
+        font-family: 'Courier New', Courier, monospace;
+        font-size: 0.9rem;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
+      .site-copy-entry .actions {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+      .site-copy-entry .actions button {
+        flex: 0 0 auto;
+      }
       @media (max-width: 768px) {
         table {
           display: block;
@@ -212,6 +257,61 @@
             <li>Fotoğraf eklediğinizde hem ana sayfa hem de Notlar kartları otomatik olarak görsel kullanır.</li>
             <li>Güncel tutulması gereken projeleri silip daha sonra geri yükleyebilir veya kalıcı olarak kaldırabilirsiniz.</li>
           </ul>
+        </section>
+
+        <section>
+          <h3>Site Metinleri ve Menü</h3>
+          <p>
+            Navigasyon, hero başlıkları, sayfa açıklamaları, meta içerikler ve buton çağrıları dahil olmak üzere sitenin tamamındaki
+            metinler aşağıdaki anahtarlar üzerinden yönetilir. Her alan çok dilli çalışır; örneğin <code>index.hero.title</code>
+            değeri Türkçe ve İngilizce için ayrı ayrı saklanır.
+          </p>
+          <form id="site-copy-form">
+            <div>
+              <label for="site-copy-language">Dil</label>
+              <select id="site-copy-language" name="language">
+                <option value="tr" selected>Türkçe</option>
+                <option value="en">İngilizce</option>
+              </select>
+            </div>
+            <div>
+              <label for="site-copy-key">Anahtar</label>
+              <input
+                type="text"
+                id="site-copy-key"
+                name="key"
+                placeholder="index.hero.title veya common.nav.services"
+                required
+              />
+              <small>Sayfalar ve bölümler nokta ile ayrılır; mevcut anahtarlar aşağıdaki listede yer alır.</small>
+            </div>
+            <div>
+              <label for="site-copy-value">Metin / Değer</label>
+              <textarea
+                id="site-copy-value"
+                name="value"
+                placeholder="CTA metnini, açıklamaları veya görsel URL'lerini buradan güncelleyebilirsiniz."
+                required
+              ></textarea>
+            </div>
+            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+              <button type="submit">Metni Kaydet</button>
+              <button type="button" id="site-copy-reset" class="secondary">Formu Temizle</button>
+            </div>
+          </form>
+          <div class="site-copy-controls">
+            <div>
+              <label for="site-copy-search">Anahtar Ara</label>
+              <input type="text" id="site-copy-search" placeholder="ör. services.hero." />
+            </div>
+            <div>
+              <small>
+                Listede düzenlemek istediğiniz anahtara tıklayın; değer otomatik olarak forma aktarılır. Her değişiklik
+                kaydedildiğinde siteye anında yansır.
+              </small>
+            </div>
+          </div>
+          <div id="site-copy-list" class="site-copy-list"></div>
         </section>
 
         <section>
