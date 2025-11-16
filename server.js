@@ -35,6 +35,8 @@ const I18N_DIR = path.join(__dirname, 'i18n');
 
 const DEFAULT_CONTENT_API_BASE = '/api';
 
+const DEFAULT_CONTENT_API_BASE = '/api';
+
 const DEFAULT_CONTENT_LANGUAGE = 'tr';
 const ALLOWED_CONTENT_LANGUAGES = new Set(['tr', 'en', 'multi']);
 const DEFAULT_PROJECT_TYPE = 'workplace';
