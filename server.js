@@ -98,6 +98,61 @@ const parseBoolean = (value) => {
   return Boolean(value);
 };
 
+const makeRelativeUploadPath = (subdir, filename) =>
+  path.posix.join(String(subdir || '').replace(/\\+/g, '/'), filename);
+
+const toPublicUploadUrl = (relativePath) => {
+  if (!relativePath) {
+    return '';
+  }
+
+  return `/uploads/${String(relativePath).replace(/\\+/g, '/')}`;
+};
+
+const buildStoredFileMetadata = (file, subdir) => {
+  if (!file || !file.filename) {
+    return null;
+  }
+
+  const relativePath = makeRelativeUploadPath(subdir, file.filename);
+
+  return {
+    filename: relativePath,
+    originalname: file.originalname,
+    mimetype: file.mimetype,
+    size: file.size,
+    url: toPublicUploadUrl(relativePath),
+    uploadedAt: new Date(),
+  };
+};
+
+const resolveUploadsPath = (relativePath = '') => path.join(uploadsDir, relativePath);
+
+const deleteUploadedFile = async (relativePath, { ignoreNotFound = true } = {}) => {
+  if (!relativePath) {
+    return true;
+  }
+
+  try {
+    await fsPromises.unlink(resolveUploadsPath(relativePath));
+    return true;
+  } catch (error) {
+    if (ignoreNotFound && error && error.code === 'ENOENT') {
+      return true;
+    }
+
+    throw error;
+  }
+};
+
+const parseBoolean = (value) => {
+  if (typeof value === 'string') {
+    return ['true', '1', 'yes', 'on'].includes(value.trim().toLowerCase());
+  }
+
+  return Boolean(value);
+};
+
 function normalizeAdminApiBase(value) {
   if (typeof value !== 'string') {
     return '/api';
