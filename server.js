@@ -22,18 +22,18 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/alpermorko
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretjwt';
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
-const ADMIN_API_BASE_URL = normalizeAdminApiBase(process.env.ADMIN_API_BASE_URL);
-const PUBLIC_CONTENT_API_BASE_URL = normalizeAdminApiBase(
-  process.env.PUBLIC_CONTENT_API_BASE_URL || process.env.ADMIN_API_BASE_URL
+const PRODUCTION_API_BASE_URL =
+  'https://alpermorkoc-production.up.railway.app/api';
+const ADMIN_API_BASE_URL = normalizeAdminApiBase(
+  process.env.ADMIN_API_BASE_URL || PRODUCTION_API_BASE_URL
 );
 const { allowAllOrigins, allowedOrigins } = parseAllowedOrigins(
   process.env.CORS_ALLOWED_ORIGINS
 );
 const PUBLIC_SITE_DIR = __dirname;
+const SITE_CONFIG_FILE_PATH = path.join(PUBLIC_SITE_DIR, 'site-config.js');
 const ADMIN_ASSETS_DIR = path.join(__dirname, 'public');
 const I18N_DIR = path.join(__dirname, 'i18n');
-
-const DEFAULT_CONTENT_API_BASE_PATH = '/api';
 
 const DEFAULT_CONTENT_LANGUAGE = 'tr';
 const ALLOWED_CONTENT_LANGUAGES = new Set(['tr', 'en', 'multi']);
@@ -363,52 +363,20 @@ const parseBoolean = (value) => {
 };
 
 function normalizeAdminApiBase(value) {
+  const fallback = PRODUCTION_API_BASE_URL;
+
   if (typeof value !== 'string') {
-    return '/api';
+    return fallback;
   }
 
   const trimmed = value.trim();
 
-  if (!trimmed) {
-    return '/api';
-  }
-
-  if (trimmed === '/') {
-    return '';
+  if (!trimmed || trimmed === '/') {
+    return fallback;
   }
 
   return trimmed.replace(/\/$/, '');
 }
-
-function buildContentApiEndpoint(base) {
-  const fallback = DEFAULT_CONTENT_API_BASE_PATH;
-
-  if (typeof base !== 'string') {
-    return `${fallback}/content`;
-  }
-
-  const trimmed = base.trim();
-
-  if (!trimmed) {
-    return `${fallback}/content`;
-  }
-
-  const sanitized = trimmed === '/' ? fallback : trimmed.replace(/\/$/, '');
-
-  if (/^https?:\/\//i.test(sanitized)) {
-    return `${sanitized}/content`;
-  }
-
-  const withLeadingSlash = sanitized.startsWith('/')
-    ? sanitized
-    : `/${sanitized}`;
-
-  return `${withLeadingSlash}/content`;
-}
-
-const PUBLIC_CONTENT_API_ENDPOINT = buildContentApiEndpoint(
-  PUBLIC_CONTENT_API_BASE_URL || DEFAULT_CONTENT_API_BASE_PATH
-);
 
 function parseAllowedOrigins(rawValue) {
   if (typeof rawValue !== 'string' || !rawValue.trim()) {
@@ -585,16 +553,19 @@ const setNoCacheHeaders = (res) => {
   res.set('Expires', '0');
 };
 
-app.get('/site-config.js', (req, res) => {
-  const config = {
-    contentApiBase: PUBLIC_CONTENT_API_BASE_URL,
-    contentEndpoint: PUBLIC_CONTENT_API_ENDPOINT,
-  };
-
+app.get('/site-config.js', async (req, res) => {
   setNoCacheHeaders(res);
-  res
-    .type('application/javascript')
-    .send(`window.__SITE_CONFIG__ = Object.freeze(${JSON.stringify(config)});\n`);
+
+  try {
+    const script = await fsPromises.readFile(SITE_CONFIG_FILE_PATH, 'utf8');
+    res.type('application/javascript').send(script);
+  } catch (error) {
+    console.error('Site config dosyası okunamadı:', error.message);
+    res
+      .status(500)
+      .type('text/plain')
+      .send('Site config dosyası yüklenemedi.');
+  }
 });
 
 const adminBasicAuth = (req, res, next) => {
@@ -639,27 +610,21 @@ app.get('/admin-panel', adminBasicAuth, (req, res) => {
   res.sendFile(path.join(ADMIN_ASSETS_DIR, 'admin.html'));
 });
 
-app.get('/admin-panel/admin-config.js', adminBasicAuth, async (req, res) => {
+app.get('/admin-panel/admin-config.js', adminBasicAuth, (req, res) => {
   const config = {
     apiBase: ADMIN_API_BASE_URL,
     bootstrapToken: null,
   };
 
-  const basicAuthUser = req.adminBasicAuthUser || ADMIN_USERNAME;
-
-  try {
-    const token = await issueAdminToken(basicAuthUser);
-    if (token) {
-      config.bootstrapToken = token;
-    }
-  } catch (error) {
-    console.error('Admin config token oluşturulamadı:', error.message);
-  }
-
   setNoCacheHeaders(res);
   res
     .type('application/javascript')
-    .send(`window.__ADMIN_CONFIG__ = Object.freeze(${JSON.stringify(config)});\n`);
+    .send(
+      `window.__ADMIN_CONFIG__ = {\n` +
+        `  apiBase: ${JSON.stringify(config.apiBase)},\n` +
+        `  bootstrapToken: null,\n` +
+        `};\n`
+    );
 });
 
 app.get('/admin-panel/bootstrap-token', adminBasicAuth, async (req, res) => {

@@ -1,6 +1,6 @@
 (function () {
     const ABSOLUTE_URL_REGEX = /^https?:\/\//i;
-    const DEFAULT_API_BASE = '/api';
+    const DEFAULT_API_BASE = 'https://alpermorkoc-production.up.railway.app/api';
     const DEFAULT_CONTENT_ENDPOINT = `${DEFAULT_API_BASE}/content`;
 
     const readMetaContent = (name) => {
