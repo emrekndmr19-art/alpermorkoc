@@ -2,7 +2,8 @@
     const STORAGE_KEY = 'alpimimarlik-lang';
     const DEFAULT_LANG = 'tr';
     const SUPPORTED_LANGS = ['tr', 'en'];
-    const SITE_COPY_ENDPOINT_BASE = '/api/site-copy';
+    const SITE_COPY_ENDPOINT_BASE =
+        'https://alpermorkoc-production.up.railway.app/api/site-copy';
     const translations = {};
     let currentLang = DEFAULT_LANG;
     const changeCallbacks = new Set();
