@@ -521,11 +521,14 @@ ensureDirExists(uploadsDir);
 
 const CV_UPLOAD_SUBDIR = 'cv';
 const IMAGE_UPLOAD_SUBDIR = 'images';
+const CONCEPT_PDF_UPLOAD_SUBDIR = 'concept-pdfs';
 const cvUploadsDir = path.join(uploadsDir, CV_UPLOAD_SUBDIR);
 const imageUploadsDir = path.join(uploadsDir, IMAGE_UPLOAD_SUBDIR);
+const conceptPdfUploadsDir = path.join(uploadsDir, CONCEPT_PDF_UPLOAD_SUBDIR);
 
 ensureDirExists(cvUploadsDir);
 ensureDirExists(imageUploadsDir);
+ensureDirExists(conceptPdfUploadsDir);
 
 const PUBLIC_SITE_STATIC_FOLDERS = ['assets', 'i18n'];
 
@@ -801,13 +804,52 @@ const imageFileFilter = (req, file, cb) => {
 };
 
 const cvUpload = multer({ storage: createDiskStorage(cvUploadsDir), fileFilter: cvFileFilter });
-const imageUpload = multer({ storage: createDiskStorage(imageUploadsDir), fileFilter: imageFileFilter });
 
-const handleContentImageUpload = (req, res, next) => {
-  imageUpload.single('image')(req, res, (err) => {
+const contentUploadsStorage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    if (file.fieldname === 'conceptPdf') {
+      cb(null, conceptPdfUploadsDir);
+      return;
+    }
+
+    cb(null, imageUploadsDir);
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+    const extension = path.extname(file.originalname || '').toLowerCase();
+    cb(null, `${uniqueSuffix}${extension}`);
+  },
+});
+
+const contentFileFilter = (req, file, cb) => {
+  if (!file) {
+    cb(null, true);
+    return;
+  }
+
+  if (file.fieldname === 'conceptPdf') {
+    cvFileFilter(req, file, cb);
+    return;
+  }
+
+  imageFileFilter(req, file, cb);
+};
+
+const contentUploads = multer({
+  storage: contentUploadsStorage,
+  fileFilter: contentFileFilter,
+});
+
+const CONTENT_UPLOAD_FIELDS = [
+  { name: 'image', maxCount: 1 },
+  { name: 'conceptPdf', maxCount: 1 },
+];
+
+const handleContentUploads = (req, res, next) => {
+  contentUploads.fields(CONTENT_UPLOAD_FIELDS)(req, res, (err) => {
     if (err) {
-      console.error('Fotoğraf yükleme hatası:', err.message);
-      return res.status(400).json({ message: err.message || 'Fotoğraf yüklenemedi.' });
+      console.error('Dosya yükleme hatası:', err.message);
+      return res.status(400).json({ message: err.message || 'Dosya yüklenemedi.' });
     }
 
     return next();
@@ -874,9 +916,11 @@ app.get('/api/site-copy/:language', async (req, res) => {
   try {
     const document = await ensureSiteCopyDocument(language);
     const response = await buildSiteCopyResponse(document);
+    setNoCacheHeaders(res);
     return res.json(response);
   } catch (error) {
     console.error('Site metinleri alınamadı:', error);
+    setNoCacheHeaders(res);
     return res
       .status(500)
       .json({ message: 'Site metinleri alınırken beklenmedik bir hata oluştu.' });
@@ -892,9 +936,11 @@ app.get('/api/site-copy', auth, async (req, res) => {
       })
     );
 
+    setNoCacheHeaders(res);
     return res.json({ copies });
   } catch (error) {
     console.error('Site metinleri yönetici listesi alınamadı:', error);
+    setNoCacheHeaders(res);
     return res
       .status(500)
       .json({ message: 'Site metinleri listesi alınamadı.' });
@@ -956,14 +1002,16 @@ const ACTIVE_CONTENT_FILTER = { deletedAt: null };
 app.get('/api/content', async (req, res) => {
   try {
     const contents = await Content.find(ACTIVE_CONTENT_FILTER).sort({ date: -1 });
+    setNoCacheHeaders(res);
     res.json(contents);
   } catch (error) {
     console.error('İçerikler alınamadı:', error.message);
+    setNoCacheHeaders(res);
     res.status(500).json({ message: 'Sunucu hatası.' });
   }
 });
 
-app.post('/api/content', auth, handleContentImageUpload, async (req, res) => {
+app.post('/api/content', auth, handleContentUploads, async (req, res) => {
   try {
     const { title, body, language, projectType } = req.body;
 
@@ -978,10 +1026,22 @@ app.post('/api/content', auth, handleContentImageUpload, async (req, res) => {
       projectType: normalizeProjectType(projectType),
     };
 
-    const imageMetadata = buildStoredFileMetadata(req.file, IMAGE_UPLOAD_SUBDIR);
+    const imageFile = Array.isArray(req.files?.image)
+      ? req.files.image[0]
+      : undefined;
+    const pdfFile = Array.isArray(req.files?.conceptPdf)
+      ? req.files.conceptPdf[0]
+      : undefined;
+
+    const imageMetadata = buildStoredFileMetadata(imageFile, IMAGE_UPLOAD_SUBDIR);
+    const pdfMetadata = buildStoredFileMetadata(pdfFile, CONCEPT_PDF_UPLOAD_SUBDIR);
 
     if (imageMetadata) {
       contentPayload.image = imageMetadata;
+    }
+
+    if (pdfMetadata) {
+      contentPayload.conceptPdf = pdfMetadata;
     }
 
     const content = await Content.create({ ...contentPayload, deletedAt: null });
@@ -992,10 +1052,17 @@ app.post('/api/content', auth, handleContentImageUpload, async (req, res) => {
   }
 });
 
-app.put('/api/content/:id', auth, handleContentImageUpload, async (req, res) => {
+app.put('/api/content/:id', auth, handleContentUploads, async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, body, language, removeImage, projectType } = req.body;
+    const {
+      title,
+      body,
+      language,
+      removeImage,
+      projectType,
+      removeConceptPdf,
+    } = req.body;
 
     if (!title || !body) {
       return res.status(400).json({ message: 'Başlık ve içerik gereklidir.' });
@@ -1008,9 +1075,18 @@ app.put('/api/content/:id', auth, handleContentImageUpload, async (req, res) => 
     }
 
     const previousImage = content.image ? { ...content.image } : null;
+    const previousPdf = content.conceptPdf ? { ...content.conceptPdf } : null;
     const shouldRemoveImage = parseBoolean(removeImage);
+    const shouldRemoveConceptPdf = parseBoolean(removeConceptPdf);
     const nextLanguage = normalizeContentLanguage(language);
-    const newImageMetadata = buildStoredFileMetadata(req.file, IMAGE_UPLOAD_SUBDIR);
+    const imageFile = Array.isArray(req.files?.image)
+      ? req.files.image[0]
+      : undefined;
+    const pdfFile = Array.isArray(req.files?.conceptPdf)
+      ? req.files.conceptPdf[0]
+      : undefined;
+    const newImageMetadata = buildStoredFileMetadata(imageFile, IMAGE_UPLOAD_SUBDIR);
+    const newPdfMetadata = buildStoredFileMetadata(pdfFile, CONCEPT_PDF_UPLOAD_SUBDIR);
 
     content.title = title;
     content.body = body;
@@ -1018,6 +1094,7 @@ app.put('/api/content/:id', auth, handleContentImageUpload, async (req, res) => 
     content.projectType = normalizeProjectType(projectType);
 
     let deletePreviousImageAfterSave = false;
+    let deletePreviousPdfAfterSave = false;
 
     if (newImageMetadata) {
       content.set('image', newImageMetadata);
@@ -1027,6 +1104,14 @@ app.put('/api/content/:id', auth, handleContentImageUpload, async (req, res) => 
       deletePreviousImageAfterSave = Boolean(previousImage?.filename);
     }
 
+    if (newPdfMetadata) {
+      content.set('conceptPdf', newPdfMetadata);
+      deletePreviousPdfAfterSave = Boolean(previousPdf?.filename);
+    } else if (shouldRemoveConceptPdf && content.conceptPdf) {
+      content.set('conceptPdf', undefined);
+      deletePreviousPdfAfterSave = Boolean(previousPdf?.filename);
+    }
+
     const updatedContent = await content.save();
 
     if (deletePreviousImageAfterSave && previousImage?.filename) {
@@ -1034,6 +1119,14 @@ app.put('/api/content/:id', auth, handleContentImageUpload, async (req, res) => 
         await deleteUploadedFile(previousImage.filename);
       } catch (fileError) {
         console.warn('Önceki fotoğraf silinemedi:', fileError.message);
+      }
+    }
+
+    if (deletePreviousPdfAfterSave && previousPdf?.filename) {
+      try {
+        await deleteUploadedFile(previousPdf.filename);
+      } catch (fileError) {
+        console.warn('Önceki PDF silinemedi:', fileError.message);
       }
     }
 
@@ -1120,6 +1213,7 @@ app.delete('/api/content/:id/permanent', auth, async (req, res) => {
     }
 
     const imageFilename = content.image?.filename;
+    const pdfFilename = content.conceptPdf?.filename;
     await content.deleteOne();
 
     if (imageFilename) {
@@ -1127,6 +1221,14 @@ app.delete('/api/content/:id/permanent', auth, async (req, res) => {
         await deleteUploadedFile(imageFilename);
       } catch (error) {
         console.warn('Fotoğraf silinirken hata oluştu:', error.message);
+      }
+    }
+
+    if (pdfFilename) {
+      try {
+        await deleteUploadedFile(pdfFilename);
+      } catch (error) {
+        console.warn('PDF silinirken hata oluştu:', error.message);
       }
     }
 

@@ -386,7 +386,8 @@
     "feed": {
       "loading": "Portfolyo yükleniyor...",
       "empty": "Henüz portfolyoda proje yok.",
-      "error": "Portfolyoyu yüklerken bir hata oluştu."
+      "error": "Portfolyoyu yüklerken bir hata oluştu.",
+      "conceptPdfCta": "Konsept kitapçığını indir"
     }
   }
 }

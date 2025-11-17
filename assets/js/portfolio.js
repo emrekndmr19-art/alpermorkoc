@@ -53,7 +53,7 @@
         return config;
     };
 
-    const resolveContentEndpoint = () => {
+    const collectContentEndpointCandidates = () => {
         const config = getSiteConfig();
         const configEndpoint = sanitizeEndpoint(config && config.contentEndpoint);
         const configBase = config && config.contentApiBase;
@@ -69,23 +69,50 @@
             readMetaContent('content:api-base') ||
             readMetaContent('insights:content-api-base');
 
-        return (
-            configEndpoint ||
-            buildEndpointFromBase(configBase) ||
-            metaEndpoint ||
-            buildEndpointFromBase(metaBase) ||
-            DEFAULT_CONTENT_ENDPOINT
-        );
+        return [
+            configEndpoint,
+            buildEndpointFromBase(configBase),
+            metaEndpoint,
+            buildEndpointFromBase(metaBase),
+            DEFAULT_CONTENT_ENDPOINT,
+        ].filter(Boolean);
     };
 
-    const API_ENDPOINT = resolveContentEndpoint();
-    let apiOrigin = '';
-    try {
-        const endpointUrl = new URL(API_ENDPOINT, window.location.origin);
-        apiOrigin = endpointUrl.origin;
-    } catch (error) {
-        apiOrigin = window.location.origin;
-    }
+    const endpointCandidates = Array.from(new Set(collectContentEndpointCandidates()));
+
+    let activeEndpointIndex = 0;
+    let API_ENDPOINT = endpointCandidates[activeEndpointIndex] || DEFAULT_CONTENT_ENDPOINT;
+
+    const computeApiOrigin = (endpoint) => {
+        try {
+            const endpointUrl = new URL(endpoint, window.location.origin);
+            return endpointUrl.origin;
+        } catch (error) {
+            return window.location.origin;
+        }
+    };
+
+    let apiOrigin = computeApiOrigin(API_ENDPOINT);
+
+    const setActiveEndpoint = (endpoint) => {
+        API_ENDPOINT = endpoint;
+        apiOrigin = computeApiOrigin(endpoint);
+    };
+
+    const getEndpointFetchOrder = () => {
+        if (endpointCandidates.length === 0) {
+            endpointCandidates.push(DEFAULT_CONTENT_ENDPOINT);
+        }
+
+        if (activeEndpointIndex <= 0) {
+            return endpointCandidates.slice();
+        }
+
+        return [
+            ...endpointCandidates.slice(activeEndpointIndex),
+            ...endpointCandidates.slice(0, activeEndpointIndex),
+        ];
+    };
     const fallbackProjectTypeLabels = {
         workplace: 'Ofis Projesi',
         residential: 'Konut Projesi',
@@ -315,11 +342,21 @@
         return normalized.toUpperCase();
     };
 
-    const resolvePhotoUrl = (content) => {
-        if (!content || !content.image || typeof content.image.url !== 'string') {
+    const getConceptPdfLabel = () => {
+        if (window.I18N && typeof window.I18N.translate === 'function') {
+            const translated = window.I18N.translate('portfolioPage.feed.conceptPdfCta');
+            if (translated) {
+                return translated;
+            }
+        }
+        return 'Konsept PDF\'ini İncele';
+    };
+
+    const resolveUploadUrl = (value) => {
+        if (typeof value !== 'string') {
             return '';
         }
-        const trimmed = content.image.url.trim();
+        const trimmed = value.trim();
         if (!trimmed) {
             return '';
         }
@@ -330,6 +367,20 @@
             return `${apiOrigin}${trimmed}`;
         }
         return `${apiOrigin}/${trimmed}`.replace(/([^:]\/)\/+/g, '$1');
+    };
+
+    const resolvePhotoUrl = (content) => {
+        if (!content || !content.image) {
+            return '';
+        }
+        return resolveUploadUrl(content.image.url);
+    };
+
+    const resolveConceptPdfUrl = (content) => {
+        if (!content || !content.conceptPdf) {
+            return '';
+        }
+        return resolveUploadUrl(content.conceptPdf.url);
     };
 
     const applyVisual = (element, index, photoUrl) => {
@@ -364,6 +415,8 @@
             const languageElement = fragment.querySelector('[data-role="language"]');
             const titleElement = fragment.querySelector('[data-role="title"]');
             const excerptElement = fragment.querySelector('[data-role="excerpt"]');
+            const pdfLinkElement = fragment.querySelector('[data-role="concept-pdf"]');
+            const pdfLinkText = fragment.querySelector('[data-role="concept-pdf-text"]');
 
             if (article && content && content._id) {
                 article.setAttribute('data-content-id', content._id);
@@ -419,6 +472,30 @@
                 excerptElement.textContent = excerpt;
             }
 
+            if (pdfLinkElement && pdfLinkText) {
+                const pdfUrl = resolveConceptPdfUrl(content);
+                const isConcept = normalizeProjectType(content && content.projectType) === 'concept';
+                if (pdfUrl && isConcept) {
+                    pdfLinkElement.href = pdfUrl;
+                    setHidden(pdfLinkElement, false);
+                    pdfLinkElement.setAttribute('rel', 'noopener');
+                    pdfLinkElement.setAttribute('target', '_blank');
+                    const originalName =
+                        content && content.conceptPdf && content.conceptPdf.originalname;
+                    if (originalName) {
+                        pdfLinkElement.setAttribute('download', originalName);
+                    } else {
+                        pdfLinkElement.removeAttribute('download');
+                    }
+                    pdfLinkText.textContent = getConceptPdfLabel();
+                } else {
+                    setHidden(pdfLinkElement, true);
+                    pdfLinkElement.removeAttribute('href');
+                    pdfLinkElement.removeAttribute('download');
+                    pdfLinkText.textContent = '';
+                }
+            }
+
             listElement.appendChild(fragment);
         });
 
@@ -433,17 +510,43 @@
         setState('loading');
 
         try {
-            const response = await fetch(API_ENDPOINT, {
-                headers: {
-                    Accept: 'application/json',
-                },
-            });
+            const fetchOrder = getEndpointFetchOrder();
+            let data = null;
+            let lastError = null;
 
-            if (!response.ok) {
-                throw new Error(`Failed to load content: ${response.status}`);
+            for (const endpoint of fetchOrder) {
+                try {
+                    const response = await fetch(endpoint, {
+                        headers: {
+                            Accept: 'application/json',
+                        },
+                        cache: 'no-cache',
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Failed to load content: ${response.status}`);
+                    }
+
+                    data = await response.json();
+                    const newIndex = endpointCandidates.indexOf(endpoint);
+                    if (newIndex !== -1) {
+                        activeEndpointIndex = newIndex;
+                    } else {
+                        endpointCandidates.push(endpoint);
+                        activeEndpointIndex = endpointCandidates.length - 1;
+                    }
+                    setActiveEndpoint(endpoint);
+                    break;
+                } catch (error) {
+                    lastError = error;
+                    console.warn(`Portfolyo akışı ${endpoint} adresinden alınamadı:`, error);
+                }
             }
 
-            const data = await response.json();
+            if (!data) {
+                throw lastError || new Error('İçerik listesi alınamadı.');
+            }
+
             cache = Array.isArray(data) ? data : [];
             hasLoadedOnce = true;
 

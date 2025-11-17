@@ -95,7 +95,7 @@
         return config;
     };
 
-    const resolveContentEndpoint = () => {
+    const collectContentEndpointCandidates = () => {
         const config = getSiteConfig();
         const configEndpoint = sanitizeEndpoint(config && config.contentEndpoint);
         const configBase = config && config.contentApiBase;
@@ -111,24 +111,50 @@
             readMetaContent('content:api-base') ||
             readMetaContent('insights:content-api-base');
 
-        return (
-            configEndpoint ||
-            buildEndpointFromBase(configBase) ||
-            metaEndpoint ||
-            buildEndpointFromBase(metaBase) ||
-            DEFAULT_CONTENT_ENDPOINT
-        );
+        return [
+            configEndpoint,
+            buildEndpointFromBase(configBase),
+            metaEndpoint,
+            buildEndpointFromBase(metaBase),
+            DEFAULT_CONTENT_ENDPOINT,
+        ].filter(Boolean);
     };
 
-    const API_ENDPOINT = resolveContentEndpoint();
-    let apiOrigin = '';
+    const endpointCandidates = Array.from(new Set(collectContentEndpointCandidates()));
 
-    try {
-        const endpointUrl = new URL(API_ENDPOINT, window.location.origin);
-        apiOrigin = endpointUrl.origin;
-    } catch (error) {
-        apiOrigin = window.location.origin;
-    }
+    let activeEndpointIndex = 0;
+    let API_ENDPOINT = endpointCandidates[activeEndpointIndex] || DEFAULT_CONTENT_ENDPOINT;
+
+    const computeApiOrigin = (endpoint) => {
+        try {
+            const endpointUrl = new URL(endpoint, window.location.origin);
+            return endpointUrl.origin;
+        } catch (error) {
+            return window.location.origin;
+        }
+    };
+
+    let apiOrigin = computeApiOrigin(API_ENDPOINT);
+
+    const setActiveEndpoint = (endpoint) => {
+        API_ENDPOINT = endpoint;
+        apiOrigin = computeApiOrigin(endpoint);
+    };
+
+    const getEndpointFetchOrder = () => {
+        if (endpointCandidates.length === 0) {
+            endpointCandidates.push(DEFAULT_CONTENT_ENDPOINT);
+        }
+
+        if (activeEndpointIndex <= 0) {
+            return endpointCandidates.slice();
+        }
+
+        return [
+            ...endpointCandidates.slice(activeEndpointIndex),
+            ...endpointCandidates.slice(0, activeEndpointIndex),
+        ];
+    };
 
     let cache = [];
     let hasLoadedOnce = false;
@@ -358,15 +384,41 @@
         setState('loading');
 
         try {
-            const response = await fetch(API_ENDPOINT, {
-                headers: { Accept: 'application/json' },
-            });
+            const fetchOrder = getEndpointFetchOrder();
+            let lastError = null;
+            let data = null;
 
-            if (!response.ok) {
-                throw new Error(`Failed to load content: ${response.status}`);
+            for (const endpoint of fetchOrder) {
+                try {
+                    const response = await fetch(endpoint, {
+                        headers: { Accept: 'application/json' },
+                        cache: 'no-cache',
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Failed to load content: ${response.status}`);
+                    }
+
+                    data = await response.json();
+                    const newIndex = endpointCandidates.indexOf(endpoint);
+                    if (newIndex !== -1) {
+                        activeEndpointIndex = newIndex;
+                    } else {
+                        endpointCandidates.push(endpoint);
+                        activeEndpointIndex = endpointCandidates.length - 1;
+                    }
+                    setActiveEndpoint(endpoint);
+                    break;
+                } catch (error) {
+                    lastError = error;
+                    console.warn(`Projeler akışı ${endpoint} adresinden alınamadı:`, error);
+                }
             }
 
-            const data = await response.json();
+            if (!data) {
+                throw lastError || new Error('Projeler alınamadı.');
+            }
+
             cache = Array.isArray(data) ? data : [];
             hasLoadedOnce = true;
 
