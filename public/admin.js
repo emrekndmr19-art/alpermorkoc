@@ -1,4 +1,4 @@
-const DEFAULT_API_BASE = '/api';
+const DEFAULT_API_BASE = 'https://alpermorkoc-production.up.railway.app/api';
 
 function normalizeApiBase(base) {
   if (typeof base !== 'string') {
@@ -7,12 +7,8 @@ function normalizeApiBase(base) {
 
   const trimmed = base.trim();
 
-  if (!trimmed) {
+  if (!trimmed || trimmed === '/') {
     return DEFAULT_API_BASE;
-  }
-
-  if (trimmed === '/') {
-    return '';
   }
 
   return trimmed.replace(/\/$/, '');

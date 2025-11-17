@@ -22,9 +22,15 @@ const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/alpermorko
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretjwt';
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
-const ADMIN_API_BASE_URL = normalizeAdminApiBase(process.env.ADMIN_API_BASE_URL);
+const PRODUCTION_API_BASE_URL =
+  'https://alpermorkoc-production.up.railway.app/api';
+const ADMIN_API_BASE_URL = normalizeAdminApiBase(
+  process.env.ADMIN_API_BASE_URL || PRODUCTION_API_BASE_URL
+);
 const PUBLIC_CONTENT_API_BASE_URL = normalizeAdminApiBase(
-  process.env.PUBLIC_CONTENT_API_BASE_URL || process.env.ADMIN_API_BASE_URL
+  process.env.PUBLIC_CONTENT_API_BASE_URL ||
+    process.env.ADMIN_API_BASE_URL ||
+    PRODUCTION_API_BASE_URL
 );
 const { allowAllOrigins, allowedOrigins } = parseAllowedOrigins(
   process.env.CORS_ALLOWED_ORIGINS
@@ -33,7 +39,7 @@ const PUBLIC_SITE_DIR = __dirname;
 const ADMIN_ASSETS_DIR = path.join(__dirname, 'public');
 const I18N_DIR = path.join(__dirname, 'i18n');
 
-const DEFAULT_CONTENT_API_BASE_PATH = '/api';
+const DEFAULT_CONTENT_API_BASE_PATH = PRODUCTION_API_BASE_URL;
 
 const DEFAULT_CONTENT_LANGUAGE = 'tr';
 const ALLOWED_CONTENT_LANGUAGES = new Set(['tr', 'en', 'multi']);
@@ -363,18 +369,16 @@ const parseBoolean = (value) => {
 };
 
 function normalizeAdminApiBase(value) {
+  const fallback = PRODUCTION_API_BASE_URL;
+
   if (typeof value !== 'string') {
-    return '/api';
+    return fallback;
   }
 
   const trimmed = value.trim();
 
-  if (!trimmed) {
-    return '/api';
-  }
-
-  if (trimmed === '/') {
-    return '';
+  if (!trimmed || trimmed === '/') {
+    return fallback;
   }
 
   return trimmed.replace(/\/$/, '');
@@ -594,7 +598,12 @@ app.get('/site-config.js', (req, res) => {
   setNoCacheHeaders(res);
   res
     .type('application/javascript')
-    .send(`window.__SITE_CONFIG__ = Object.freeze(${JSON.stringify(config)});\n`);
+    .send(
+      `window.__SITE_CONFIG__ = {\n` +
+        `  contentApiBase: ${JSON.stringify(config.contentApiBase)},\n` +
+        `  contentEndpoint: ${JSON.stringify(config.contentEndpoint)},\n` +
+        `};\n`
+    );
 });
 
 const adminBasicAuth = (req, res, next) => {
@@ -639,27 +648,21 @@ app.get('/admin-panel', adminBasicAuth, (req, res) => {
   res.sendFile(path.join(ADMIN_ASSETS_DIR, 'admin.html'));
 });
 
-app.get('/admin-panel/admin-config.js', adminBasicAuth, async (req, res) => {
+app.get('/admin-panel/admin-config.js', adminBasicAuth, (req, res) => {
   const config = {
     apiBase: ADMIN_API_BASE_URL,
     bootstrapToken: null,
   };
 
-  const basicAuthUser = req.adminBasicAuthUser || ADMIN_USERNAME;
-
-  try {
-    const token = await issueAdminToken(basicAuthUser);
-    if (token) {
-      config.bootstrapToken = token;
-    }
-  } catch (error) {
-    console.error('Admin config token oluşturulamadı:', error.message);
-  }
-
   setNoCacheHeaders(res);
   res
     .type('application/javascript')
-    .send(`window.__ADMIN_CONFIG__ = Object.freeze(${JSON.stringify(config)});\n`);
+    .send(
+      `window.__ADMIN_CONFIG__ = {\n` +
+        `  apiBase: ${JSON.stringify(config.apiBase)},\n` +
+        `  bootstrapToken: null,\n` +
+        `};\n`
+    );
 });
 
 app.get('/admin-panel/bootstrap-token', adminBasicAuth, async (req, res) => {
