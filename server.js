@@ -1,5 +1,4 @@
 require('dotenv').config();
-console.log("ENV'den okunan port:", process.env.PORT);
 const path = require('path');
 const fs = require('fs');
 const express = require('express');
@@ -18,6 +17,7 @@ const auth = require('./middleware/auth');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+console.log("ENV'den okunan port:", PORT);
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/alpermorkoc';
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretjwt';
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
@@ -1327,5 +1327,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Sunucu ${PORT} portunda çalışıyor`);
+  console.log("Sunucu", PORT, "portunda çalışıyor");
 });
