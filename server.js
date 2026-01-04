@@ -564,6 +564,25 @@ PUBLIC_SITE_STATIC_FOLDERS.forEach((folder) => {
 });
 app.use('/uploads', express.static(uploadsDir));
 
+app.get('/uploads/*', (req, res) => {
+  const relativePath = req.path.replace(/^\/uploads\/+/, '');
+  const normalizedPath = path.normalize(relativePath);
+  const absolutePath = path.join(uploadsDir, normalizedPath);
+
+  if (!absolutePath.startsWith(uploadsDir)) {
+    return res.status(400).send('Geçersiz dosya yolu.');
+  }
+
+  fs.access(absolutePath, fs.constants.F_OK, (error) => {
+    if (error) {
+      return res.status(404).send('Dosya bulunamadı.');
+    }
+
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    return res.sendFile(absolutePath);
+  });
+});
+
 const ensureBasicAuthHeader = (res) => {
   res.set('WWW-Authenticate', 'Basic realm="Admin Panel"');
 };
