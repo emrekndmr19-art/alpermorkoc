@@ -31,7 +31,7 @@ const cancelUpdateButton = document.getElementById('cancel-update');
 const createLanguageSelect = document.getElementById('create-language');
 const createProjectTypeSelect = document.getElementById('create-project-type');
 const createImageInput = document.getElementById('create-image');
-const createConceptPdfInput = document.getElementById('create-concept-pdf');
+const createConceptPdfUrlInput = document.getElementById('create-concept-pdf-url');
 const loginStatus = document.getElementById('login-status');
 const adminStatus = document.getElementById('admin-status');
 const contentTableBody = document.getElementById('content-table-body');
@@ -48,7 +48,7 @@ const updateImagePreviewContainer = document.getElementById('update-image-previe
 const updateImagePreview = document.getElementById('update-image-preview');
 const updateImageLink = document.getElementById('update-image-link');
 const updateRemoveImageCheckbox = document.getElementById('update-remove-image');
-const updateConceptPdfInput = document.getElementById('update-concept-pdf');
+const updateConceptPdfUrlInput = document.getElementById('update-concept-pdf-url');
 const updatePdfPreviewContainer = document.getElementById('update-pdf-preview');
 const updatePdfLink = document.getElementById('update-pdf-link');
 const updatePdfFilename = document.getElementById('update-pdf-filename');
@@ -596,8 +596,8 @@ function toggleUpdatePdfPreview(pdfData) {
 }
 
 function resetUpdatePdfInputs() {
-  if (updateConceptPdfInput) {
-    updateConceptPdfInput.value = '';
+  if (updateConceptPdfUrlInput) {
+    updateConceptPdfUrlInput.value = '';
   }
   if (updateRemovePdfCheckbox) {
     updateRemovePdfCheckbox.checked = false;
@@ -897,6 +897,12 @@ async function createContent(event) {
   setStatus(adminStatus, 'İçerik ekleniyor...');
 
   const formData = new FormData(createContentForm);
+  const conceptPdfUrl = createConceptPdfUrlInput?.value?.trim();
+  if (conceptPdfUrl) {
+    formData.set('conceptPdfUrl', conceptPdfUrl);
+  } else {
+    formData.delete('conceptPdfUrl');
+  }
 
   try {
     const response = await fetch(`${API_BASE}/content`, {
@@ -927,8 +933,8 @@ async function createContent(event) {
     if (createImageInput) {
       createImageInput.value = '';
     }
-    if (createConceptPdfInput) {
-      createConceptPdfInput.value = '';
+    if (createConceptPdfUrlInput) {
+      createConceptPdfUrlInput.value = '';
     }
     setStatus(adminStatus, 'İçerik başarıyla eklendi.');
     await Promise.all([fetchContents(), fetchDeletedContents()]);
@@ -965,6 +971,12 @@ async function updateContent(event) {
   }
 
   const formData = new FormData(updateContentForm);
+  const conceptPdfUrl = updateConceptPdfUrlInput?.value?.trim();
+  if (conceptPdfUrl) {
+    formData.set('conceptPdfUrl', conceptPdfUrl);
+  } else {
+    formData.delete('conceptPdfUrl');
+  }
 
   try {
     const response = await fetch(`${API_BASE}/content/${id}`, {

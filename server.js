@@ -876,23 +876,35 @@ const contentUploads = multer({
   fileFilter: contentFileFilter,
 });
 
-const normalizePdfOriginalName = (rawName) => {
+const normalizePdfOriginalName = (rawName, fallback = 'file.pdf') => {
   if (typeof rawName !== 'string' || !rawName.trim()) {
-    return 'cv.pdf';
+    return fallback;
   }
 
   const decodedName = decodeURIComponent(rawName.trim());
-  const baseName = path.basename(decodedName) || 'cv.pdf';
+  const baseName = path.basename(decodedName) || fallback;
   return baseName.toLowerCase().endsWith('.pdf') ? baseName : `${baseName}.pdf`;
 };
 
-const generateUniqueFilename = (extension = '.pdf') => {
+const generateUniqueFilename = (extension = '.pdf', prefix = '') => {
   const safeExtension = extension && extension.startsWith('.') ? extension : `.${extension || 'pdf'}`;
   const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
-  return `${uniqueSuffix}${safeExtension}`;
+  return `${prefix}${uniqueSuffix}${safeExtension}`;
 };
 
-const downloadPdfFromUrl = async (pdfUrl) => {
+const buildDownloadedFileMetadata = (relativePath, originalname, size) => ({
+  filename: relativePath,
+  originalname,
+  mimetype: 'application/pdf',
+  size,
+  url: toPublicUploadUrl(relativePath),
+  uploadedAt: new Date(),
+});
+
+const downloadPdfFromUrl = async (
+  pdfUrl,
+  { targetSubdir = CV_UPLOAD_SUBDIR, filenamePrefix = '' } = {}
+) => {
   let parsedUrl;
 
   try {
@@ -944,19 +956,17 @@ const downloadPdfFromUrl = async (pdfUrl) => {
     throw emptyError;
   }
 
-  const originalname = normalizePdfOriginalName(path.basename(parsedUrl.pathname) || 'cv.pdf');
-  const uniqueFilename = generateUniqueFilename('.pdf');
-  const storedFilename = buildRelativeUploadPath(CV_UPLOAD_SUBDIR, uniqueFilename);
+  const originalname = normalizePdfOriginalName(
+    path.basename(parsedUrl.pathname) || 'document.pdf',
+    'document.pdf'
+  );
+  const uniqueFilename = generateUniqueFilename('.pdf', filenamePrefix);
+  const storedFilename = buildRelativeUploadPath(targetSubdir, uniqueFilename);
   const absolutePath = resolveUploadsPath(storedFilename);
 
   await fsPromises.writeFile(absolutePath, buffer);
 
-  return {
-    filename: storedFilename,
-    originalname,
-    mimetype: 'application/pdf',
-    size: buffer.length,
-  };
+  return buildDownloadedFileMetadata(storedFilename, originalname, buffer.length);
 };
 
 const CONTENT_UPLOAD_FIELDS = [
@@ -1151,24 +1161,34 @@ app.post('/api/content', auth, handleContentUploads, async (req, res) => {
     const pdfFile = Array.isArray(req.files?.conceptPdf)
       ? req.files.conceptPdf[0]
       : undefined;
+    const conceptPdfUrl = typeof req.body?.conceptPdfUrl === 'string' ? req.body.conceptPdfUrl.trim() : '';
 
     const imageMetadata = buildStoredFileMetadata(imageFile, IMAGE_UPLOAD_SUBDIR);
-    const pdfMetadata = buildStoredFileMetadata(pdfFile, CONCEPT_PDF_UPLOAD_SUBDIR);
+    let pdfMetadata = buildStoredFileMetadata(pdfFile, CONCEPT_PDF_UPLOAD_SUBDIR);
+
+    if (conceptPdfUrl) {
+      pdfMetadata = await downloadPdfFromUrl(conceptPdfUrl, {
+        targetSubdir: CONCEPT_PDF_UPLOAD_SUBDIR,
+        filenamePrefix: 'concept-',
+      });
+    }
 
     if (imageMetadata) {
       contentPayload.image = imageMetadata;
     }
 
-    if (pdfMetadata) {
-      contentPayload.conceptPdf = pdfMetadata;
-    }
-
-    const content = await Content.create({ ...contentPayload, deletedAt: null });
-    res.status(201).json(content);
-  } catch (error) {
-    console.error('İçerik oluşturulamadı:', error.message);
-    res.status(500).json({ message: 'Sunucu hatası.' });
+  if (pdfMetadata) {
+    contentPayload.conceptPdf = pdfMetadata;
   }
+
+  const content = await Content.create({ ...contentPayload, deletedAt: null });
+  res.status(201).json(content);
+} catch (error) {
+  console.error('İçerik oluşturulamadı:', error.message);
+  const statusCode = error?.statusCode || 500;
+  const message = statusCode === 400 ? error.message : 'Sunucu hatası.';
+  res.status(statusCode).json({ message });
+}
 });
 
 app.put('/api/content/:id', auth, handleContentUploads, async (req, res) => {
@@ -1204,8 +1224,16 @@ app.put('/api/content/:id', auth, handleContentUploads, async (req, res) => {
     const pdfFile = Array.isArray(req.files?.conceptPdf)
       ? req.files.conceptPdf[0]
       : undefined;
+    const conceptPdfUrl = typeof req.body?.conceptPdfUrl === 'string' ? req.body.conceptPdfUrl.trim() : '';
     const newImageMetadata = buildStoredFileMetadata(imageFile, IMAGE_UPLOAD_SUBDIR);
-    const newPdfMetadata = buildStoredFileMetadata(pdfFile, CONCEPT_PDF_UPLOAD_SUBDIR);
+    let newPdfMetadata = buildStoredFileMetadata(pdfFile, CONCEPT_PDF_UPLOAD_SUBDIR);
+
+    if (conceptPdfUrl) {
+      newPdfMetadata = await downloadPdfFromUrl(conceptPdfUrl, {
+        targetSubdir: CONCEPT_PDF_UPLOAD_SUBDIR,
+        filenamePrefix: 'concept-',
+      });
+    }
 
     content.title = title;
     content.body = body;
@@ -1252,7 +1280,9 @@ app.put('/api/content/:id', auth, handleContentUploads, async (req, res) => {
     res.json(updatedContent);
   } catch (error) {
     console.error('İçerik güncellenemedi:', error.message);
-    res.status(500).json({ message: 'Sunucu hatası.' });
+    const statusCode = error?.statusCode || 500;
+    const message = statusCode === 400 ? error.message : 'Sunucu hatası.';
+    res.status(statusCode).json({ message });
   }
 });
 
