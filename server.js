@@ -18,7 +18,28 @@ const auth = require('./middleware/auth');
 const app = express();
 const PORT = process.env.PORT || 3000;
 console.log("ENV'den okunan port:", PORT);
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/alpermorkoc';
+const resolveMongoUri = () => {
+  const candidates = [
+    process.env.MONGO_URI,
+    process.env.MONGODB_URI,
+    process.env.MONGODB_URL,
+    process.env.MONGO_URL,
+  ];
+
+  for (const candidate of candidates) {
+    if (typeof candidate === 'string' && candidate.trim()) {
+      return candidate.trim();
+    }
+  }
+
+  console.warn(
+    'MongoDB bağlantı adresi ortam değişkenlerinde bulunamadı. ' +
+      'Yerel MongoDB varsayılana düşülüyor: mongodb://127.0.0.1:27017/alpermorkoc'
+  );
+  return 'mongodb://127.0.0.1:27017/alpermorkoc';
+};
+
+const MONGO_URI = resolveMongoUri();
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretjwt';
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
@@ -649,18 +670,49 @@ app.use(
   express.static(ADMIN_ASSETS_DIR, { index: false })
 );
 
-mongoose
-  .connect(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
+const maskMongoUri = (uri) => {
+  try {
+    const parsed = new URL(uri);
+    if (parsed.password) {
+      parsed.password = '****';
+    }
+    return parsed.toString();
+  } catch (error) {
+    return uri;
+  }
+};
+
+const connectToMongo = async (attempt = 1, maxAttempts = 3) => {
+  try {
+    await mongoose.connect(MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log('MongoDB bağlantısı başarılı');
-    return ensureDefaultAdmin();
-  })
-  .catch((error) => {
-    console.error('MongoDB bağlantı hatası:', error.message);
-  });
+    await ensureDefaultAdmin();
+  } catch (error) {
+    console.error(
+      `MongoDB bağlantı hatası (deneme ${attempt}/${maxAttempts}):`,
+      error.message
+    );
+
+    if (attempt >= maxAttempts) {
+      console.error(
+        `MongoDB ${maskMongoUri(
+          MONGO_URI
+        )} adresine bağlanılamadı. Uygulama kapatılıyor.`
+      );
+      process.exit(1);
+    }
+
+    const backoffMs = Math.min(5000, 1000 * attempt);
+    console.log(`${backoffMs}ms sonra tekrar denenecek...`);
+    await new Promise((resolve) => setTimeout(resolve, backoffMs));
+    return connectToMongo(attempt + 1, maxAttempts);
+  }
+};
+
+connectToMongo();
 
 async function ensureDefaultAdmin() {
   try {
