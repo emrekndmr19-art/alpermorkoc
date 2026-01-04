@@ -348,9 +348,14 @@
               <small>Desteklenen formatlar: JPG, PNG, WEBP, GIF, SVG, AVIF.</small>
             </div>
             <div>
-              <label for="create-concept-pdf">Konsept PDF (opsiyonel)</label>
-              <input type="file" id="create-concept-pdf" name="conceptPdf" accept="application/pdf" />
-              <small>Konsept kartlarına sunum kitapçığını PDF olarak ekleyebilirsiniz.</small>
+              <label for="create-concept-pdf-url">Konsept PDF URL'si (opsiyonel)</label>
+              <input
+                type="url"
+                id="create-concept-pdf-url"
+                name="conceptPdfUrl"
+                placeholder="https://.../sunum.pdf"
+              />
+              <small>Konsept kartlarına sunum kitapçığını bir PDF bağlantısı ekleyerek kullanabilirsiniz.</small>
             </div>
             <button type="submit">Ekle</button>
           </form>
@@ -455,9 +460,14 @@
               </div>
             </div>
             <div>
-              <label for="update-concept-pdf">Yeni Konsept PDF</label>
-              <input type="file" id="update-concept-pdf" name="conceptPdf" accept="application/pdf" />
-              <small>Konsept kartına ait sunum PDF'ini bu alandan güncelleyebilirsiniz.</small>
+              <label for="update-concept-pdf-url">Konsept PDF URL'si</label>
+              <input
+                type="url"
+                id="update-concept-pdf-url"
+                name="conceptPdfUrl"
+                placeholder="https://.../sunum.pdf"
+              />
+              <small>Yeni PDF bağlantısı girerek konsept kartının PDF'ini güncelleyebilirsiniz.</small>
             </div>
             <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
               <button type="submit">Güncelle</button>
@@ -471,7 +481,13 @@
           <form id="upload-cv-form">
             <div>
               <label for="cv-file">PDF Seç</label>
-              <input type="file" id="cv-file" name="cv" accept="application/pdf" required />
+              <input type="file" id="cv-file" name="cv" accept="application/pdf" />
+              <small>Bilgisayarınızdan PDF seçebilir veya aşağıya bir URL ekleyebilirsiniz.</small>
+            </div>
+            <div>
+              <label for="cv-url">PDF URL'si</label>
+              <input type="url" id="cv-url" name="cvUrl" placeholder="https://.../dosya.pdf" />
+              <small>PDF bağlantısını tam adres olarak yapıştırın; dosya sunucuya kaydedilir.</small>
             </div>
             <button type="submit">Yükle</button>
           </form>
