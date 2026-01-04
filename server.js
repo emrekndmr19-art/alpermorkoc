@@ -18,7 +18,28 @@ const auth = require('./middleware/auth');
 const app = express();
 const PORT = process.env.PORT || 3000;
 console.log("ENV'den okunan port:", PORT);
-const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/alpermorkoc';
+const resolveMongoUri = () => {
+  const candidates = [
+    process.env.MONGO_URI,
+    process.env.MONGODB_URI,
+    process.env.MONGODB_URL,
+    process.env.MONGO_URL,
+  ];
+
+  for (const candidate of candidates) {
+    if (typeof candidate === 'string' && candidate.trim()) {
+      return candidate.trim();
+    }
+  }
+
+  console.warn(
+    'MongoDB bağlantı adresi ortam değişkenlerinde bulunamadı. ' +
+      'Yerel MongoDB varsayılana düşülüyor: mongodb://127.0.0.1:27017/alpermorkoc'
+  );
+  return 'mongodb://127.0.0.1:27017/alpermorkoc';
+};
+
+const MONGO_URI = resolveMongoUri();
 const JWT_SECRET = process.env.JWT_SECRET || 'supersecretjwt';
 const ADMIN_USERNAME = process.env.ADMIN_USERNAME || 'admin';
 const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'admin123';
@@ -543,6 +564,25 @@ PUBLIC_SITE_STATIC_FOLDERS.forEach((folder) => {
 });
 app.use('/uploads', express.static(uploadsDir));
 
+app.get('/uploads/*', (req, res) => {
+  const relativePath = req.path.replace(/^\/uploads\/+/, '');
+  const normalizedPath = path.normalize(relativePath);
+  const absolutePath = path.join(uploadsDir, normalizedPath);
+
+  if (!absolutePath.startsWith(uploadsDir)) {
+    return res.status(400).send('Geçersiz dosya yolu.');
+  }
+
+  fs.access(absolutePath, fs.constants.F_OK, (error) => {
+    if (error) {
+      return res.status(404).send('Dosya bulunamadı.');
+    }
+
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+    return res.sendFile(absolutePath);
+  });
+});
+
 const ensureBasicAuthHeader = (res) => {
   res.set('WWW-Authenticate', 'Basic realm="Admin Panel"');
 };
@@ -649,18 +689,49 @@ app.use(
   express.static(ADMIN_ASSETS_DIR, { index: false })
 );
 
-mongoose
-  .connect(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => {
+const maskMongoUri = (uri) => {
+  try {
+    const parsed = new URL(uri);
+    if (parsed.password) {
+      parsed.password = '****';
+    }
+    return parsed.toString();
+  } catch (error) {
+    return uri;
+  }
+};
+
+const connectToMongo = async (attempt = 1, maxAttempts = 3) => {
+  try {
+    await mongoose.connect(MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
     console.log('MongoDB bağlantısı başarılı');
-    return ensureDefaultAdmin();
-  })
-  .catch((error) => {
-    console.error('MongoDB bağlantı hatası:', error.message);
-  });
+    await ensureDefaultAdmin();
+  } catch (error) {
+    console.error(
+      `MongoDB bağlantı hatası (deneme ${attempt}/${maxAttempts}):`,
+      error.message
+    );
+
+    if (attempt >= maxAttempts) {
+      console.error(
+        `MongoDB ${maskMongoUri(
+          MONGO_URI
+        )} adresine bağlanılamadı. Uygulama kapatılıyor.`
+      );
+      process.exit(1);
+    }
+
+    const backoffMs = Math.min(5000, 1000 * attempt);
+    console.log(`${backoffMs}ms sonra tekrar denenecek...`);
+    await new Promise((resolve) => setTimeout(resolve, backoffMs));
+    return connectToMongo(attempt + 1, maxAttempts);
+  }
+};
+
+connectToMongo();
 
 async function ensureDefaultAdmin() {
   try {
@@ -804,6 +875,89 @@ const contentUploads = multer({
   storage: contentUploadsStorage,
   fileFilter: contentFileFilter,
 });
+
+const normalizePdfOriginalName = (rawName) => {
+  if (typeof rawName !== 'string' || !rawName.trim()) {
+    return 'cv.pdf';
+  }
+
+  const decodedName = decodeURIComponent(rawName.trim());
+  const baseName = path.basename(decodedName) || 'cv.pdf';
+  return baseName.toLowerCase().endsWith('.pdf') ? baseName : `${baseName}.pdf`;
+};
+
+const generateUniqueFilename = (extension = '.pdf') => {
+  const safeExtension = extension && extension.startsWith('.') ? extension : `.${extension || 'pdf'}`;
+  const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+  return `${uniqueSuffix}${safeExtension}`;
+};
+
+const downloadPdfFromUrl = async (pdfUrl) => {
+  let parsedUrl;
+
+  try {
+    parsedUrl = new URL(pdfUrl);
+  } catch (error) {
+    const invalidUrlError = new Error('Geçerli bir PDF URL\'i giriniz.');
+    invalidUrlError.statusCode = 400;
+    throw invalidUrlError;
+  }
+
+  if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
+    const protocolError = new Error('PDF URL\'i http veya https olmalıdır.');
+    protocolError.statusCode = 400;
+    throw protocolError;
+  }
+
+  let response;
+
+  try {
+    response = await fetch(pdfUrl);
+  } catch (error) {
+    const fetchError = new Error('PDF indirilemedi. Lütfen bağlantıyı kontrol edin.');
+    fetchError.statusCode = 400;
+    throw fetchError;
+  }
+
+  if (!response.ok) {
+    const statusError = new Error('PDF indirilemedi. Lütfen bağlantıyı kontrol edin.');
+    statusError.statusCode = 400;
+    throw statusError;
+  }
+
+  const contentType = String(response.headers.get('content-type') || '').toLowerCase();
+
+  const arrayBuffer = await response.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+  const isPdfByMime = contentType.includes('application/pdf');
+  const isPdfBySignature = buffer.slice(0, 4).toString('utf8') === '%PDF';
+
+  if (!isPdfByMime && !isPdfBySignature) {
+    const mimeError = new Error('Verilen bağlantı PDF dosyası döndürmüyor.');
+    mimeError.statusCode = 400;
+    throw mimeError;
+  }
+
+  if (!buffer.length) {
+    const emptyError = new Error('PDF içeriği alınamadı.');
+    emptyError.statusCode = 400;
+    throw emptyError;
+  }
+
+  const originalname = normalizePdfOriginalName(path.basename(parsedUrl.pathname) || 'cv.pdf');
+  const uniqueFilename = generateUniqueFilename('.pdf');
+  const storedFilename = buildRelativeUploadPath(CV_UPLOAD_SUBDIR, uniqueFilename);
+  const absolutePath = resolveUploadsPath(storedFilename);
+
+  await fsPromises.writeFile(absolutePath, buffer);
+
+  return {
+    filename: storedFilename,
+    originalname,
+    mimetype: 'application/pdf',
+    size: buffer.length,
+  };
+};
 
 const CONTENT_UPLOAD_FIELDS = [
   { name: 'image', maxCount: 1 },
@@ -1211,18 +1365,36 @@ app.post('/api/upload-cv', auth, (req, res) => {
       return res.status(400).json({ message: err.message });
     }
 
-    if (!req.file) {
-      return res.status(400).json({ message: 'PDF dosyası yükleyiniz.' });
+    const cvUrl = typeof req.body?.cvUrl === 'string' ? req.body.cvUrl.trim() : '';
+
+    if (cvUrl && req.file) {
+      return res
+        .status(400)
+        .json({ message: 'Lütfen dosya seçme veya URL ile yükleme seçeneklerinden sadece birini kullanın.' });
+    }
+
+    if (!req.file && !cvUrl) {
+      return res.status(400).json({ message: 'PDF dosyası yükleyin veya URL girin.' });
     }
 
     try {
-      const { filename, originalname, mimetype, size } = req.file;
-      const storedFilename = buildRelativeUploadPath(CV_UPLOAD_SUBDIR, filename);
-      const cv = await CV.create({ filename: storedFilename, originalname, mimetype, size });
+      let cv;
+
+      if (cvUrl) {
+        const downloadedPdf = await downloadPdfFromUrl(cvUrl);
+        cv = await CV.create(downloadedPdf);
+      } else {
+        const { filename, originalname, mimetype, size } = req.file;
+        const storedFilename = buildRelativeUploadPath(CV_UPLOAD_SUBDIR, filename);
+        cv = await CV.create({ filename: storedFilename, originalname, mimetype, size });
+      }
+
       res.status(201).json(cv);
     } catch (error) {
       console.error('CV kaydedilemedi:', error.message);
-      res.status(500).json({ message: 'Sunucu hatası.' });
+      const statusCode = error?.statusCode || 500;
+      const message = statusCode === 400 ? error.message : 'Sunucu hatası.';
+      res.status(statusCode).json({ message });
     }
   });
 });
@@ -1291,6 +1463,45 @@ app.use((err, req, res, next) => {
   return res.status(500).json({ message: 'Sunucu hatası.' });
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log("Sunucu", PORT, "portunda çalışıyor");
+});
+
+const gracefulShutdown = async (signal = 'SIGTERM') => {
+  console.log(`${signal} alındı, sunucu kapatılıyor...`);
+
+  try {
+    await new Promise((resolve) => {
+      if (server.listening) {
+        server.close(() => resolve());
+      } else {
+        resolve();
+      }
+    });
+  } catch (error) {
+    console.warn('Sunucu kapatılamadı:', error.message);
+  }
+
+  try {
+    await mongoose.connection.close();
+    console.log('MongoDB bağlantısı kapatıldı.');
+  } catch (error) {
+    console.warn('MongoDB bağlantısı kapatılamadı:', error.message);
+  }
+
+  process.exit(0);
+};
+
+['SIGTERM', 'SIGINT'].forEach((signal) => {
+  process.on(signal, () => gracefulShutdown(signal));
+});
+
+process.on('uncaughtException', (error) => {
+  console.error('Yakalanamayan hata:', error);
+  gracefulShutdown('UNCAUGHT_EXCEPTION');
+});
+
+process.on('unhandledRejection', (reason) => {
+  console.error('Yakalanamayan promise reddi:', reason);
+  gracefulShutdown('UNHANDLED_REJECTION');
 });
