@@ -471,7 +471,13 @@
           <form id="upload-cv-form">
             <div>
               <label for="cv-file">PDF Seç</label>
-              <input type="file" id="cv-file" name="cv" accept="application/pdf" required />
+              <input type="file" id="cv-file" name="cv" accept="application/pdf" />
+              <small>Bilgisayarınızdan PDF seçebilir veya aşağıya bir URL ekleyebilirsiniz.</small>
+            </div>
+            <div>
+              <label for="cv-url">PDF URL'si</label>
+              <input type="url" id="cv-url" name="cvUrl" placeholder="https://.../dosya.pdf" />
+              <small>PDF bağlantısını tam adres olarak yapıştırın; dosya sunucuya kaydedilir.</small>
             </div>
             <button type="submit">Yükle</button>
           </form>
