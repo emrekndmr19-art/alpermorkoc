@@ -24,6 +24,8 @@ const loginForm = document.getElementById('login-form');
 const createContentForm = document.getElementById('create-content-form');
 const updateContentForm = document.getElementById('update-content-form');
 const uploadCvForm = document.getElementById('upload-cv-form');
+const cvFileInput = document.getElementById('cv-file');
+const cvUrlInput = document.getElementById('cv-url');
 const logoutButton = document.getElementById('logout-button');
 const cancelUpdateButton = document.getElementById('cancel-update');
 const createLanguageSelect = document.getElementById('create-language');
@@ -877,6 +879,19 @@ function formatDate(dateString) {
   }).format(date);
 }
 
+function isValidHttpUrl(value) {
+  if (typeof value !== 'string') {
+    return false;
+  }
+
+  try {
+    const parsed = new URL(value.trim());
+    return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+  } catch (error) {
+    return false;
+  }
+}
+
 async function createContent(event) {
   event.preventDefault();
   setStatus(adminStatus, 'İçerik ekleniyor...');
@@ -1024,9 +1039,29 @@ async function deleteContent(id) {
 
 async function uploadCv(event) {
   event.preventDefault();
+
+  const file = cvFileInput?.files?.[0];
+  const cvUrl = (cvUrlInput?.value || '').trim();
+
+  if (!file && !cvUrl) {
+    setStatus(adminStatus, 'PDF dosyası seçin veya bir URL girin.', true);
+    return;
+  }
+
+  if (cvUrl && !isValidHttpUrl(cvUrl)) {
+    setStatus(adminStatus, 'Lütfen geçerli bir PDF bağlantısı girin (http veya https).', true);
+    return;
+  }
+
   setStatus(adminStatus, 'CV yükleniyor...');
 
-  const formData = new FormData(uploadCvForm);
+  const formData = new FormData();
+  if (file) {
+    formData.append('cv', file);
+  }
+  if (cvUrl) {
+    formData.append('cvUrl', cvUrl);
+  }
 
   try {
     const response = await fetch(`${API_BASE}/upload-cv`, {

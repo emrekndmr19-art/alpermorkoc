@@ -805,6 +805,89 @@ const contentUploads = multer({
   fileFilter: contentFileFilter,
 });
 
+const normalizePdfOriginalName = (rawName) => {
+  if (typeof rawName !== 'string' || !rawName.trim()) {
+    return 'cv.pdf';
+  }
+
+  const decodedName = decodeURIComponent(rawName.trim());
+  const baseName = path.basename(decodedName) || 'cv.pdf';
+  return baseName.toLowerCase().endsWith('.pdf') ? baseName : `${baseName}.pdf`;
+};
+
+const generateUniqueFilename = (extension = '.pdf') => {
+  const safeExtension = extension && extension.startsWith('.') ? extension : `.${extension || 'pdf'}`;
+  const uniqueSuffix = `${Date.now()}-${Math.round(Math.random() * 1e9)}`;
+  return `${uniqueSuffix}${safeExtension}`;
+};
+
+const downloadPdfFromUrl = async (pdfUrl) => {
+  let parsedUrl;
+
+  try {
+    parsedUrl = new URL(pdfUrl);
+  } catch (error) {
+    const invalidUrlError = new Error('Geçerli bir PDF URL\'i giriniz.');
+    invalidUrlError.statusCode = 400;
+    throw invalidUrlError;
+  }
+
+  if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
+    const protocolError = new Error('PDF URL\'i http veya https olmalıdır.');
+    protocolError.statusCode = 400;
+    throw protocolError;
+  }
+
+  let response;
+
+  try {
+    response = await fetch(pdfUrl);
+  } catch (error) {
+    const fetchError = new Error('PDF indirilemedi. Lütfen bağlantıyı kontrol edin.');
+    fetchError.statusCode = 400;
+    throw fetchError;
+  }
+
+  if (!response.ok) {
+    const statusError = new Error('PDF indirilemedi. Lütfen bağlantıyı kontrol edin.');
+    statusError.statusCode = 400;
+    throw statusError;
+  }
+
+  const contentType = String(response.headers.get('content-type') || '').toLowerCase();
+
+  const arrayBuffer = await response.arrayBuffer();
+  const buffer = Buffer.from(arrayBuffer);
+  const isPdfByMime = contentType.includes('application/pdf');
+  const isPdfBySignature = buffer.slice(0, 4).toString('utf8') === '%PDF';
+
+  if (!isPdfByMime && !isPdfBySignature) {
+    const mimeError = new Error('Verilen bağlantı PDF dosyası döndürmüyor.');
+    mimeError.statusCode = 400;
+    throw mimeError;
+  }
+
+  if (!buffer.length) {
+    const emptyError = new Error('PDF içeriği alınamadı.');
+    emptyError.statusCode = 400;
+    throw emptyError;
+  }
+
+  const originalname = normalizePdfOriginalName(path.basename(parsedUrl.pathname) || 'cv.pdf');
+  const uniqueFilename = generateUniqueFilename('.pdf');
+  const storedFilename = buildRelativeUploadPath(CV_UPLOAD_SUBDIR, uniqueFilename);
+  const absolutePath = resolveUploadsPath(storedFilename);
+
+  await fsPromises.writeFile(absolutePath, buffer);
+
+  return {
+    filename: storedFilename,
+    originalname,
+    mimetype: 'application/pdf',
+    size: buffer.length,
+  };
+};
+
 const CONTENT_UPLOAD_FIELDS = [
   { name: 'image', maxCount: 1 },
   { name: 'conceptPdf', maxCount: 1 },
@@ -1211,18 +1294,36 @@ app.post('/api/upload-cv', auth, (req, res) => {
       return res.status(400).json({ message: err.message });
     }
 
-    if (!req.file) {
-      return res.status(400).json({ message: 'PDF dosyası yükleyiniz.' });
+    const cvUrl = typeof req.body?.cvUrl === 'string' ? req.body.cvUrl.trim() : '';
+
+    if (cvUrl && req.file) {
+      return res
+        .status(400)
+        .json({ message: 'Lütfen dosya seçme veya URL ile yükleme seçeneklerinden sadece birini kullanın.' });
+    }
+
+    if (!req.file && !cvUrl) {
+      return res.status(400).json({ message: 'PDF dosyası yükleyin veya URL girin.' });
     }
 
     try {
-      const { filename, originalname, mimetype, size } = req.file;
-      const storedFilename = buildRelativeUploadPath(CV_UPLOAD_SUBDIR, filename);
-      const cv = await CV.create({ filename: storedFilename, originalname, mimetype, size });
+      let cv;
+
+      if (cvUrl) {
+        const downloadedPdf = await downloadPdfFromUrl(cvUrl);
+        cv = await CV.create(downloadedPdf);
+      } else {
+        const { filename, originalname, mimetype, size } = req.file;
+        const storedFilename = buildRelativeUploadPath(CV_UPLOAD_SUBDIR, filename);
+        cv = await CV.create({ filename: storedFilename, originalname, mimetype, size });
+      }
+
       res.status(201).json(cv);
     } catch (error) {
       console.error('CV kaydedilemedi:', error.message);
-      res.status(500).json({ message: 'Sunucu hatası.' });
+      const statusCode = error?.statusCode || 500;
+      const message = statusCode === 400 ? error.message : 'Sunucu hatası.';
+      res.status(statusCode).json({ message });
     }
   });
 });
