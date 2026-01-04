@@ -1392,6 +1392,45 @@ app.use((err, req, res, next) => {
   return res.status(500).json({ message: 'Sunucu hatası.' });
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log("Sunucu", PORT, "portunda çalışıyor");
+});
+
+const gracefulShutdown = async (signal = 'SIGTERM') => {
+  console.log(`${signal} alındı, sunucu kapatılıyor...`);
+
+  try {
+    await new Promise((resolve) => {
+      if (server.listening) {
+        server.close(() => resolve());
+      } else {
+        resolve();
+      }
+    });
+  } catch (error) {
+    console.warn('Sunucu kapatılamadı:', error.message);
+  }
+
+  try {
+    await mongoose.connection.close();
+    console.log('MongoDB bağlantısı kapatıldı.');
+  } catch (error) {
+    console.warn('MongoDB bağlantısı kapatılamadı:', error.message);
+  }
+
+  process.exit(0);
+};
+
+['SIGTERM', 'SIGINT'].forEach((signal) => {
+  process.on(signal, () => gracefulShutdown(signal));
+});
+
+process.on('uncaughtException', (error) => {
+  console.error('Yakalanamayan hata:', error);
+  gracefulShutdown('UNCAUGHT_EXCEPTION');
+});
+
+process.on('unhandledRejection', (reason) => {
+  console.error('Yakalanamayan promise reddi:', reason);
+  gracefulShutdown('UNHANDLED_REJECTION');
 });
